@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('backend_logo');
             $table->text('keyword');
             $table->text('copyright');
-            $table->integer('user_updated');
+            $table->integer('user_updated')->nullable();
             $table->timestamp('updated_at')->default(DB::raw('NULL on update CURRENT_TIMESTAMP'))->nullable();
         });
     }

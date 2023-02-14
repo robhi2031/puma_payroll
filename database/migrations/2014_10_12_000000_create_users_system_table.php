@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->text('thumb');
+            $table->tinyInteger('is_active', 1)->default(1);
             $table->integer('user_add');
-            $table->integer('user_updated');
+            $table->integer('user_updated')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('NULL on update CURRENT_TIMESTAMP'))->nullable();
         });

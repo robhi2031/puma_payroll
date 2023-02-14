@@ -24,6 +24,9 @@ Route::group(['prefix' => 'auth'], function () {
 // Api Ajax
 Route::group(['prefix' => 'api'], function () {
     Route::get('/system_info', [CommonController::class, 'system_info'])->name('system_info');
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('/first_login', [AuthController::class, 'first_login'])->name('first_login');
+    });
 });
 
 // Dashboard Backend

@@ -72,8 +72,8 @@
             <!--end::Wrapper-->
             <!--begin::Actions-->
             <div class="d-flex flex-stack mt-5">
-                <!--begin::Link--
-                <a href="#" class="link-danger text-hover-danger fs-6 fw-bolder"><i class="bi bi-house-fill text-danger"></i> Halaman Awal</a>
+                <!--begin::Link-->
+                <a href="javascript:void(0);" class="link-danger text-hover-danger fs-6 fw-bolder">Lupa Password ?</a>
                 <!--end::Link-->
                 <!--begin::Submit button-->
                 <button type="button" id="btn-login2" class="btn btn-sm btn-primary">

@@ -28,7 +28,8 @@ var KTLogin = function() {
 			blockUi.block(), blockUi.destroy();
 			var formData = new FormData($('#kt_sign_in_form')[0]);
 			$.ajax({
-				url: base_url+ "login/cekfirstlogin",
+				url: base_url+ "api/auth/first_login",
+				headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
 				type: "POST",
 				data: formData,
 				contentType: false,
@@ -39,7 +40,7 @@ var KTLogin = function() {
 					blockUi.release(), blockUi.destroy();
 					if (data.status==true){
 						var tUserInfo=`<!--begin::Title-->
-						<h4 class="text-dark  fw-500 mb-2">` +data.userInfo.name+ `</h4>
+						<h4 class="text-dark  fw-500 mb-2">` +data.row.name+ `</h4>
 						<!--end::Title-->
 						<div class="btn-group">
 							<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,27 +49,17 @@ var KTLogin = function() {
 								<path opacity="0.3" d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z" fill="black"/>
 								<path d="M12 22C14.6 22 17 21 18.7 19.4C17.9 16.9 15.2 15 12 15C8.8 15 6.09999 16.9 5.29999 19.4C6.99999 21 9.4 22 12 22Z" fill="black"/>
 								</svg></span>
-								<!--end::Svg Icon-->` +data.userInfo.email+ `
+								<!--end::Svg Icon-->` +data.row.email+ `
 							</button>
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="` +base_url+ `logout"><i class="bi bi-person-x me-2 text-dark fs-5"></i> Gunakan akun lain</a></li>
 							</ul>
 						</div>`;
-						$('[name="hideMail"]').val(data.userInfo.email), $('#hT-login2').html(tUserInfo), $('#fBody-login1').hide(), $('#fBody-login2').addClass('loginAnimated-fadeInRight').show(), $('#password').focus();
+						$('[name="hideMail"]').val(data.row.email), $('#hT-login2').html(tUserInfo), $('#fBody-login1').hide(), $('#fBody-login2').addClass('loginAnimated-fadeInRight').show(), $('#password').focus();
 					}else{
-						if(data.error_code=='USER_NOT_VALID') {
-							Swal.fire({title: "Ooops!", text: "Email/ Username tidak terdaftar pada sistem!", icon: "error", allowOutsideClick: false}).then(function (result) {
-								$('#username').focus();
-							});
-						}else if(data.error_code == 'USER_OFF') {
-							Swal.fire({title: "Ooops!", text: "Akun user pada sistem saat ini berstatus tidak aktif, Hubungi Admin PP untuk info lebih lanjut!", icon: "error", allowOutsideClick: false}).then(function (result) {
-								location.reload(true);
-							});
-						}else{
-							Swal.fire({title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, mohon hubungi pengembang!",icon: "error", allowOutsideClick: false}).then(function (result) {
-								location.reload(true);
-							});
-						}
+						Swal.fire({title: "Ooops!", text: data.message, icon: "error", allowOutsideClick: false}).then(function (result) {
+							location.reload(true);
+						});
 					}
 				}, error: function (jqXHR, textStatus, errorThrown) {
 					$('#btn-login1').html('<i class="bi bi-box-arrow-in-right fs-4"></i> Berikutnya').attr('disabled', false);
@@ -113,7 +104,8 @@ var KTLogin = function() {
 			blockUi.block(), blockUi.destroy();
 			var formData = new FormData($('#kt_sign_in_form')[0]);
 			$.ajax({
-				url: base_url+ "login/ceksecondlogin",
+				url: base_url+ "api/auth/second_login",
+				headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
 				type: "POST",
 				data: formData,
 				contentType: false,

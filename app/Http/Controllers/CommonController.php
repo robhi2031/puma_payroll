@@ -24,7 +24,6 @@ class CommonController extends Controller
         try {
             $getRow = $this->get_systeminfo();
             if($getRow != null){
-                //Return Response
                 return jsonResponse(true, 'Success', 200, $getRow);
             } else {
                 return jsonResponse(false, "Credentials not match", 401);

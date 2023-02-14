@@ -38,7 +38,7 @@ class CreatePermissionTables extends Migration
             $table->string('order_line', 10)->nullable();
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->integer('user_add');
-            $table->integer('user_updated');
+            $table->integer('user_updated')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('NULL on update CURRENT_TIMESTAMP'))->nullable();
 
@@ -54,7 +54,7 @@ class CreatePermissionTables extends Migration
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->integer('user_add');
-            $table->integer('user_updated');
+            $table->integer('user_updated')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('NULL on update CURRENT_TIMESTAMP'))->nullable();
             if ($teams || config('permission.testing')) {
