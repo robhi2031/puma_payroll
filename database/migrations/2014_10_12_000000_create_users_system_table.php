@@ -24,6 +24,9 @@ return new class extends Migration
             $table->rememberToken();
             $table->text('thumb');
             $table->tinyInteger('is_active', 1)->default(1);
+            $table->tinyInteger('is_login', 1)->nullable();
+            $table->string('ip_login')->nullable();
+            $table->timestamp('last_login')->nullable();
             $table->integer('user_add');
             $table->integer('user_updated')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -115,15 +115,6 @@ var KTLogin = function() {
 					$('#btn-login2').html('<i class="bi bi-box-arrow-in-right fs-4"></i> Login').attr('disabled', false);
 					blockUi.release(), blockUi.destroy();
 					if (data.status==true){
-						var linkUrl;
-						if(data.l=='1'){
-							linkUrl=base_url+'app_admin';
-						} if(data.l=='2'){
-							linkUrl=base_url+'app_pdpc';
-						} if(data.l=='3'){
-							// linkUrl=base_url;
-							linkUrl = $.cookie("previous_url");
-						}
 						Swal.fire({
 							title: "Success!",
 							text: "Login berhasil, sistem akan mengarahkan anda ke halaman dashboard dalam beberapa detik...",
@@ -133,18 +124,16 @@ var KTLogin = function() {
 							showConfirmButton: false,
 							allowOutsideClick: false
 						}).then(function (result) {
-							$('#kt_sign_in').hide(), window.location = linkUrl;
+							$('#kt_sign_in').hide(), window.location = base_url;
 						});
 					}else{
-						if(data.error_code=='PASSWORD_NOT_VALID') {
-							Swal.fire({title: "Ooops!", text: "Password yang dimasukkan tidak sesuai, coba lagi dengan password yang benar!", icon: "error", allowOutsideClick: false}).then(function (result) {
-								password.focus().val('');
-							});
-						}else{
-							Swal.fire({title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, mohon hubungi pengembang!",icon: "error", allowOutsideClick: false}).then(function (result) {
+						Swal.fire({title: "Ooops!", text: data.message, icon: "error", allowOutsideClick: false}).then(function (result) {
+							if(data.row.error_code=='PASSWORD_NOT_VALID') {
+								password.val('').focus();
+							}else{
 								location.reload(true);
-							});
-						}
+							}
+						});
 					}
 				},
 				error: function (jqXHR, textStatus, errorThrown) {

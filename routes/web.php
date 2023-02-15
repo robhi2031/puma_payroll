@@ -26,12 +26,14 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/system_info', [CommonController::class, 'system_info'])->name('system_info');
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/first_login', [AuthController::class, 'first_login'])->name('first_login');
+        Route::post('/second_login', [AuthController::class, 'second_login'])->name('second_login');
     });
 });
 
 // Dashboard Backend
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
 });
 
 // Route::get('/', function () {

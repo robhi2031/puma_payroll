@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SystemInfo extends Model
+class LogActivities extends Model
 {
     use HasFactory;
 
-    protected $table = 'system_info';
+    protected $table = 'log_activities';
+    
+    protected $guarded = ['id'];
 
     public $timestamps = false;
 }

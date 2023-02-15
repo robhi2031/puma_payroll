@@ -8,8 +8,10 @@ use App\Traits\SystemInfoCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Artisan;
 use Hash;
 use Session;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
@@ -33,6 +35,7 @@ class AuthController extends Controller
             'app_keywords' => $getSystemInfo->keyword
         );
 
+        addToLog('Mengakses halaman login');
         return view('login.index', compact('data'));
     }    
     /**
@@ -62,11 +65,14 @@ class AuthController extends Controller
                         'is_active' => $user->is_active,
                     );
                 } else {
+                    addToLog('First step login failed, System cannot find user according to the Username or Email entered !');
                     return jsonResponse(false, 'Sistem tidak dapat menemukan akun user', 200);
                 }
             }
+            addToLog('First step login was successful, username and email found');
             return jsonResponse(true, 'Success', 200, $output);
         } catch (\Exception $exception) {
+            addToLog($exception->getMessage());
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
@@ -85,26 +91,55 @@ class AuthController extends Controller
             $user = User::where('email', $email)->first();
             $hashedPassword = $user->password;
             if (!Hash::check($password, $hashedPassword)) {
-                return jsonResponse(false, 'Password yang dimasukkan tidak sesuai, coba lagi dengan password yang benar!', 200);
+                addToLog('Second step login failed, System cannot find user according to the Password entered !');
+                return jsonResponse(false, 'Password yang dimasukkan tidak sesuai, coba lagi dengan password yang benar!', 200, ['error_code' => 'PASSWORD_NOT_VALID']);
             }
-
-            $data = array(
+            //Session Data
+            $data = (object) array(
                 'id' => $user->id,
-                'name' => $user->id,
-                'username' => $user->id,
-                'email' => $user->id,
-                'phone_number' => $user->id,
-                'thumb' => $user->id,
-                'is_active' => $user->id
+                'name' => $user->name,
+                'username' => $user->username,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+                'is_active' => $user->is_active
             );
-
-            Cookie::queue('owt-cookie', 'Setting Cookie from Online Web Tutor', 120);
-
-            return jsonResponse(true, 'Success', 200, $output);
+            Auth::login($user);
+            //Created Token Sanctum
+            $bearer_token = $request->user()->createToken('api-token')->plainTextToken;
+            addToLog('Second step login successful, the user session has been created');
+            //Update Data User Session
+            User::where('id', auth()->user()->id)->update([
+                'is_login' => 1,
+                'ip_login' => getUserIp(),
+                'last_login' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+            //Set Cookie
+            $arrColorTextSymbol = array( "text-primary"=>"text-primary", "text-success"=>"text-success", "text-info"=>"text-info", "text-warning"=>"text-warning", "text-danger"=>"text-danger", "text-dark"=>"text-dark");
+            $symbolThumbTheme = array_rand($arrColorTextSymbol);
+            $expCookie = 86400; //24Jam
+            Cookie::queue('username', auth()->user()->username, $expCookie);
+            Cookie::queue('email', auth()->user()->email, $expCookie);
+            Cookie::queue('symbolThumb_theme', $symbolThumbTheme, $expCookie);
+            Cookie::queue('remember', TRUE, $expCookie);
+            return jsonResponse(true, 'Success', 200);
         } catch (\Exception $exception) {
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
         }
+    }    
+    /**
+     * logout_sessions
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function logout_sessions(Request $request) {
+        auth()->user()->tokens()->delete();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        session()->flush();
+        Artisan::call('cache:clear');
+        redirect('/auth');
     }
 }
