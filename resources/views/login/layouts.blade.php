@@ -55,7 +55,6 @@
         <link href="{{ asset('/dist/img/favicon/apple-startup-1496x2048.png') }}" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image" />
         <link href="{{ asset('/dist/img/favicon/apple-startup-1536x2008.png') }}" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" rel="apple-touch-startup-image" />
         <link rel="manifest" href="{{ asset('/dist/img/favicon/manifest.json') }}" />
-
         <meta name="application-name" content="{{ $data['app_name'] }}">
         <meta name="msapplication-TileImage" content="{{ $data['thumb'] }}">
         <meta name="msapplication-TileColor" content="#6CC4A1">

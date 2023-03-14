@@ -33,6 +33,10 @@ Route::group(['prefix' => 'api'], function () {
 // Dashboard Backend
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/system_info', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/roles', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/permissions', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
 });
 
