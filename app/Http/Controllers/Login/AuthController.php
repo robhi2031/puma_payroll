@@ -140,6 +140,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         session()->flush();
         Artisan::call('cache:clear');
-        redirect('/auth');
+        return redirect('/auth');
     }
 }

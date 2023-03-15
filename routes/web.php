@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Login\AuthController;
@@ -33,6 +34,9 @@ Route::group(['prefix' => 'api'], function () {
 // Dashboard Backend
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
+
+
     Route::get('/system_info', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/roles', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/permissions', [DashboardController::class, 'index'])->name('dashboard');

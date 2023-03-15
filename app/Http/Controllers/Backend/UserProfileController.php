@@ -14,7 +14,7 @@ use Session;
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 
-class DashboardController extends Controller
+class UserProfileController extends Controller
 {
     use SystemInfoCommon;
 
@@ -23,20 +23,20 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index($username)
     {
         $getSystemInfo = $this->get_systeminfo();
         $getUserSession = Auth::user();
 
         $data = array(
-            'title' => 'Dashboard',
+            'title' => $getUserSession->name.' on User Profile',
             'url' => url()->current(),
             'app_version' => config('app.version'),
             'app_name' => $getSystemInfo->name,
             'user_session' => $getUserSession
         );
 
-        addToLog('Mengakses halaman Dashboard - Backend');
-        return view('backend.index', compact('data'));
+        addToLog('Mengakses halaman ' .$getUserSession->name. ' on User Profile - Backend');
+        return view('backend.user_profile', compact('data'));
     }
 }
