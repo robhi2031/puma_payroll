@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('log_activities', function (Blueprint $table) {
             $table->id();
             $table->string('ip_address');
-            $table->string('fid_user')->nullable();
+            $table->integer('fid_user')->nullable();
             $table->string('description');
             $table->text('url');
             $table->text('method');

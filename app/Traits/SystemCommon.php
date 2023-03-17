@@ -4,21 +4,26 @@ namespace App\Traits;
 
 use App\Models\SystemInfo;
 
-trait SystemInfoCommon {
+trait SystemCommon {    
+    /**
+     * get_systeminfo
+     *
+     * @return void
+     */
     protected function get_systeminfo()
     {
         $getRow = SystemInfo::where('id', 1)->first();
         if($getRow==true){
             //Thumb Site
-            $thumb_site = $getRow->thumb;
-            if($thumb_site==''){
+            $thumb = $getRow->thumb;
+            if($thumb==''){
                 $getRow->url_thumb = NULL;
             } else {
-                if (!file_exists('./dist/img/system-img/'.$thumb_site)){
+                if (!file_exists('./dist/img/system-img/'.$thumb)){
                     $getRow->url_thumb = NULL;
-                    $getRow->thumb_site = NULL;
+                    $getRow->thumb = NULL;
                 }else{
-                    $getRow->url_thumb = url('dist/img/system-img/'.$thumb_site);
+                    $getRow->url_thumb = url('dist/img/system-img/'.$thumb);
                 }
             }
             //Login Background
@@ -55,6 +60,18 @@ trait SystemInfoCommon {
                     $getRow->backend_logo = NULL;
                 }else{
                     $getRow->url_backendLogo = url('dist/img/system-img/'.$backend_logo);
+                }
+            }
+            //Backend Logo Icon
+            $backend_logo_icon = $getRow->backend_logo_icon;
+            if($backend_logo_icon==''){
+                $getRow->url_backendLogoIcon = NULL;
+            } else {
+                if (!file_exists('./dist/img/system-img/'.$backend_logo_icon)){
+                    $getRow->url_backendLogoIcon = NULL;
+                    $getRow->backend_logo_icon = NULL;
+                }else{
+                    $getRow->url_backendLogoIcon = url('dist/img/system-img/'.$backend_logo_icon);
                 }
             }
 

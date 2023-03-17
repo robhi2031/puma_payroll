@@ -3,27 +3,19 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Traits\SystemInfoCommon;
+use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Artisan;
-use Hash;
-use Session;
-use Carbon\Carbon;
-use Spatie\Permission\Models\Role;
 
 class UserProfileController extends Controller
 {
-    use SystemInfoCommon;
-
+    use SystemCommon;
     /**
      * index
      *
      * @return void
      */
-    public function index($username)
+    public function index(Request $request, $username)
     {
         $getSystemInfo = $this->get_systeminfo();
         $getUserSession = Auth::user();

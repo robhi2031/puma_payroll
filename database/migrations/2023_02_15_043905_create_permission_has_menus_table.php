@@ -13,20 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users_system', function (Blueprint $table) {
+        Schema::create('permission_has_menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
-            $table->string('username', 100);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('phone_number', 25);
-            $table->string('password');
-            $table->rememberToken();
-            $table->text('thumb');
-            $table->string('is_active', 1)->default('Y');
-            $table->string('is_login', 1)->default('N');
-            $table->string('ip_login')->nullable();
-            $table->timestamp('last_login')->nullable();
+            $table->string('name');
+            $table->string('icon', 50)->nullable();
+            $table->string('has_route', 10)->default('N');
+            $table->string('route_name')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('has_child', 10)->default('N');
+            $table->string('is_crud', 10)->default('N');
+            $table->string('order_line', 10)->nullable();
             $table->integer('user_add');
             $table->integer('user_updated')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -41,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_system');
+        Schema::dropIfExists('permission_has_menus');
     }
 };

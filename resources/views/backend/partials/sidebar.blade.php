@@ -7,9 +7,12 @@
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
         <a href="{{ url('/') }}">
-            <img alt="Logo" src="{{ asset('/dist/img/system-img/backend-logo-123456.png') }}" class="h-40px app-sidebar-logo-default" />
-
-            <img alt="Logo" src="{{ asset('/dist/img/logo_ju 1.png') }}" class="h-40px app-sidebar-logo-minimize" />
+            <svg class="bd-placeholder-img rounded w-100 h-40px app-sidebar-logo-default" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#868e96"></rect>
+            </svg>
+            <svg class="bd-placeholder-img rounded w-100 h-40px app-sidebar-logo-minimize" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#868e96"></rect>
+            </svg>
         </a>
         <!--end::Logo image-->
 
@@ -49,7 +52,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link active"
+                    <a class="menu-link @if(Route::is('dashboard')) active @endif"
                         href="{{ url('/') }}"><span
                         class="menu-icon"><i class="bi bi-house fs-3"></i></span><span
                         class="menu-title">Dashboard</span>

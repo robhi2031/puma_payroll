@@ -1,9 +1,10 @@
 "use strict";
 // Class Definition
+//Block & Unblock on Div
 var messageBlockUi = '<div class="blockui-message"><span class="spinner-border text-primary"></span> Mohon Tunggu...</div>';
 // FORM CLASS LOGIN
 var KTLogin = function() {
-	//Block & Unblock on Div
+	//SignIn Handle 1
 	var _handleSignInForm = function() {
 		$('#username').focus();
 		//Handle Enter Submit
@@ -71,7 +72,7 @@ var KTLogin = function() {
 			});
 		});
 	}
-
+	//SignIn Handle 2
 	var _handleSignIn2Form = function() {
 		/* Show Hide Password */
 		$('#showPass_checkbox').change(function (e) {

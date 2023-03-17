@@ -23,9 +23,11 @@
         </div>
         <!--end::Sidebar mobile toggle-->
         <!--begin::Mobile logo-->
-        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0" id="logoMobile">
             <a href="{{ url('/') }}" class="d-lg-none">
-                <img alt="Logo-mobile" src="{{ asset('/dist/img/logo_ju 1.png') }}" class="h-30px" />
+                <svg class="bd-placeholder-img rounded w-100 h-30px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                </svg>
             </a>
         </div>
         <!--end::Mobile logo-->
@@ -241,10 +243,12 @@
                 <!--begin::User menu-->
                 <div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->
-                    <div class="cursor-pointer symbol symbol-30px symbol-md-40px"
+                    <div class="cursor-pointer symbol symbol-30px symbol-md-40px avatar-header"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
                         data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img src="{{ asset('/dist/img/users-img/300-1.jpg') }}" alt="avatar-user" />
+                        <svg class="bd-placeholder-img rounded w-40px h-40px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <rect width="100%" height="100%" fill="#868e96"></rect>
+                        </svg>
                     </div>
                     <!--begin::User account menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
@@ -253,17 +257,14 @@
                         <div class="menu-item px-3">
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
-                                <div class="symbol symbol-50px me-5">
-                                    <img alt="avatar-user" src="{{ asset('/dist/img/users-img/300-1.jpg') }}" />
+                                <div class="symbol symbol-50px me-5 avatar-header">
+                                    <svg class="bd-placeholder-img rounded w-50px h-50px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                                    </svg>
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
-                                <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5">
-                                        User Admin Test
-                                    </div>
-                                    <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7"> max@kt.com </a>
-                                </div>
+                                <div class="d-flex flex-column" id="nameUserHeader"></div>
                                 <!--end::Username-->
                             </div>
                         </div>

@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Login;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Traits\SystemInfoCommon;
+use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Artisan;
 use Hash;
-use Session;
 use Carbon\Carbon;
-use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
-    use SystemInfoCommon;
-    
+    use SystemCommon;
     /**
      * index
      *
@@ -69,6 +66,10 @@ class AuthController extends Controller
                     return jsonResponse(false, 'Sistem tidak dapat menemukan akun user', 200);
                 }
             }
+            if($user->is_active=='N') {
+                addToLog('First step login failed, The user is currently disabled !');
+                return jsonResponse(false, 'Akun user sedang dinonactifkan, silahkan coba lagi nanti atau hubungi admin untuk mengatasi masalah ini.', 200);
+            }
             addToLog('First step login was successful, username and email found');
             return jsonResponse(true, 'Success', 200, $output);
         } catch (\Exception $exception) {
@@ -94,32 +95,23 @@ class AuthController extends Controller
                 addToLog('Second step login failed, System cannot find user according to the Password entered !');
                 return jsonResponse(false, 'Password yang dimasukkan tidak sesuai, coba lagi dengan password yang benar!', 200, ['error_code' => 'PASSWORD_NOT_VALID']);
             }
-            //Session Data
-            $data = (object) array(
-                'id' => $user->id,
-                'name' => $user->name,
-                'username' => $user->username,
-                'email' => $user->email,
-                'phone_number' => $user->phone_number,
-                'is_active' => $user->is_active
-            );
             Auth::login($user);
             //Created Token Sanctum
-            $bearer_token = $request->user()->createToken('api-token')->plainTextToken;
+            $request->user()->createToken('api-token')->plainTextToken;
             addToLog('Second step login successful, the user session has been created');
             //Update Data User Session
             User::where('id', auth()->user()->id)->update([
-                'is_login' => 1,
+                'is_login' => 'Y',
                 'ip_login' => getUserIp(),
                 'last_login' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             //Set Cookie
-            $arrColorTextSymbol = array( "text-primary"=>"text-primary", "text-success"=>"text-success", "text-info"=>"text-info", "text-warning"=>"text-warning", "text-danger"=>"text-danger", "text-dark"=>"text-dark");
-            $symbolThumbTheme = array_rand($arrColorTextSymbol);
+            $arrColor= ["text-primary", "text-success", "text-info", "text-warning", "text-danger", "text-dark"];
+            $randomColor = array_rand($arrColor,2);
             $expCookie = 86400; //24Jam
-            Cookie::queue('username', auth()->user()->username, $expCookie);
-            Cookie::queue('email', auth()->user()->email, $expCookie);
-            Cookie::queue('symbolThumb_theme', $symbolThumbTheme, $expCookie);
+            Cookie::queue('username', Auth::user()->username, $expCookie);
+            Cookie::queue('email', Auth::user()->email, $expCookie);
+            Cookie::queue('userThumb_color', $arrColor[$randomColor[0]], $expCookie);
             Cookie::queue('remember', TRUE, $expCookie);
             return jsonResponse(true, 'Success', 200);
         } catch (\Exception $exception) {
@@ -135,6 +127,10 @@ class AuthController extends Controller
      * @return void
      */
     public function logout_sessions(Request $request) {
+        $arrayCookie = array();
+        foreach (Cookie::get() as $key => $item){
+            $arrayCookie []= cookie($key, null, -2628000, null, null);
+        }
         auth()->user()->tokens()->delete();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

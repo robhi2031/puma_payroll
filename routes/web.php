@@ -33,15 +33,20 @@ Route::group(['prefix' => 'api'], function () {
 
 // Dashboard Backend
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
+
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
 
+    Route::group(['prefix' => 'api'], function () {
+        Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
+        Route::get('/user_menus', [CommonController::class, 'user_menus'])->name('user_menus');
+    });
 
-    Route::get('/system_info', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/roles', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/permissions', [DashboardController::class, 'index'])->name('dashboard');
-    
-    Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
+
+    // Route::get('/system_info', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/roles', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/permissions', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 // Route::get('/', function () {

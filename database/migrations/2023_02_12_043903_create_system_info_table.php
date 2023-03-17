@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('login_bg');
             $table->text('login_logo');
             $table->text('backend_logo');
+            $table->text('backend_logo_icon');
             $table->text('keyword');
             $table->text('copyright');
             $table->integer('user_updated')->nullable();
