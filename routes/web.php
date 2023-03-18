@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Login\AuthController;
 
@@ -36,11 +37,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
 
     Route::group(['prefix' => 'api'], function () {
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
-        Route::get('/user_menus', [CommonController::class, 'user_menus'])->name('user_menus');
+        Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
+        Route::post('/update_userpassprofil', [CommonController::class, 'update_userpassprofil'])->name('update_userpassprofil');
     });
 
 

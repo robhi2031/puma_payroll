@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Cookie;
+use Spatie\Permission\Models\Role;
 
 trait UserSessionCommon {    
     /**
@@ -37,6 +38,13 @@ trait UserSessionCommon {
                     $getRow->url_thumb = url('dist/img/users-img/'.$thumb);
                 }
             }
+            //Get Roles
+            $role = Role::select('roles.*')
+                ->join('model_has_roles AS b', 'roles.id', '=', 'b.role_id', 'LEFT OUTER')
+                ->where('b.model_id', $getRow->id)->first();
+            $getRow->role = $role->name;
+            //Get Login Time a Go
+            $getRow->login_ago = time_ago($getRow->last_login);
 
             return $getRow;
         } else {

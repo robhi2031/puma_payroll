@@ -1,4 +1,4 @@
-@extends('backend.layouts')
+@extends('backend.layouts', ['activeMenu' => 'DASHBOARD', 'activeSubMenu' => ''])
 @section('content')
 
 @endsection

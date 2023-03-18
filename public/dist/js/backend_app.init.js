@@ -1,17 +1,7 @@
 "use strict";
 // Class Definition
-//Block & Unblock on Div
-const _blockUI = (targetVal, isBlocked) => {
-    let target = document.querySelector(targetVal);
-    let blockUI = new KTBlockUI(target, {
-        message: '<div class="blockui-message bg-light text-dark"><span class="spinner-border text-primary"></span> Mohon Tunggu...</div>',
-    });
-    if (isBlocked==1) {
-        blockUI.block(), blockUI.destroy();
-    } else {
-        blockUI.release(), blockUI.destroy();
-    }
-}
+//Message BlockUi
+const messageBlockUi = '<div class="blockui-message bg-light text-dark"><span class="spinner-border text-primary"></span> Please wait ...</div>';
 //Validate Email
 const validateEmail = (email) => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -32,13 +22,12 @@ const _loadSystemInfo = () => {
             let headerLogoMobile = `<img alt="Logo-mobile" src="` +data.row.url_backendLogoIcon+ `" class="h-30px" />`;
             $('#logoMobile a').html(headerLogoMobile);
             $('#footerCopyright').html(data.row.copyright);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
+        }, error: function (jqXHR, textStatus, errorThrown) {
             console.log('Load data is error');
         }
     });
 };
-//System INFO
+//User INFO
 const _loadUserInfo = () => {
 	$.ajax({
         url: base_url+ "api/user_info",
@@ -58,8 +47,7 @@ const _loadUserInfo = () => {
                 ` +data.row.name+ `
             </div>
             <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7"> ` +data.row.email+ ` </a>`);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
+        }, error: function (jqXHR, textStatus, errorThrown) {
             console.log('Load data is error');
         }
     });

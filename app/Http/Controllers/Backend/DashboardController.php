@@ -25,13 +25,23 @@ class DashboardController extends Controller
     {
         $getSystemInfo = $this->get_systeminfo();
         $getUserSession = Auth::user();
-
+        //Data WebInfo
         $data = array(
-            'title' => 'Dashboard',
+            'title' => $getUserSession->name.' on User Profile',
             'url' => url()->current(),
             'app_version' => config('app.version'),
             'app_name' => $getSystemInfo->name,
             'user_session' => $getUserSession
+        );
+        //Data Source CSS
+        $data['css'] = array(
+            '/dist/plugins/Magnific-Popup/magnific-popup.css',
+        );
+        //Data Source JS
+        $data['js'] = array(
+            '/dist/plugins/Magnific-Popup/jquery.magnific-popup.min.js',
+            '/dist/js/backend_app.init.js',
+            '/scripts/backend/main.init.js'
         );
 
         addToLog('Mengakses halaman Dashboard - Backend');

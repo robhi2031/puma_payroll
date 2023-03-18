@@ -1,5 +1,5 @@
 <!--begin::Sidebar-->
-<div id="kt_app_sidebar" class="app-sidebar  flex-column " data-kt-drawer="true"
+<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true"
     data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}"
     data-kt-drawer-overlay="true" data-kt-drawer-width="225px" data-kt-drawer-direction="start"
     data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
@@ -15,13 +15,11 @@
             </svg>
         </a>
         <!--end::Logo image-->
-
         <!--begin::Sidebar toggle-->
         <div id="kt_app_sidebar_toggle"
             class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate "
             data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
             data-kt-toggle-name="app-sidebar-minimize">
-
             <!--begin::Svg Icon | path: icons/duotune/arrows/arr079.svg-->
             <span class="svg-icon svg-icon-2 rotate-180"><svg width="24" height="24"
                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,242 +50,64 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link @if(Route::is('dashboard')) active @endif"
+                    <a class="menu-link {{ strtolower($activeMenu) == 'dashboard' ? 'active' : '' }}"
                         href="{{ url('/') }}"><span
                         class="menu-icon"><i class="bi bi-house fs-3"></i></span><span
-                        class="menu-title">Dashboard</span>
+                        class="menu-title">DASHBOARD</span>
                     </a>
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">Settings</span></div>
-                    <!--end:Menu content-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('system_info') }}"><span
-                        class="menu-icon"><i class="bi bi-info fs-3"></i></span><span
-                        class="menu-title">System Info</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="bi bi-person-lines-fill fs-3"></i>
-                        </span>
-                        <span class="menu-title">Roles & Permissions</span>
-                        <span class="menu-arrow"> </span>
-                    </span>
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
+                @php
+                    $menus = userMenus()
+                @endphp
+                @foreach ($menus as $menu)
+                    @if (isset($menu['children']) AND $menu['has_child'] == 'Y' )
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ strtolower($activeMenu) == strtolower($menu['menu']) ? 'hover show' : '' }}">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <span class="menu-icon">
+                                    <i class="bi {{ $menu['icon'] }} fs-3"></i>
+                                </span>
+                                <span class="menu-title">{{ $menu['menu'] }}</span>
+                                <span class="menu-arrow"> </span>
+                            </span>
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion {{ strtolower($activeMenu) == strtolower($menu['menu']) ? 'show' : '' }}">
+                            @foreach ($menu['children'] as $child)
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a href="{{ url($child['route_name']) }}" class="menu-link {{ strtolower($activeSubMenu) == strtolower($child['menu']) ? 'active' : '' }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ $child['menu'] }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
+                            @endforeach
+                            </div>
+                            <!--end:Menu sub-->
+                        </div>
+                        <!--end:Menu item-->
+                    @else
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ url('roles') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Roles</span>
+                            <a class="menu-link {{ strtolower($activeMenu) == strtolower($menu['menu']) ? 'active' : '' }}"
+                                href="{{ url($menu['route_name']) }}"><span
+                                class="menu-icon"><i class="bi {{ $menu['icon'] }} fs-3"></i></span><span
+                                class="menu-title">{{ $menu['menu'] }}</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ url('permissions') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Permissions</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">Company</span></div>
-                    <!--end:Menu content-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-building-gear fs-3"></i></span><span
-                        class="menu-title">Setting Company</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="bi bi-diagram-3 fs-2"></i>
-                        </span>
-                        <span class="menu-title">Organization</span>
-                        <span class="menu-arrow"></span>
-                    </span>
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="/metronic8/demo1/../demo1/account/overview.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Levels</span></a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="/metronic8/demo1/../demo1/account/overview.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Structure</span></a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="/metronic8/demo1/../demo1/account/overview.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Tree</span></a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="bi bi-sort-numeric-up-alt fs-2"></i>
-                        </span>
-                        <span class="menu-title">Grade</span>
-                        <span class="menu-arrow"></span>
-                    </span>
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="/metronic8/demo1/../demo1/account/overview.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Levels</span></a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="/metronic8/demo1/../demo1/account/overview.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Positions</span></a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end:Menu sub-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-layers fs-3"></i></span><span
-                        class="menu-title">Job Positions</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-list-task fs-3"></i></span><span
-                        class="menu-title">Payroll Items</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">Employee</span></div>
-                    <!--end:Menu content-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-people fs-3"></i></span><span
-                        class="menu-title">List Data</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-person-check fs-3"></i></span><span
-                        class="menu-title">Membership</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link"
-                        href="{{ url('set_company') }}"><span
-                        class="menu-icon"><i class="bi bi-box-arrow-up-right fs-3"></i></span><span
-                        class="menu-title">Leave</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
+                    @endif
+                @endforeach 
             </div>
             <!--end::Menu-->
         </div>
