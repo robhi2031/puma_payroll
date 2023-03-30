@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\RolesController;
+use App\Http\Controllers\Backend\SystemInfoController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Login\AuthController;
 
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/manage_systeminfo', [SystemInfoController::class, 'index'])->name('manage_systeminfo');
     Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax

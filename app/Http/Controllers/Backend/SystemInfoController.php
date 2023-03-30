@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Auth;
 class SystemInfoController extends Controller
 {
     use SystemCommon;
+    public function __construct()
+    {
+        $this->middleware(['direct_permission:system-info-read'])->only(['index']);
+        $this->middleware(['direct_permission:system-info-update'])->only('update');
+    }
     /**
      * index
      *
      * @return void
      */
-    public function index(Request $request, $username)
+    public function index(Request $request)
     {
         $getSystemInfo = $this->get_systeminfo();
         $getUserSession = Auth::user();
@@ -29,12 +34,11 @@ class SystemInfoController extends Controller
         );
         //Data Source CSS
         $data['css'] = array(
-            '/dist/plugins/Magnific-Popup/magnific-popup.css',
+            '/dist/plugins/dropify-master/css/dropify.min.css',
         );
         //Data Source JS
         $data['js'] = array(
-            '/dist/js/jquery.mask.min.js',
-            '/dist/plugins/Magnific-Popup/jquery.magnific-popup.min.js',
+            '/dist/plugins/dropify-master/js/dropify.min.js',
             '/dist/js/backend_app.init.js',
             '/scripts/backend/manage_systeminfo.init.js'
         );
