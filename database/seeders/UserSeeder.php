@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -25,7 +23,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('123456'),
             'email' => 'admin.sample@gmail.com',
             'phone_number' => '0',
-            'thumb' => 'avatar new~1.jpg',
+            'thumb' => 'avatar-sample-01.jpg',
             'user_add' => 1,
         ]);
 

@@ -281,7 +281,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="{{ url('/logout') }}" class="menu-link px-5">
+                            <a href="{{ url('auth/logout') }}" class="menu-link px-5">
                                 <i class="bi bi-power fs-3 me-3"></i> Sign Out
                             </a>
                         </div>

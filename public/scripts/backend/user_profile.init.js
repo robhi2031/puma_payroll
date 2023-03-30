@@ -444,7 +444,7 @@ $('#btn-savePassUser').on('click', function (e) {
                     blockUi.release(), blockUi.destroy();
                     if (data.status==true){
                         Swal.fire({title: "Success!", html: "Password akun: <strong>" +dataUserSes.username+ "</strong> berhasil diperbarui, Silahkan login ulang ke sistem menggunakan password baru", icon: "success", allowOutsideClick: false}).then(function (result) {
-                            var linkUrl = base_url+ 'logout';
+                            var linkUrl = base_url+ 'auth/logout';
                             window.location = linkUrl;
                         });
                     }else{

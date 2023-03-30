@@ -21,9 +21,10 @@ use Illuminate\Support\Facades\Route;
 // Auth Login
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
+    Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
 });
 
-// Api Ajax
+//Api Ajax
 Route::group(['prefix' => 'api'], function () {
     Route::get('/system_info', [CommonController::class, 'system_info'])->name('system_info');
     Route::group(['prefix' => 'auth'], function () {
@@ -34,12 +35,15 @@ Route::group(['prefix' => 'api'], function () {
 
 // Dashboard Backend
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Auth Logout
+    Route::group(['prefix' => 'auth'], function () {
+        Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
+    });
     Route::get('/logout', [AuthController::class, 'logout_sessions'])->name('logout_sessions');
-
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
-
+    //Api Ajax
     Route::group(['prefix' => 'api'], function () {
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');

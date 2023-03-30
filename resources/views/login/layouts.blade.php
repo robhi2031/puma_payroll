@@ -7,16 +7,16 @@
         <meta charset="utf-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
-        <meta name="robots" content="noodp" />
+        <meta name="robots" content="noindex, nofollow" />
+        <title>{{ isset($data['title']) ? $data['title'] : 'Unknown'; }} - {{ $data['app_name'] }}</title>
         <meta name="description" content="{{ $data['app_desc'] }}" />
         <meta name="keywords" content="{{ $data['app_keywords'] }}" />
-        <meta name="author" content="Robhi Tranzad" />
+        <meta name="author" content="@RobhiTranzad" />
         <meta name="email" content="robhi.sanjaya@gmail.com" />
         <meta name="website" content="{{ $data['url'] }}" />
         <meta name="Version" content="{{ $data['app_version'] }}" />
         <meta name="docsearch:language" content="id">
         <meta name="docsearch:version" content="{{ $data['app_version'] }}">
-        <title>{{ isset($data['title']) ? $data['title'] : 'Unknown'; }} - {{ $data['app_name'] }}</title>
         <link rel="canonical" href="{{ $data['url'] }}">
         <!-- Favicons -->
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/dist/img/favicon/apple-touch-icon.png') }}">

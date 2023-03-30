@@ -53,7 +53,7 @@ var KTLogin = function() {
 								<!--end::Svg Icon-->` +data.row.email+ `
 							</button>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="` +base_url+ `logout"><i class="bi bi-person-x me-2 text-dark fs-5"></i> Gunakan akun lain</a></li>
+								<li><a class="dropdown-item" href="` +base_url+ `auth/logout"><i class="bi bi-person-x me-2 text-dark fs-5"></i> Gunakan akun lain</a></li>
 							</ul>
 						</div>`;
 						$('[name="hideMail"]').val(data.row.email), $('#hT-login2').html(tUserInfo), $('#fBody-login1').hide(), $('#fBody-login2').addClass('loginAnimated-fadeInRight').show(), $('#password').focus();
