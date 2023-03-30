@@ -75,6 +75,11 @@ class UserSeeder extends Seeder
         $role->givePermissionTo('roles-update');
         $role->givePermissionTo('roles-delete');
 
+        $user->givePermissionTo('roles-read');
+        $user->givePermissionTo('roles-create');
+        $user->givePermissionTo('roles-update');
+        $user->givePermissionTo('roles-delete');
+
         $user->assignRole([$role->id]);
     }
 }

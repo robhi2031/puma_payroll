@@ -7,47 +7,6 @@ const validateEmail = (email) => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
-//Load File Dropify
-const _loadDropifyFile = (url_file, paramsId) => {
-    if (url_file == "") {
-        var drEvent1 = $(paramsId).dropify({
-            defaultFile: '',
-        });
-        drEvent1 = drEvent1.data('dropify');
-        drEvent1.resetPreview();
-        drEvent1.clearElement();
-        drEvent1.settings.defaultFile = '';
-        drEvent1.destroy();
-        drEvent1.init();
-    } else {
-        var drEvent1 = $(paramsId).dropify({
-            defaultFile: url_file,
-        });
-        drEvent1 = drEvent1.data('dropify');
-        drEvent1.resetPreview();
-        drEvent1.clearElement();
-        drEvent1.settings.defaultFile = url_file;
-        drEvent1.destroy();
-        drEvent1.init();
-    }
-	//begin::Spotify
-	$('.dropify-upl').dropify({
-		messages: {
-			'default': '<span class="btn btn-sm btn-secondary">Drag/ drop file atau Klik disini</span>',
-			'replace': '<span class="btn btn-sm btn-primary"><i class="fas fa-upload"></i> Drag/ drop atau Klik untuk menimpa file</span>',
-			'remove':  '<span class="btn btn-sm btn-danger"><i class="las la-trash-alt"></i> Reset</span>',
-			'error':   'Ooops, Terjadi kesalahan pada file input'
-		}, error: {
-			'fileSize': 'Ukuran file terlalu besar, Max. ( {{ value }} )',
-			'minWidth': 'Lebar gambar terlalu kecil, Min. ( {{ value }}}px )',
-			'maxWidth': 'Lebar gambar terlalu besar, Max. ( {{ value }}}px )',
-			'minHeight': 'Tinggi gambar terlalu kecil, Min. ( {{ value }}}px )',
-			'maxHeight': 'Tinggi gambar terlalu besar, Max. ( {{ value }}px )',
-			'imageFormat': 'Format file tidak diizinkan, Hanya ( {{ value }} )'
-		}
-	});
-	//end::Spotify
-}
 //System INFO
 const _loadSystemInfo = () => {
 	$.ajax({

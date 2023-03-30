@@ -1,0 +1,147 @@
+/*--start Input, Button Custom--*/
+.bootstrap-select .dropdown-toggle:focus,
+.bootstrap-select .dropdown-toggle:hover,
+.bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+    outline: none !important;
+    outline-offset: 0;
+}
+/*--end Input, Button Custom--*/
+/*--start Dropify Custom--*/
+.dropify-wrapper {
+    border-radius: 0.475rem !important;
+}
+.dropify-custom-dark .dropify-preview {
+    background-color: #1a1a27;
+}
+.dropify-custom-dark .dropify-preview .dropify-render img {
+    background-color: #1a1a27;
+}
+/*--end Dropify Custom--*/
+/*--start Summernote Custom--*/
+.note-editor .dropdown-toggle::after {
+    all: unset;
+}
+.note-editor .note-dropdown-menu {
+    box-sizing: content-box;
+}
+.note-editor .note-modal-footer {
+    box-sizing: content-box;
+}
+.note-editor .note-modal-body .checkbox input {
+    margin-right: 5px;
+}
+.note-toolbar .note-btn-group .note-btn i {
+    color: #181c32;
+}
+/*--end Summernote Custom--*/
+/*--start Reminder Alert Custom--*/
+.reminder-bottom-alert {
+    position: fixed;
+    bottom: 3%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 75%;
+    z-index: 999;
+}
+.reminder-bottom-alert .reminder-bottom-alert-close button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    font-weight: 600;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+/*--end Reminder Alert Custom--*/
+/*--begin Placeholder Bootstrap 5 Custom--*/
+.placeholder {
+    display: inline-block;
+    min-height: 1em;
+    vertical-align: middle;
+    cursor: wait;
+    background-color: currentColor;
+    opacity: 0.5;
+}
+.placeholder.btn::before {
+    display: inline-block;
+    content: "";
+}
+.placeholder-xs {
+    min-height: 0.6em;
+}
+.placeholder-sm {
+    min-height: 0.8em;
+}
+.placeholder-lg {
+    min-height: 1.2em;
+}
+.placeholder-glow .placeholder {
+    -webkit-animation: placeholder-glow 2s ease-in-out infinite;
+    animation: placeholder-glow 2s ease-in-out infinite;
+}
+@-webkit-keyframes placeholder-glow {
+    50% {
+        opacity: 0.2;
+    }
+}
+@keyframes placeholder-glow {
+    50% {
+        opacity: 0.2;
+    }
+}
+.placeholder-wave {
+    -webkit-mask-image: linear-gradient(
+        130deg,
+        #000 55%,
+        rgba(0, 0, 0, 0.8) 75%,
+        #000 95%
+    );
+    mask-image: linear-gradient(
+        130deg,
+        #000 55%,
+        rgba(0, 0, 0, 0.8) 75%,
+        #000 95%
+    );
+    -webkit-mask-size: 200% 100%;
+    mask-size: 200% 100%;
+    -webkit-animation: placeholder-wave 2s linear infinite;
+    animation: placeholder-wave 2s linear infinite;
+}
+@-webkit-keyframes placeholder-wave {
+    100% {
+        -webkit-mask-position: -200% 0%;
+        mask-position: -200% 0%;
+    }
+}
+@keyframes placeholder-wave {
+    100% {
+        -webkit-mask-position: -200% 0%;
+        mask-position: -200% 0%;
+    }
+}
+/*--end Placeholder Bootstrap 5 Custom--*/
+/*--start Magnific-popup Custom--*/
+.mfp-bg {
+    z-index: 99999;
+}
+.mfp-wrap {
+    z-index: 99999;
+}
+/*--end Magnific-popup Custom--*/
+/*--start footer Custom--*/
+.copyRight a {
+    color: #00c410;
+}
+.copyRight a:hover,
+.copyRight a:focus,
+.copyRight a:active {
+    color: #096c11;
+}
+/*--end footer Custom--*/
+/*--start Value Select2 Custom--*/
+.select2-container--bootstrap5 .select2-selection--single .select2-selection__rendered {
+    color: #181c32;
+}
+/*--end Value Select2 Custom--*/

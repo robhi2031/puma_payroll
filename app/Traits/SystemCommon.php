@@ -74,6 +74,8 @@ trait SystemCommon {
                     $getRow->url_backendLogoIcon = url('dist/img/system-img/'.$backend_logo_icon);
                 }
             }
+            //Keyword to Explode
+            $getRow->keyword_explode = explode(',', $getRow->keyword);
 
             return $getRow;
         } else {

@@ -1,9 +1,9 @@
-@extends('backend.layouts', ['activeMenu' => '', 'activeSubMenu' => ''])
+@extends('backend.layouts', ['activeMenu' => 'SETTINGS', 'activeSubMenu' => 'System Info'])
 @section('content')
 <!--begin::System Info-->
 <div class="card mb-5 mb-xl-10" id="cardSystemInfo">
     <!--begin::Edit-->
-    <div class="card-body" id="editSystemInfo">
+    <div class="card-body">
         <div class="d-flex justify-content-between align-items-start flex-wrap mb-10">
             <h3 class="fw-bolder m-0 mb-3"><i class="las la-pen text-dark fs-2 me-3"></i>Edit Informasi Sistem</h3>
             <a href="javascript:history.back();" class="btn btn-sm btn btn-bg-light btn-color-danger ms-3"><i class="las la-undo fs-3"></i> Kembali</a>
@@ -28,7 +28,7 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
-                            <input type="text" name="short_name" id="short_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="100" placeholder="Isikan nama alias / nama pendek sistem ..." />
+                            <input type="text" name="short_name" id="short_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="60" placeholder="Isikan nama alias / nama pendek sistem ..." />
                         </div>
                     </div>
                 </div>
@@ -66,15 +66,15 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
-                            <textarea name="copyright_site" id="copyright_site" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 summernote"></textarea>
+                            <textarea name="copyright" id="copyright" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 summernote"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="thumb">Gambar Thumbnail</label>
+            <div class="row mb-6" id="iGroup-thumb">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6">Gambar Thumbnail</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
@@ -87,8 +87,8 @@
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="login_bg">Background Login</label>
+            <div class="row mb-6" id="iGroup-login_bg">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6">Background Login</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
@@ -101,8 +101,8 @@
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="login_logo">Logo Login</label>
+            <div class="row mb-6" id="iGroup-login_logo">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6">Logo Login</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
@@ -115,8 +115,8 @@
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="backend_logo">Backend Logo</label>
+            <div class="row mb-6" id="iGroup-backend_logo">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6">Backend Logo</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
@@ -129,8 +129,8 @@
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="backend_logo_icon">Backend Logo Icon</label>
+            <div class="row mb-6" id="iGroup-backend_logo_icon">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6">Backend Logo Icon</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
