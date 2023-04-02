@@ -50,10 +50,9 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link {{ strtolower($activeMenu) == 'dashboard' ? 'active' : '' }}"
-                        href="{{ url('/') }}"><span
-                        class="menu-icon"><i class="bi bi-house fs-3"></i></span><span
-                        class="menu-title">DASHBOARD</span>
+                    <a class="menu-link {{ strtolower($activeMenu) == 'dashboard' ? 'active' : '' }}" href="{{ url('/') }}">
+                        <span class="menu-icon"><i class="bi bi-house fs-3"></i></span>
+                        <span class="menu-title">DASHBOARD</span>
                     </a>
                     <!--end:Menu link-->
                 </div>
@@ -98,10 +97,9 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link {{ strtolower($activeMenu) == strtolower($menu['menu']) ? 'active' : '' }}"
-                                href="{{ url($menu['route_name']) }}"><span
-                                class="menu-icon"><i class="bi {{ $menu['icon'] }} fs-3"></i></span><span
-                                class="menu-title">{{ $menu['menu'] }}</span>
+                            <a class="menu-link {{ strtolower($activeMenu) == strtolower($menu['menu']) ? 'active' : '' }}" href="{{ $menu['route_name'] == NULL || $menu['route_name'] == '' ? '/' : url($menu['route_name']) }}">
+                                <span class="menu-icon"><i class="bi {{ $menu['icon'] }} fs-3"></i></span>
+                                <span class="menu-title">{{ $menu['menu'] }}</span>
                             </a>
                             <!--end:Menu link-->
                         </div>

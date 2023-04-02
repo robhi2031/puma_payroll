@@ -1,5 +1,4 @@
 "use strict";
-var openMethod = 'dtl-userProfile';
 var dataUserSes;
 // Class Definition
 const _loadUserOnProfile = () => {
@@ -225,7 +224,6 @@ const _loadUserOnProfile = () => {
 }
 //Edit User Profile
 const _editMyProfile = () => {
-    openMethod = 'edit-userProfile';
     $('#changePassUserInfo').hide(), $('#dtlUserInfo').hide(), $('#editUserInfo').show();
     _loadFotoUser(dataUserSes.thumb, dataUserSes.url_thumb);
     $('#name').val(dataUserSes.name),
@@ -271,7 +269,7 @@ $("#form-editProfile input").keyup(function(event) {
 $('#btn-saveMyProfile').on('click', function (e) {
     e.preventDefault();
     $('#btn-saveMyProfile').html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr('disabled', true);
-    var cek_foto_user = $('#iGroup-fotoUser .image-input-wrapper'),
+    let cek_foto_user = $('#iGroup-fotoUser .image-input-wrapper'),
     name = $('#name'),
     // username = $('#username'),
     email = $('#email'),
@@ -323,9 +321,9 @@ $('#btn-saveMyProfile').on('click', function (e) {
         cancelButtonText: "Batal"
     }).then(result => {
         if (result.value) {
-            var target = document.querySelector('#cardUserInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
+            let target = document.querySelector('#cardUserInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
             blockUi.block(), blockUi.destroy();
-            var formData = new FormData($('#form-editProfile')[0]), ajax_url= base_url+ "api/update_userprofile";
+            let formData = new FormData($('#form-editProfile')[0]), ajax_url= base_url+ "api/update_userprofile";
             $.ajax({
                 url: ajax_url,
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
@@ -367,7 +365,6 @@ $('#btn-saveMyProfile').on('click', function (e) {
 });
 //Change User Password
 const _changePass = () => {
-    openMethod = 'changePass-userProfile';
     $('#dtlUserInfo').hide(), $('#editUserInfo').hide(), $('#changePassUserInfo').show();
 
 }
@@ -386,7 +383,7 @@ $("#form-changePass input").keyup(function(event) {
 $('#btn-savePassUser').on('click', function (e) {
     e.preventDefault();
     $('#btn-savePassUser').html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr('disabled', true);
-    var pass_lama = $('#pass_lama'), pass_baru = $('#pass_baru'), repass_baru = $('#repass_baru');
+    let pass_lama = $('#pass_lama'), pass_baru = $('#pass_baru'), repass_baru = $('#repass_baru');
     if (pass_lama.val() == '') {
         toastr.error('Password lama masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
         pass_lama.focus();
@@ -428,9 +425,9 @@ $('#btn-savePassUser').on('click', function (e) {
         cancelButtonText: "Batal"
     }).then(result => {
         if (result.value) {
-            var target = document.querySelector('#cardUserInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
+            let target = document.querySelector('#cardUserInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
             blockUi.block(), blockUi.destroy();
-            var formData = new FormData($('#form-changePass')[0]), ajax_url= base_url+ "api/update_userpassprofil";
+            let formData = new FormData($('#form-changePass')[0]), ajax_url= base_url+ "api/update_userpassprofil";
             $.ajax({
                 url: ajax_url,
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
@@ -444,7 +441,7 @@ $('#btn-savePassUser').on('click', function (e) {
                     blockUi.release(), blockUi.destroy();
                     if (data.status==true){
                         Swal.fire({title: "Success!", html: "Password akun: <strong>" +dataUserSes.username+ "</strong> berhasil diperbarui, Silahkan login ulang ke sistem menggunakan password baru", icon: "success", allowOutsideClick: false}).then(function (result) {
-                            var linkUrl = base_url+ 'auth/logout';
+                            let linkUrl = base_url+ 'auth/logout';
                             window.location = linkUrl;
                         });
                     }else{
@@ -477,9 +474,7 @@ const _closeContentCard = (method) => {
 }
 // Class Initialization
 jQuery(document).ready(function() {
-    if(openMethod=='dtl-userProfile') {
-        _loadUserOnProfile();
-    }
+    _loadUserOnProfile();
     //Input Mask
     Inputmask({
         "mask": "9",
@@ -491,7 +486,7 @@ jQuery(document).ready(function() {
 		return e.which !== 32;
 	});
     /* [ Show pass ] */
-    var showPass = 0;
+    let showPass = 0;
     $(document).on("mouseenter mouseleave", ".btn-showPass", function (e) {
         if (e.type == "mouseenter") {
             $('.password').attr('type', 'text');

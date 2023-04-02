@@ -47,6 +47,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'api'], function () {
         //Manage System Info
         Route::post('/manage_systeminfo/update', [SystemInfoController::class, 'update'])->name('update_systeminfo');
+        //Manage Roles
+        Route::get('/manage_roles/show', [RolesController::class, 'show'])->name('show_roles');
+        Route::post('/manage_roles/store', [RolesController::class, 'store'])->name('store_roles');
+        Route::post('/manage_roles/update', [RolesController::class, 'update'])->name('update_roles');
+        Route::get('/manage_roles/show_permissions', [RolesController::class, 'show_permissions'])->name('show_permissions_role');
+        Route::get('/manage_roles/select2_permissions', [RolesController::class, 'select2_permissions'])->name('select2_permissions');
+        Route::post('/manage_roles/store_permissionrole', [RolesController::class, 'store_permissionrole'])->name('store_permissionrole');
+        Route::post('/manage_roles/update_permissionbyrole', [RolesController::class, 'update_permissionbyrole'])->name('update_permissionbyrole');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');

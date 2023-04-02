@@ -2,6 +2,7 @@
 
 /* start:API RESPONSE */
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
@@ -35,10 +36,10 @@ if (! function_exists('userMenus')) {
     {
         $idp = Auth::user()->id;
         $getRows = Role::select('e.*')
-            ->join('model_has_roles AS b', 'roles.id', '=', 'b.role_id', 'LEFT OUTER')
-            ->join('role_has_permissions AS c', 'roles.id', '=', 'c.role_id', 'LEFT OUTER')
-            ->join('permissions AS d', 'c.permission_id', '=', 'd.id', 'LEFT OUTER')
-            ->join('permission_has_menus AS e', 'd.fid_menu', '=', 'e.id', 'LEFT OUTER')
+            ->leftJoin('model_has_roles AS b', 'roles.id', '=', 'b.role_id')
+            ->leftJoin('role_has_permissions AS c', 'roles.id', '=', 'c.role_id')
+            ->leftJoin('permissions AS d', 'c.permission_id', '=', 'd.id')
+            ->leftJoin('permission_has_menus AS e', 'd.fid_menu', '=', 'e.id')
             ->where('b.model_id', $idp)
             ->where('e.parent_id', '')->orWhereNull('parent_id')
             ->groupBy('d.fid_menu')
@@ -48,10 +49,10 @@ if (! function_exists('userMenus')) {
         if(count($getRows)>0){
             foreach ($getRows as $row) {
                 $getChildren = Role::select('e.*')
-                    ->join('model_has_roles AS b', 'roles.id', '=', 'b.role_id', 'LEFT OUTER')
-                    ->join('role_has_permissions AS c', 'roles.id', '=', 'c.role_id', 'LEFT OUTER')
-                    ->join('permissions AS d', 'c.permission_id', '=', 'd.id', 'LEFT OUTER')
-                    ->join('permission_has_menus AS e', 'd.fid_menu', '=', 'e.id', 'LEFT OUTER')
+                    ->leftJoin('model_has_roles AS b', 'roles.id', '=', 'b.role_id')
+                    ->leftJoin('role_has_permissions AS c', 'roles.id', '=', 'c.role_id')
+                    ->leftJoin('permissions AS d', 'c.permission_id', '=', 'd.id')
+                    ->leftJoin('permission_has_menus AS e', 'd.fid_menu', '=', 'e.id')
                     ->where('b.model_id', $idp)
                     ->where('e.parent_id', $row->id)
                     ->groupBy('d.fid_menu')
@@ -84,6 +85,45 @@ if (! function_exists('userMenus')) {
     }
 }
 /* end:get User Menus */
+/**
+ * assignPermissionToUser
+ *
+ * @param  mixed $idpRole
+ * @param  mixed $permission
+ * @return void
+ */
+if(!function_exists('assignPermissionToUser'))
+{    
+    function assignPermissionToUser($idpRole, $permission)
+    {
+        $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users_system.id')
+        ->select('users_system.*')
+        ->where('model_has_roles.role_id', '=', $idpRole)
+        ->get();
+
+        if($users) {
+            foreach ($users as $user) {
+                $user->givePermissionTo($permission->name);
+            }
+        }
+    }
+}
+if(!function_exists('revokePermissionToUser'))
+{    
+    function revokePermissionToUser($idpRole, $permission)
+    {
+        $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users_system.id')
+        ->select('users_system.*')
+        ->where('model_has_roles.role_id', '=', $idpRole)
+        ->get();
+
+        if($users) {
+            foreach ($users as $user) {
+                $user->revokePermissionTo($permission->name);
+            }
+        }
+    }
+}
 /* start:Time a Go */
 if(!function_exists('time_ago'))
 {

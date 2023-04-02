@@ -110,7 +110,7 @@
     <div class="card-body" id="changePassUserInfo" style="display: none;">
         <div class="d-flex justify-content-between align-items-start flex-wrap">
             <h3 class="fw-bolder m-0 mb-3"><i class="las la-user-lock text-dark fs-2 me-3"></i>Ubah Password</h3>
-            <a href="javascript:void(0);" class="btn btn-sm btn btn-bg-light btn-color-danger ms-3" onclick="_closeContentCard('changePass-userProfile')"><i class="las la-undo fs-3"></i> Kembali</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn btn-bg-light btn-color-danger mb-3" onclick="_closeContentCard('changePass-userProfile')"><i class="las la-undo fs-3"></i> Kembali</a>
         </div>
         <!--begin::Form-->
         <form id="form-changePass" class="form" onsubmit="return false">

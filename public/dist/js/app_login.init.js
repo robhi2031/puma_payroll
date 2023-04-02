@@ -1,11 +1,11 @@
 "use strict";
 // Class Definition
 //Block & Unblock on Div
-var messageBlockUi = '<div class="blockui-message"><span class="spinner-border text-primary"></span> Mohon Tunggu...</div>';
+const messageBlockUi = '<div class="blockui-message"><span class="spinner-border text-primary"></span> Mohon Tunggu...</div>';
 // FORM CLASS LOGIN
 var KTLogin = function() {
 	//SignIn Handle 1
-	var _handleSignInForm = function() {
+	const _handleSignInForm = function() {
 		$('#username').focus();
 		//Handle Enter Submit
 		$("#username").keyup(function(event) {
@@ -17,7 +17,7 @@ var KTLogin = function() {
 		$('#btn-login1').on('click', function (e) {
 			e.preventDefault();
 			$('#btn-login1').html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr('disabled', true);
-			var username = $('#username');
+			let username = $('#username');
 			if (username.val() == '') {
 				toastr.error('Username atau Email masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
 				username.focus();
@@ -25,9 +25,9 @@ var KTLogin = function() {
 				return false;
 			}
 
-			var target = document.querySelector('#kt_sign_in'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
+			let target = document.querySelector('#kt_sign_in'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
 			blockUi.block(), blockUi.destroy();
-			var formData = new FormData($('#kt_sign_in_form')[0]);
+			let formData = new FormData($('#kt_sign_in_form')[0]);
 			$.ajax({
 				url: base_url+ "api/auth/first_login",
 				headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
@@ -40,7 +40,7 @@ var KTLogin = function() {
 					$('#btn-login1').html('<i class="bi bi-box-arrow-in-right fs-4"></i> Berikutnya').attr('disabled', false);
 					blockUi.release(), blockUi.destroy();
 					if (data.status==true){
-						var tUserInfo=`<!--begin::Title-->
+						let tUserInfo=`<!--begin::Title-->
 						<h4 class="text-dark  fw-500 mb-2">` +data.row.name+ `</h4>
 						<!--end::Title-->
 						<div class="btn-group">
@@ -73,7 +73,7 @@ var KTLogin = function() {
 		});
 	}
 	//SignIn Handle 2
-	var _handleSignIn2Form = function() {
+	const _handleSignIn2Form = function() {
 		/* Show Hide Password */
 		$('#showPass_checkbox').change(function (e) {
 			e.preventDefault();
@@ -93,7 +93,7 @@ var KTLogin = function() {
         $('#btn-login2').on('click', function (e) {
 			e.preventDefault();
 			$('#btn-login2').html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr('disabled', true);
-			var password = $('#password');
+			let password = $('#password');
 			if (password.val() == '') {
 				toastr.error('Password masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
 				password.focus();
@@ -101,9 +101,9 @@ var KTLogin = function() {
 				return false;
 			}
 
-			var target = document.querySelector('#kt_sign_in'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
+			let target = document.querySelector('#kt_sign_in'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
 			blockUi.block(), blockUi.destroy();
-			var formData = new FormData($('#kt_sign_in_form')[0]);
+			let formData = new FormData($('#kt_sign_in_form')[0]);
 			$.ajax({
 				url: base_url+ "api/auth/second_login",
 				headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },

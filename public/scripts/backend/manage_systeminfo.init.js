@@ -74,13 +74,13 @@ const _loadEditSystemInfo = () => {
             $('#short_name').val(data.row.short_name),
             $('#description').val(data.row.description);
             //Keyword System
-            var selected = '', i;
+            let selected = '', i;
             for (i = 0; i < data.row.keyword_explode.length; i++) {
                 selected += '<option value="' + data.row.keyword_explode[i] + '" selected>' + data.row.keyword_explode[i] + '</option>';
             }
             $("#keyword").html(selected).trigger('change');
             //Summernote CopyRight
-            var copyright = data.row.copyright;
+            let copyright = data.row.copyright;
             $('#copyright').summernote('code', copyright);
             _loadDropifyFile(data.row.url_thumb, '#thumb'), _loadDropifyFile(data.row.url_loginBg, '#login_bg'), _loadDropifyFile(data.row.url_loginLogo, '#login_logo'), _loadDropifyFile(data.row.url_backendLogo, '#backend_logo'), _loadDropifyFile(data.row.url_backendLogoIcon, '#backend_logo_icon');
         }, error: function (jqXHR, textStatus, errorThrown) {
@@ -188,9 +188,9 @@ $('#btn-saveSystemInfo').on('click', function (e) {
         cancelButtonText: "Batal"
     }).then(result => {
         if (result.value) {
-            var target = document.querySelector('#cardSystemInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
+            let target = document.querySelector('#cardSystemInfo'), blockUi = new KTBlockUI(target, {message: messageBlockUi});
             blockUi.block(), blockUi.destroy();
-            var formData = new FormData($('#form-editSystemInfo')[0]), ajax_url= base_url+ "api/manage_systeminfo/update";
+            let formData = new FormData($('#form-editSystemInfo')[0]), ajax_url= base_url+ "api/manage_systeminfo/update";
             $.ajax({
                 url: ajax_url,
                 headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
