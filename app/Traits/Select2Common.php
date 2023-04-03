@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 trait Select2Common {    
     /**
-     * select2_permission_torole
+     * select2_permission
      *
      * @return void
      */
-    protected function select2_permission_torole($search, $page)
+    protected function select2_permission($search, $page, $child)
     {
         // Search term
         $searchTerm = $search;
@@ -19,7 +19,7 @@ trait Select2Common {
         $query = DB::table('permission_has_menus AS a')
             ->selectRaw("a.id, a.name AS text")
             ->leftJoin('permissions AS b', 'b.fid_menu', '=', 'a.id')
-            ->where('a.has_child', 'N')
+            ->where('a.has_child', $child)
             ->where('a.name','LIKE','%'.$searchTerm.'%');
         $start=0;
         $limit=20;
