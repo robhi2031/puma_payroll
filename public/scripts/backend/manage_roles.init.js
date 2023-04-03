@@ -80,7 +80,7 @@ const _loadDtRoles = () => {
 }
 //Load Datatables Permissions
 const _loadDtPermissions = (idp) => {
-    table = $('#dt-permisions').DataTable({
+    tablePermissions = $('#dt-permisions').DataTable({
         searchDelay: 300,
         processing: true,
         serverSide: true,
