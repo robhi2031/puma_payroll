@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Traits\Select2Common;
 use Spatie\Permission\Models\Role;
-
+use Spatie\Permission\Models\Permission;
+use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use LengthException;
-use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 
 class RolesController extends Controller
@@ -249,14 +246,14 @@ class RolesController extends Controller
     public function select2_permissions(Request $request)
     {
         try {
-            $output = $this->select2_permission_torole($request->search, $request->page);
+            $output = $this->select2_permission($request->search, $request->page, 'N');
             return jsonResponse(true, 'Success', 200, $output);
         } catch (\Exception $exception) {
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
         }
-    }    
+    }
     /**
      * store_permissionrole
      *
