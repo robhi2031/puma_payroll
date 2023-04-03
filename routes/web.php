@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PermissionsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SystemInfoController;
+use App\Http\Controllers\Backend\UsersController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Login\AuthController;
 
@@ -44,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manage_systeminfo', [SystemInfoController::class, 'index'])->name('manage_systeminfo');
     Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
     Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
+    Route::get('/manage_users', [UsersController::class, 'index'])->name('manage_users');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
     Route::group(['prefix' => 'api'], function () {
@@ -62,6 +64,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/manage_permissions/store', [PermissionsController::class, 'store'])->name('store_permissions');
         Route::post('/manage_permissions/update', [PermissionsController::class, 'update'])->name('update_permissions');
         Route::get('/manage_permissions/select2_parentpermissions', [PermissionsController::class, 'select2_parentpermissions'])->name('select2_parentpermissions');
+        //Manage Users
+        Route::get('/manage_users/show', [UsersController::class, 'show'])->name('show_users');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
