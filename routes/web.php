@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\PermissionsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SystemInfoController;
 use App\Http\Controllers\CommonController;
@@ -42,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/manage_systeminfo', [SystemInfoController::class, 'index'])->name('manage_systeminfo');
     Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
+    Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
     Route::group(['prefix' => 'api'], function () {
@@ -55,6 +57,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/manage_roles/select2_permissions', [RolesController::class, 'select2_permissions'])->name('select2_permissions');
         Route::post('/manage_roles/store_permissionrole', [RolesController::class, 'store_permissionrole'])->name('store_permissionrole');
         Route::post('/manage_roles/update_permissionbyrole', [RolesController::class, 'update_permissionbyrole'])->name('update_permissionbyrole');
+        //Manage Permissions
+        Route::get('/manage_permissions/show', [PermissionsController::class, 'show'])->name('show_permissions');
+        Route::post('/manage_permissions/store', [PermissionsController::class, 'store'])->name('store_permissions');
+        Route::post('/manage_permissions/update', [PermissionsController::class, 'update'])->name('update_permissions');
+        Route::get('/manage_permissions/select2_parentpermissions', [PermissionsController::class, 'select2_parentpermissions'])->name('select2_parentpermissions');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
