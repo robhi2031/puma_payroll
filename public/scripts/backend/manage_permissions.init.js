@@ -93,6 +93,7 @@ const _closeCard = (card) => {
 }
 //Clear Form Permission
 const _clearFormPermission = () => {
+    $('#iGroup-icon span.input-group-text').html('...');
     //Has Route
     $('#has_route').prop('checked', false), $('#route_name').val(''), $('#iGroup-routeName').hide();
     //Has Parent
@@ -137,10 +138,8 @@ const _editPermission = (idp) => {
                 $('[name="id"]').val(data.row.id),
                 $('#name').val(data.row.name);
                 $('[name="old_name"]').val(data.row.name);
-                if(data.row.icon==null || data.row.icon=='') {
-                    $('#iGroup-icon span.input-group-text').html('...');
-                } else {
-                    $('#iGroup-icon span.input-group-text').html('<i class="bi ' +data.row.icon+ ' fs-2"></i>');
+                if(data.row.icon !== null && data.row.icon !== '') {
+                    $('#iGroup-icon span.input-group-text').html('<i class="bi ' +data.row.icon+ ' text-dark fs-2"></i>');
                 }
                 $('#icon').val(data.row.icon);
                 $('#order_line').val(data.row.order_line);
@@ -201,7 +200,7 @@ $("#icon").on("keyup", function () {
     if(value==null || value=='') {
         $('#iGroup-icon span.input-group-text').html('...');
     } else {
-        $('#iGroup-icon span.input-group-text').html('<i class="bi bi-' +value+ ' fs-2"></i>');
+        $('#iGroup-icon span.input-group-text').html('<i class="bi ' +value+ ' text-dark fs-2"></i>');
     }
 });
 //Has Route Change Switch
@@ -267,19 +266,21 @@ $("#btn-save").on("click", function (e) {
             return false;
         }
     } if (has_parent.is(':checked')) {
-        let icon = $("#icon"), cbo_parent = $("#cbo_parent");
-        if (icon.val() == "") {
-            toastr.error("Icon permission/ menu masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-            icon.focus();
-            $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
-            return false;
-        } if (cbo_parent.val() == '' || cbo_parent.val() == null) {
+        let cbo_parent = $("#cbo_parent");
+        if (cbo_parent.val() == '' || cbo_parent.val() == null) {
             toastr.error("Parent permission/ menu masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
             cbo_parent.focus().select2('open');
             $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
             return false;
         }
-
+    } else {
+        let icon = $("#icon");
+        if (icon.val() == "") {
+            toastr.error("Icon permission/ menu masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+            icon.focus();
+            $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+            return false;
+        } 
     }
 
     let textConfirmSave = "Simpan perubahan data sekarang ?";
@@ -322,7 +323,7 @@ $("#btn-save").on("click", function (e) {
                                 icon: "success",
                                 allowOutsideClick: false,
                             }).then(function (result) {
-                                _closeCard('form_permission'), _loadDtRoles();
+                                _closeCard('form_permission'), _loadDtPermissions();
                             });
                         } else {
                             Swal.fire({
@@ -331,7 +332,7 @@ $("#btn-save").on("click", function (e) {
                                 icon: "success",
                                 allowOutsideClick: false,
                             }).then(function (result) {
-                                _closeCard('form_permission'), _loadDtRoles();
+                                _closeCard('form_permission'), _loadDtPermissions();
                             });
                         }
                     } else {
