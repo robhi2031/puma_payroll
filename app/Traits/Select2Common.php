@@ -18,9 +18,11 @@ trait Select2Common {
         $result = array();
         $query = DB::table('permission_has_menus AS a')
             ->selectRaw("a.id, a.name AS text")
-            ->leftJoin('permissions AS b', 'b.fid_menu', '=', 'a.id')
-            ->where('a.has_child', $child)
-            ->where('a.name','LIKE','%'.$searchTerm.'%');
+            ->leftJoin('permissions AS b', 'b.fid_menu', '=', 'a.id');
+        if($child!='') {
+            $query = $query->where('a.has_child', $child);
+        }
+        $query = $query->where('a.name','LIKE','%'.$searchTerm.'%');
         $start=0;
         $limit=20;
         if($page!=''){
