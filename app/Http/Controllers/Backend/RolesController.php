@@ -170,7 +170,7 @@ class RolesController extends Controller
             ->leftJoin('role_has_permissions AS c', 'c.permission_id', '=', 'b.id')
             ->leftJoin('roles AS d', 'd.id', '=', 'c.role_id')
             ->where('c.role_id', $idp)
-            ->where('a.has_child', 'N')
+            // ->where('a.has_child', 'N')
             ->groupBy('b.fid_menu')
             ->orderBy('a.order_line', 'ASC')
             ->get();
@@ -184,7 +184,7 @@ class RolesController extends Controller
                 ->where('a.fid_menu', $row->id)
                 ->whereRaw('RIGHT(a.name, 4)="read"')
                 ->first();
-                $check = '<button type="button" class="btn btn-sm btn-danger mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'read'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
+                $check = '<button type="button" class="btn btn-sm btn-light mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'read'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
                 if($subRow==true){
                     $check = '<button type="button" class="btn btn-sm btn-info mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'true'".', '."'read'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
                 }
@@ -198,7 +198,7 @@ class RolesController extends Controller
                 ->where('a.fid_menu', $row->id)
                 ->whereRaw('RIGHT(a.name, 6)="create"')
                 ->first();
-                $check = '<button type="button" class="btn btn-sm btn-danger mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'create'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
+                $check = '<button type="button" class="btn btn-sm btn-light mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'create'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
                 if($subRow==true){
                     $check = '<button type="button" class="btn btn-sm btn-info mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'true'".', '."'create'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
                 }
@@ -212,7 +212,7 @@ class RolesController extends Controller
                 ->where('a.fid_menu', $row->id)
                 ->whereRaw('RIGHT(a.name, 6)="update"')
                 ->first();
-                $check = '<button type="button" class="btn btn-sm btn-danger mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'update'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
+                $check = '<button type="button" class="btn btn-sm btn-light mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'update'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
                 if($subRow==true){
                     $check = '<button type="button" class="btn btn-sm btn-info mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'true'".', '."'update'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
                 }
@@ -226,7 +226,7 @@ class RolesController extends Controller
                 ->where('a.fid_menu', $row->id)
                 ->whereRaw('RIGHT(a.name, 6)="delete"')
                 ->first();
-                $check = '<button type="button" class="btn btn-sm btn-danger mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'delete'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
+                $check = '<button type="button" class="btn btn-sm btn-light mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'false'".', '."'delete'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
                 if($subRow==true){
                     $check = '<button type="button" class="btn btn-sm btn-info mb-1" onclick="_updatePermission('."'".$row->id."'".', '."'".$idp."'".', '."'true'".', '."'delete'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
                 }
@@ -246,7 +246,7 @@ class RolesController extends Controller
     public function select2_permissions(Request $request)
     {
         try {
-            $output = $this->select2_permission($request->search, $request->page, 'N');
+            $output = $this->select2_permission($request->search, $request->page, '');
             return jsonResponse(true, 'Success', 200, $output);
         } catch (\Exception $exception) {
             return jsonResponse(false, $exception->getMessage(), 401, [
@@ -304,11 +304,15 @@ class RolesController extends Controller
         $permission = Permission::where('fid_menu', $IdpPermission)->whereRaw('RIGHT(name, '.$lengthType.')="'.$type.'"')->first();
         $role = Role::where('id', $idpRole)->first();
         if ($value == 1) {
-            $role->givePermissionTo($permission->name);
-            assignPermissionToUser($idpRole, $permission);
+            if($permission == true) {
+                $role->givePermissionTo($permission->name);
+                assignPermissionToUser($idpRole, $permission);
+            }
         } else {
-            $role->revokePermissionTo($permission->name);
-            revokePermissionToUser($idpRole, $permission);
+            if($permission == true) {
+                $role->revokePermissionTo($permission->name);
+                revokePermissionToUser($idpRole, $permission);
+            }
         }
     }
     /**
