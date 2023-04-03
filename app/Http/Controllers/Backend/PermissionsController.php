@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -218,13 +219,65 @@ class PermissionsController extends Controller
         }
     }    
     /**
+     * update
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function update(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $form = [
+            'name' => 'required|max:50',
+            'order_line' => 'required|max:6',
+        ];
+        DB::beginTransaction();
+        $request->validate($form);
+        try {
+            //array data
+            $data = array(
+                'name' => $request->name,
+                'icon' => isset($request->icon) ? $request->icon : NULL,
+                'has_route' => isset($request->has_route) ? 'Y' : 'N',
+                'route_name' => isset($request->has_route) || $request->route_name !='' ? $request->route_name : NULL,
+                'parent_id' => isset($request->has_parent) || $request->cbo_parent !='' ? $request->cbo_parent : NULL,
+                'has_child' => isset($request->has_child) ? 'Y' : 'N',
+                'is_crud' => isset($request->is_crud) ? 'Y' : 'N',
+                'order_line' => $request->order_line,
+                'user_updated' => $userSesIdp
+            );
+            DB::table('permission_has_menus')->whereId($request->id)->update($data);
+            addToLog('Permission menu has been successfully updated');
+            //If Crud or Not
+            $nameSlug = Str::slug($request->name);
+            $oldNameSlug = Str::slug($request->old_name);
+            if(isset($request->is_crud)) {
+                if(isset($request->create)) {
+                    $this->store_crudpermission($oldNameSlug.'-create', $nameSlug.'-create', $request->id);
+                } if(isset($request->read)) {
+                    $this->store_crudpermission($oldNameSlug.'-read', $nameSlug.'-read', $request->id);
+                } if(isset($request->update)) {
+                    $this->store_crudpermission($oldNameSlug.'-update', $nameSlug.'-update', $request->id);
+                } if(isset($request->delete)) {
+                    $this->store_crudpermission($oldNameSlug.'-delete', $nameSlug.'-delete', $request->id);
+                }
+            }
+            DB::commit();
+            return jsonResponse(true, 'Role berhasil diperbarui', 200);
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    /**
      * store_crudpermission
      *
      * @param  mixed $name
      * @param  mixed $fid_menu
      * @return void
      */
-    private function store_crudpermission($idp, $name, $fid_menu) {
+    private function store_crudpermission($oldName, $name, $fid_menu) {
         $userSesIdp = Auth::user()->id;
         DB::beginTransaction();
         try {
@@ -233,14 +286,16 @@ class PermissionsController extends Controller
                 'fid_menu' => $fid_menu,
                 'guard_name' => 'web'
             );
-            if($idp == '') {
+            if($oldName == '') {
                 $data['user_add'] = $userSesIdp;
                 Permission::insert($data);
             } else {
                 $data['user_update'] = $userSesIdp;
-                Permission::where('id', $idp)->update($data);
+                Permission::where('name', $oldName)->update($data);
             }
             DB::commit();
+            Artisan::call("cache:forget spatie.permission.cache");
+            Artisan::call("cache:clear");
         } catch (\Exception $exception) {
             DB::rollback();
         }
