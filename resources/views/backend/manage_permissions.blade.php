@@ -35,7 +35,7 @@
                             <input type="text" class="form-control form-control-solid no-space" maxlength="50" name="icon" id="icon" placeholder="Isi icon permission/ menu ..." />
                         </div>
                         <div class="form-text">*) Daftar icon dapat dilihat di <code><a href="https://icons.getbootstrap.com/" target="_blank">https://icons.getbootstrap.com/</a></code></div>
-                        <div class="form-text">*) contoh: <code>android</code> untuk icon android</div>
+                        <div class="form-text">*) contoh: <code>bi-android</code> untuk icon android</div>
                     </div>
                     <!--end::Input group-->
                     <!--begin::Input group-->
