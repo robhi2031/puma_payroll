@@ -155,7 +155,7 @@
         </div>
     </div>
 </div>
-<!--end::Modal Verifikasi Pendaftaran-->
+<!--end::Add Permission on Role-->
 <!--begin::List Table Data-->
 <div class="card shadow" id="card-dtRoles">
     <!--begin::Card header-->
