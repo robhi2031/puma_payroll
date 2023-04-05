@@ -116,6 +116,9 @@ const loadSelectpicker_role = (value) => {
             for (i = 0; i < data.row.length; i++) {
                 output += '<option value="' + data.row[i].id + '">' + data.row[i].name + '</option>';
             }
+            if(value !== null && value !== '') {
+                value = value.toString();
+            }
             $('#role').html(output).selectpicker('refresh').selectpicker('val', value);
         }, error: function (jqXHR, textStatus, errorThrown) {
             console.log('Load data is error');
@@ -135,7 +138,7 @@ const _clearFormUser = () => {
     $('#avatar_remove').val(1),
     $('#iGroup-userThumb .image-input-outline').addClass('image-input-empty'),
     $('#iGroup-userThumb .image-input-outline .image-input-wrapper').attr('style', 'background-image: none;'),
-    _loadFotoUser('', '');
+    _loadFotoUser('', ''), $('[name="oldRole_id"]').val("");
     if (save_method == "" || save_method == "add_user") {
         $("#form-user")[0].reset(), $('[name="id"]').val(""), loadSelectpicker_role('');
         $('.password-group').show(), $('#iGroup-isActive').hide();
@@ -178,6 +181,7 @@ const _editUser = (idp) => {
             if (data.status == true) {
                 $('[name="id"]').val(data.row.id),
                 _loadFotoUser(data.row.thumb, data.row.url_thumb),
+                $('[name="oldRole_id"]').val(data.row.role_id),
                 loadSelectpicker_role(data.row.role_id),
                 $('#name').val(data.row.name),
                 $('#username').val(data.row.username),
