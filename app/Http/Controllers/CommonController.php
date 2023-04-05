@@ -108,7 +108,7 @@ class CommonController extends Controller
                         if(!is_dir($avatarDestinationPath)){ mkdir($avatarDestinationPath, 0755, TRUE); }
 
                         $avatarOriginName = $avatarFile->getClientOriginalName();
-                        $avatarNewName = strtolower(Str::slug(pathinfo($avatarOriginName, PATHINFO_FILENAME))) . time();
+                        $avatarNewName = strtolower(Str::slug($request->username.bcrypt(pathinfo($avatarOriginName, PATHINFO_FILENAME)))) . time();
                         $avatarNewNameExt = $avatarNewName . '.' . $avatarExtension;
                         $avatarFile->move($avatarDestinationPath, $avatarNewNameExt);
 
