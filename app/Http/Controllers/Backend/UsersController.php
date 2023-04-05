@@ -102,12 +102,14 @@ class UsersController extends Controller
                 ]);
             }
         } else {
-            $data = User::selectRaw("users_system.id, users_system.name, users_system.username, users_system.email, users_system.phone_number, users_system.thumb, users_system.is_active,
+            $query = User::selectRaw("users_system.id, users_system.name, users_system.username, users_system.email, users_system.phone_number, users_system.thumb, users_system.is_active,
                 users_system.is_login, users_system.ip_login, users_system.last_login, c.name AS role, b.role_id, 'action' as action")
                 ->leftJoin('model_has_roles AS b', 'b.model_id', '=', 'users_system.id')
-                ->leftJoin('roles AS c', 'c.id', '=', 'b.role_id')
-                ->orderBy('b.role_id', 'ASC')
-                ->get();
+                ->leftJoin('roles AS c', 'c.id', '=', 'b.role_id');
+            if(auth()->user()->getRoleNames()[0] != 'Super Admin') {
+                $query = $query->where('c.name', '!=', 'Super Admin');
+            }
+            $data = $query->orderBy('b.role_id', 'ASC')->get();
             $output = Datatables::of($data)->addIndexColumn()
                 ->editColumn('name', function ($row) {
                     $user_thumb = $row->thumb;
@@ -153,7 +155,11 @@ class UsersController extends Controller
                     return $activeCustom;
                 })
                 ->editColumn('last_login', function ($row) {
-                    $last_login = $row->ip_login.' <br/><div class="fw-bold text-muted">'.time_ago($row->last_login).'</div>';
+                    $ipLogin = $row->ip_login;
+                    $lastLogin = $row->last_login;
+                    if($ipLogin == '' || $ipLogin == null) { $ipLogin = '-';}
+                    if($lastLogin == '' || $lastLogin == null) { $lastLogin = '-'; } else { $lastLogin = time_ago($lastLogin); }
+                    $last_login = $ipLogin.' <br/><div class="fw-bold text-muted">'.$lastLogin.'</div>';
                     return $last_login;
                 })
                 ->addColumn('action', function($row){
@@ -193,7 +199,7 @@ class UsersController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($request->repass_user),
                 'user_add' => $userSesIdp
             );
             $cekUser = User::where('username', $request->username)->first();
@@ -215,15 +221,16 @@ class UsersController extends Controller
                         if(!is_dir($avatarDestinationPath)){ mkdir($avatarDestinationPath, 0755, TRUE); }
 
                         $avatarOriginName = $avatarFile->getClientOriginalName();
-                        $avatarNewName = strtolower(Str::slug(pathinfo($avatarOriginName, PATHINFO_FILENAME))) . time();
+                        $avatarNewName = strtolower(Str::slug(pathinfo($request->username.bcrypt($avatarOriginName), PATHINFO_FILENAME))) . time();
                         $avatarNewNameExt = $avatarNewName . '.' . $avatarExtension;
                         $avatarFile->move($avatarDestinationPath, $avatarNewNameExt);
 
                         $data['thumb'] = $avatarNewNameExt;
                     }
-
                     $insertUser = User::insertGetId($data);
                     addToLog('User has been successfully added');
+                    //Asign Role & Permissions to User
+                    $this->assignRoleToUser($insertUser, '', $request->role);
                 }
             }
             DB::commit();
@@ -244,8 +251,12 @@ class UsersController extends Controller
     public function update(Request $request) {
         $userSesIdp = Auth::user()->id;
         $form = [
-            'name' => 'required|max:50',
-            'order_line' => 'required|max:6',
+            'role' => 'required',
+            'name' => 'required|max:150',
+            'username' => 'required|max:50',
+            'email' => 'required|max:225',
+            'phone_number' => 'required|max:13',
+            'avatar' => 'mimes:png,jpg,jpeg|max:2048',
         ];
         DB::beginTransaction();
         $request->validate($form);
@@ -253,33 +264,53 @@ class UsersController extends Controller
             //array data
             $data = array(
                 'name' => $request->name,
-                'icon' => isset($request->icon) ? $request->icon : NULL,
-                'has_route' => isset($request->has_route) ? 'Y' : 'N',
-                'route_name' => isset($request->has_route) || $request->route_name !='' ? $request->route_name : NULL,
-                'parent_id' => isset($request->has_parent) || $request->cbo_parent !='' ? $request->cbo_parent : NULL,
-                'has_child' => isset($request->has_child) ? 'Y' : 'N',
-                'is_crud' => isset($request->is_crud) ? 'Y' : 'N',
-                'order_line' => $request->order_line,
+                'username' => $request->username,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'is_active' => isset($request->is_active) ? 'Y' : 'N',
                 'user_updated' => $userSesIdp
             );
-            DB::table('permission_has_menus')->whereId($request->id)->update($data);
-            addToLog('Permission menu has been successfully updated');
-            //If Crud or Not
-            $nameSlug = Str::slug($request->name);
-            $oldNameSlug = Str::slug($request->old_name);
-            if(isset($request->is_crud)) {
-                if(isset($request->create)) {
-                    $this->store_crudpermission($oldNameSlug.'-create', $nameSlug.'-create', $request->id);
-                } if(isset($request->read)) {
-                    $this->store_crudpermission($oldNameSlug.'-read', $nameSlug.'-read', $request->id);
-                } if(isset($request->update)) {
-                    $this->store_crudpermission($oldNameSlug.'-update', $nameSlug.'-update', $request->id);
-                } if(isset($request->delete)) {
-                    $this->store_crudpermission($oldNameSlug.'-delete', $nameSlug.'-delete', $request->id);
+            $cekUser = User::where('username', $request->username)->where('id', '!=' , $request->id)->first();
+            if($cekUser==true) {
+                addToLog('Data cannot be updated, the same username already exists in the system');
+                return jsonResponse(false, 'Gagal memperbarui data, username yang sama sudah ada pada sistem. Coba gunakan username yang lain', 200, array('error_code' => 'username_available'));
+            } else {
+                $cekUser = User::where('email', $request->email)->where('id', '!=' , $request->id)->first();
+                if($cekUser==true) {
+                    addToLog('Data cannot be updated, the same email already exists in the system');
+                    return jsonResponse(false, 'Gagal memperbarui data, email yang sama sudah ada pada sistem. Coba gunakan email yang lain', 200, array('error_code' => 'email_available'));
+                } else {
+                    //If Update Avatar User
+                    if(!empty($_FILES['avatar']['name'])) {
+                        $avatarDestinationPath = public_path('/dist/img/users-img');
+                        $getUser = User::select()->whereId($request->id)->first();
+                        $getAvatarFile = $avatarDestinationPath.'/'.$getUser->thumb;
+
+                        if(file_exists($getAvatarFile) && $getUser->thumb)
+                            unlink($getAvatarFile);
+
+                        $avatarFile = $request->file('avatar');
+                        $avatarExtension = $avatarFile->getClientOriginalExtension();
+                        //Cek and Create Avatar Destination Path
+                        if(!is_dir($avatarDestinationPath)){ mkdir($avatarDestinationPath, 0755, TRUE); }
+
+                        $avatarOriginName = $avatarFile->getClientOriginalName();
+                        $avatarNewName = strtolower(Str::slug($request->username.bcrypt(pathinfo($avatarOriginName, PATHINFO_FILENAME)))) . time();
+                        $avatarNewNameExt = $avatarNewName . '.' . $avatarExtension;
+                        $avatarFile->move($avatarDestinationPath, $avatarNewNameExt);
+
+                        $data['thumb'] = $avatarNewNameExt;
+                    }
+                    User::whereId($request->id)->update($data);
+                    addToLog('User has been successfully updated');
+                    if($request->role != $request->oldRole_id) {
+                        //Revoke & Asign Role & Permissions to User
+                        $this->assignRoleToUser($request->id, $request->oldRole_id, $request->role);
+                    }
                 }
             }
             DB::commit();
-            return jsonResponse(true, 'Role berhasil diperbarui', 200);
+            return jsonResponse(true, 'Data User berhasil diperbarui', 200);
         } catch (\Exception $exception) {
             DB::rollback();
             return jsonResponse(false, $exception->getMessage(), 401, [
@@ -294,16 +325,29 @@ class UsersController extends Controller
      * @param  mixed $idpRole
      * @return void
      */
-    private function assignRoleToUser($idpUser, $idpRole) {
-        $userSesIdp = Auth::user()->id;
+    private function assignRoleToUser($idpUser, $oldIdpRole, $idpRole) {
         DB::beginTransaction();
         try {
-            $getPermissions = Permission::select('permissions.*')
-                ->leftJoin('role_has_permissions AS b', 'b.permission_id', '=', 'permissions.id')
-                ->where('b.role_id', $idpRole)
-                ->get();
             $getUser = User::whereId($idpUser)->first();
-            if($getPermissions) {
+            $getPermissions = Permission::select('permissions.*')
+            ->leftJoin('role_has_permissions AS b', 'b.permission_id', '=', 'permissions.id')
+            ->where('b.role_id', $idpRole)
+            ->get();
+
+            if($oldIdpRole != '' || $oldIdpRole != null) {
+                if($oldIdpRole != $idpRole) {
+                    $getOldPermissions = Permission::select('permissions.*')
+                    ->leftJoin('role_has_permissions AS b', 'b.permission_id', '=', 'permissions.id')
+                    ->where('b.role_id', $oldIdpRole)
+                    ->get();
+                    if($getOldPermissions) {
+                        foreach ($getOldPermissions as $row) {
+                            $getUser->revokePermissionTo($getOldPermissions->name);
+                        }
+                    }
+                    $getUser->removeRole([$oldIdpRole]);
+                }
+            } if($getPermissions) {
                 foreach ($getPermissions as $row) {
                     $getUser->givePermissionTo($row->name);
                 }
@@ -311,7 +355,7 @@ class UsersController extends Controller
             $getUser->assignRole([$idpRole]);
             DB::commit();
         } catch (\Exception $exception) {
-            // \dd($exception);
+            // dd($exception);
             DB::rollback();
         }
     }
@@ -324,6 +368,9 @@ class UsersController extends Controller
     public function selectpicker_role(Request $request) {
         try {
             $getRow = Role::get();
+            if(auth()->user()->getRoleNames()[0] != 'Super Admin') {
+                $getRow = Role::where('name', '!=', 'Super Admin')->get();
+            }
             if($getRow != null){
                 return jsonResponse(true, 'Success', 200, $getRow);
             } else {
