@@ -14,7 +14,7 @@
     <!--end::Card header-->
     <!--begin::Form-->
     <form id="form-user" class="form" onsubmit="return false">
-        <input type="hidden" name="id" />
+        <input type="hidden" name="id" /><input type="hidden" name="oldRole_id" />
         <!--begin::Card body-->
         <div class="card-body">
             <!--begin::Row-->
