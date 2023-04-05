@@ -290,13 +290,14 @@ class PermissionsController extends Controller
                 $data['user_add'] = $userSesIdp;
                 Permission::insert($data);
             } else {
-                $data['user_update'] = $userSesIdp;
+                $data['user_updated'] = $userSesIdp;
                 Permission::where('name', $oldName)->update($data);
             }
             DB::commit();
             Artisan::call("cache:forget spatie.permission.cache");
             Artisan::call("cache:clear");
         } catch (\Exception $exception) {
+            // \dd($exception);
             DB::rollback();
         }
     }
