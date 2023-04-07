@@ -24,7 +24,7 @@
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="short_name">Nama Alias / Nama Pendek</label>
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="short_name">Nama Alias/ Nama Pendek</label>
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12 fv-row">
