@@ -453,7 +453,7 @@ const _updatePermission = (idpMenu, idpRole, value, type) => {
                     blockUi.release(), blockUi.destroy();
                     Swal.fire({ title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.", icon: "error", allowOutsideClick: false }).then(function (result) {
                         console.log("Update data is error!");
-                        _loadDtProvinsi();
+                        $("#dt-permisions").DataTable().ajax.reload(), $("#dt-permisions").css("width", "100%");
                     });
                 }
             });
