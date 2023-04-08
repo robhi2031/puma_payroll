@@ -148,9 +148,9 @@ class UsersController extends Controller
                 })
                 ->editColumn('is_active', function ($row) {
                     if($row->is_active == 'Y'){
-                        $activeCustom = '<button type="button" class="btn btn-sm btn-info mb-1" data-bs-toggle="tooltip" title="User Aktif, Nonaktifkan ?" onclick="_updateStatus('."'".$row->id."'".', '."'0'".', '."'users_system'".', '."'status'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
+                        $activeCustom = '<button type="button" class="btn btn-sm btn-info mb-1" data-bs-toggle="tooltip" title="User Aktif, Nonaktifkan ?" onclick="_updateStatus('."'".$row->id."'".', '."'N'".');"><i class="fas fa-toggle-on fs-2"></i></button>';
                     } else {
-                        $activeCustom = '<button type="button" class="btn btn-sm btn-light mb-1" data-bs-toggle="tooltip" title="User Tidak Aktif, Aktifkan ?" onclick="_updateStatus('."'".$row->id."'".', '."'1'".', '."'users_system'".', '."'status'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
+                        $activeCustom = '<button type="button" class="btn btn-sm btn-light mb-1" data-bs-toggle="tooltip" title="User Tidak Aktif, Aktifkan ?" onclick="_updateStatus('."'".$row->id."'".', '."'Y'".');"><i class="fas fa-toggle-off fs-2"></i></button>';
                     }
                     return $activeCustom;
                 })
@@ -357,6 +357,39 @@ class UsersController extends Controller
         } catch (\Exception $exception) {
             // dd($exception);
             DB::rollback();
+        }
+    }
+    /**
+     * update_statususers
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function update_statususers(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $idp = $request->idp;
+        $value = $request->value;
+        DB::beginTransaction();
+        try {
+            $data = array(
+                'is_active' => $value,
+                'user_updated' => $userSesIdp
+            );
+            User::whereId($idp)->update($data);
+            if($value=='N') {
+                addToLog('User status has been successfully updated to Inactive');
+                $textMsg = 'Status user berhasil diubah menjadi <strong>Nonaktif</strong>';
+            } else {
+                addToLog('User status has been successfully updated to Active');
+                $textMsg = 'Status user berhasil diubah menjadi <strong>Aktif</strong>';
+            }
+            DB::commit();
+            return jsonResponse(true, $textMsg, 200);
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
         }
     }
     /**
