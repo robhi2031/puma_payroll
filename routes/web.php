@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/manage_users/selectpicker_role', [UsersController::class, 'selectpicker_role'])->name('selectpicker_role');
         Route::post('/manage_users/store', [UsersController::class, 'store'])->name('store_users');
         Route::post('/manage_users/update', [UsersController::class, 'update'])->name('update_users');
+        Route::post('/manage_users/update_statususers', [UsersController::class, 'update_statususers'])->name('update_statususers');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
