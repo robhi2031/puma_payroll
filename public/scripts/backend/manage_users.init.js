@@ -385,6 +385,49 @@ $("#btn-save").on("click", function (e) {
         }
     });
 });
+//Update Status Data User
+const _updateStatus = (idp, value) => {
+    let textLbl = 'Nonaktifkan';
+    if(value=='Y') {
+        textLbl = 'Aktifkan';
+    }
+    let textSwal = textLbl+ ' user sekarang ?';
+    Swal.fire({
+        title: "",
+        html: textSwal,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak, Batalkan!"
+    }).then(result => {
+        if (result.value) {
+            var target = document.querySelector('#card-dtUsers'), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+            blockUi.block(), blockUi.destroy();
+            // Load Ajax
+            $.ajax({
+                url: base_url+ "api/manage_users/update_statususers",
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    idp, value
+                }, success: function (data) {
+                    blockUi.release(), blockUi.destroy();
+                    Swal.fire({ title: "Success!", html: data.message, icon: "success", allowOutsideClick: false }).then(function (result) {
+                        _loadDtUsers();
+                    });
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    blockUi.release(), blockUi.destroy();
+                    Swal.fire({ title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.", icon: "error", allowOutsideClick: false }).then(function (result) {
+                        console.log("Update data is error!");
+                        _loadDtUsers();
+                    });
+                }
+            });
+        }
+    });
+}
 //Class Initialization
 jQuery(document).ready(function() {
     _loadDtUsers();
