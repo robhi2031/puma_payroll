@@ -208,6 +208,8 @@ class PermissionsController extends Controller
                 } if(isset($request->delete)) {
                     $this->store_crudpermission('', $nameSlug.'-delete', $insertPermissionMenu);
                 }
+            } else {
+                $this->store_crudpermission('', $nameSlug.'-read', $insertPermissionMenu);
             }
             DB::commit();
             return jsonResponse(true, 'Permission/ Menu berhasil ditambahkan', 200);
@@ -260,6 +262,8 @@ class PermissionsController extends Controller
                 } if(isset($request->delete)) {
                     $this->store_crudpermission($oldNameSlug.'-delete', $nameSlug.'-delete', $request->id);
                 }
+            } else {
+                $this->store_crudpermission($oldNameSlug.'-read', $nameSlug.'-read', $request->id);
             }
             DB::commit();
             return jsonResponse(true, 'Role berhasil diperbarui', 200);
