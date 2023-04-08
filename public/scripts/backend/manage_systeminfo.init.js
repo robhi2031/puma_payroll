@@ -89,18 +89,18 @@ const _loadEditSystemInfo = () => {
         }
     });
 }
-// Handle Button Reset / Batal Form User Profile
+// Handle Button Reset / Batal Form System Info
 $('#btn-resetFormSystemInfo').on('click', function (e) {
     e.preventDefault();
     _loadEditSystemInfo();
 });
-//Handle Enter Submit Form Edit User Profile
+//Handle Enter Submit Form Edit System Info
 $("#form-editSystemInfo input").keyup(function(event) {
     if (event.keyCode == 13 || event.key === 'Enter') {
         $("#btn-saveSystemInfo").click();
     }
 });
-// Handle Button Save Form User Profile
+// Handle Button Save Form System Info
 $('#btn-saveSystemInfo').on('click', function (e) {
     e.preventDefault();
     $('#btn-saveSystemInfo').html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr('disabled', true);
