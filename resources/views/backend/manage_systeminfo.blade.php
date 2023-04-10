@@ -152,5 +152,5 @@
     </div>
     <!--end::Edit-->
 </div>
-<!--end::User Info-->
+<!--end::System Info-->
 @endsection
