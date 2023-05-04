@@ -80,7 +80,7 @@ const _loadDtRoles = () => {
 }
 //Load Datatables Permissions
 const _loadDtPermissions = (idp) => {
-    tablePermissions = $('#dt-permisions').DataTable({
+    tablePermissions = $('#dt-permissions').DataTable({
         searchDelay: 300,
         processing: true,
         serverSide: true,
@@ -110,6 +110,7 @@ const _loadDtPermissions = (idp) => {
         ],
         //"dom": "<'row'<'col-sm-6 d-flex align-items-center justify-conten-start'l><'col-sm-6 d-flex align-items-center justify-content-end'f>><'table-responsive'tr><'row'<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i><'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>>",
         fnDrawCallback: function (settings, display) {
+            //Tooltip
             $('[data-bs-toggle="tooltip"]').tooltip("dispose"), $(".tooltip").hide();
             $('[data-bs-toggle="tooltip"]').tooltip({ 
                 trigger: "hover"
@@ -118,7 +119,7 @@ const _loadDtPermissions = (idp) => {
             });
         },
     });
-    $("#dt-permisions").css("width", "100%");
+    $("#dt-permissions").css("width", "100%");
 }
 //Close Content Card by Open Method
 const _closeCard = (card) => {
@@ -391,7 +392,7 @@ $("#btn-savePermission").on("click", function (e) {
                             allowOutsideClick: false,
                         }).then(function (result) {
                             $('#modal-addPermission .modal-header .modal-title').html(''), $('#modal-addPermission').modal('hide'),
-                            $("#dt-permisions").DataTable().ajax.reload(), $("#dt-permisions").css("width", "100%");
+                            $("#dt-permissions").DataTable().ajax.reload(), $("#dt-permissions").css("width", "100%");
                         });
                     } else {
                         Swal.fire({
@@ -447,13 +448,13 @@ const _updatePermission = (idpMenu, idpRole, value, type) => {
                 }, success: function (data) {
                     blockUi.release(), blockUi.destroy();
                     Swal.fire({ title: "Success!", html: data.message, icon: "success", allowOutsideClick: false }).then(function (result) {
-                        $("#dt-permisions").DataTable().ajax.reload(), $("#dt-permisions").css("width", "100%");
+                        $("#dt-permissions").DataTable().ajax.reload(), $("#dt-permissions").css("width", "100%");
                     });
                 }, error: function (jqXHR, textStatus, errorThrown) {
                     blockUi.release(), blockUi.destroy();
                     Swal.fire({ title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.", icon: "error", allowOutsideClick: false }).then(function (result) {
                         console.log("Update data is error!");
-                        $("#dt-permisions").DataTable().ajax.reload(), $("#dt-permisions").css("width", "100%");
+                        $("#dt-permissions").DataTable().ajax.reload(), $("#dt-permissions").css("width", "100%");
                     });
                 }
             });
