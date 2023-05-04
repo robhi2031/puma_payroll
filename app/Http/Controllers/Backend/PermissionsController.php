@@ -118,6 +118,7 @@ class PermissionsController extends Controller
         } else {
             $data = DB::table('permission_has_menus')
                 ->selectRaw("permission_has_menus.*, 'action' as action")
+                ->orderBy('permission_has_menus.order_line', 'ASC')
                 ->get();
 
             $output = Datatables::of($data)->addIndexColumn()
