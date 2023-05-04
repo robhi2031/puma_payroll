@@ -1,7 +1,7 @@
 <!--begin::Footer-->
 <div class="footer py-4 d-flex flex-lg-column bg-dark" id="kt_footer">
     <!--begin::Container-->
-    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center">
         <!--begin::Copyright-->
         <div class="text-white order-2 order-md-1 copyRight">
             <p class="placeholder-glow text-center">
