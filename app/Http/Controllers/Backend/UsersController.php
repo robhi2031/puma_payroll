@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailNotifyPasswordReset;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -10,6 +11,7 @@ use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
@@ -163,8 +165,9 @@ class UsersController extends Controller
                     return $last_login;
                 })
                 ->addColumn('action', function($row){
-                    $btnEdit = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Edit data!" onclick="_editUser('."'".$row->id."'".');"><i class="la la-edit fs-3"></i></button>';
-                    return $btnEdit;
+                    $btnEdit = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1 ms-1" data-bs-toggle="tooltip" title="Edit data!" onclick="_editUser('."'".$row->id."'".');"><i class="la la-edit fs-3"></i></button>';
+                    $btnResetPass = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-warning mb-1 ms-1" data-bs-toggle="tooltip" title="Reset Password!" onclick="_resetUserPass('."'".$row->id."'".');"><i class="las la-unlock-alt fs-3"></i></button>';
+                    return $btnEdit.$btnResetPass;
                 })
                 ->rawColumns(['name', 'is_active', 'last_login', 'action'])
                 ->make(true);
@@ -387,6 +390,56 @@ class UsersController extends Controller
             return jsonResponse(true, $textMsg, 200);
         } catch (\Exception $exception) {
             DB::rollback();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    /**
+     * reset_userpass
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function reset_userpass(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $idp = $request->idp;
+        $textMsg = "";
+        DB::beginTransaction();
+        try {
+            $getUser = User::whereId($idp)->first();
+            $randPass = Str::random(6);
+            $newPass = $randPass;
+            $data = array(
+                'password' => bcrypt($newPass),
+                'user_updated' => $userSesIdp
+            );
+            User::whereId($idp)->update($data);
+            addToLog('User has been successfully reset password');
+
+            $dataMail = [
+                "subject" => "Informasi Reset Password User",
+                "systemInfo" => $this->get_systeminfo(),
+                "userInfo" => [
+                    "name" => $getUser->name,
+                    "email" => $getUser->email,
+                    "username" => $getUser->username,
+                    "newPass" => $newPass,
+                ],
+            ];
+            //if Not Send Mail to User custom Password
+            if(!Mail::to($getUser->email)->send(new MailNotifyPasswordReset($dataMail))) {
+                addToLog('New password failed to be sent to the user via email message');
+                $textMsg = "Reset password user berhasil dilakukan, Namun password baru gagal dikirimkan kepada user <strong>" .$getUser->name. "</strong> melalui pesan email, Anda dapat memberitahukan password baru kepada user tersebut dan memintanya untuk segera melakukan perubahan password setelah berhasil login. <strong>Password Baru: " .$newPass. "</strong>";
+            }
+            //if Send Mail to User custom Password
+            addToLog('New password successfully sent to user via email message');
+            $textMsg = "Reset password user berhasil dilakukan, Password baru telah dikirimkan kepada user <strong>" .$getUser->name. "</strong> melalui pesan email";
+
+            DB::commit();
+            return jsonResponse(true, $textMsg, 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
