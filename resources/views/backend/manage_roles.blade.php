@@ -58,7 +58,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <!--begin::Table-->
-            <table class="table table-rounded align-middle table-row-bordered border" id="dt-permisions">
+            <table class="table table-rounded align-middle table-row-bordered border" id="dt-permissions">
                 <thead>
                     <tr class="fw-bolder text-uppercase bg-light">
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
