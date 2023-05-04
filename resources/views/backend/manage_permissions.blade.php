@@ -170,7 +170,7 @@
         </div>
         <div class="card-toolbar">
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-sm btn-primary me-2" id="btn-addPermission" onclick="_addPermission();"><i class="fas fa-plus"></i> Tambah</button>
+                <button type="button" class="btn btn-sm btn-primary me-2" id="btn-addPermission" onclick="_addPermission();"><i class="las la-plus fs-3"></i> Tambah</button>
             </div>
         </div>
     </div>
