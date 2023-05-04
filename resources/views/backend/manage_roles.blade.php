@@ -17,18 +17,18 @@
         <input type="hidden" name="id" />
         <!--begin::Card body-->
         <div class="card-body">
-            <!--begin::Row-->
-            <div class="row">
-                <div class="col-md-12">
-                    <!--begin::Input group-->
-                    <div class="mb-3">
-                        <label class="col-form-label required fw-bold fs-6" for="name">Role</label>
-                        <input type="text" class="form-control form-control-solid" name="name" id="name" maxlength="50" placeholder="Isi nama role ..." />
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-12 fv-row">
+                            <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="50" placeholder="Isi nama role ..." />
+                        </div>
                     </div>
-                    <!--end::Input group-->
                 </div>
             </div>
-            <!--end::Row-->
+            <!--end::Input group-->
         </div>
         <!--end::Card body-->
         <!--begin::Actions-->
