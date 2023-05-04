@@ -428,6 +428,41 @@ const _updateStatus = (idp, value) => {
         }
     });
 }
+//Reset User Password
+const _resetUserPass = (idp) => {
+    Swal.fire({
+        title: "",
+        html: 'Yakin ingin melakukan <strong>Reset Password</strong> user?',
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Yakin",
+        cancelButtonText: "Tidak, Batalkan!"
+    }).then(result => {
+        if (result.value) {
+            let target = document.querySelector('#card-dtUsers'), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+            blockUi.block(), blockUi.destroy();
+            // Load Ajax
+            $.ajax({
+                url: base_url+ "api/manage_users/reset_userpass",
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    idp
+                }, success: function (data) {
+                    blockUi.release(), blockUi.destroy();
+                    Swal.fire({ title: "Success!", html: data.message, icon: "success", allowOutsideClick: false });
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    blockUi.release(), blockUi.destroy();
+                    Swal.fire({ title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.", icon: "error", allowOutsideClick: false }).then(function (result) {
+                        console.log("Update data is error!");
+                    });
+                }
+            });
+        }
+    });
+}
 //Class Initialization
 jQuery(document).ready(function() {
     _loadDtUsers();
