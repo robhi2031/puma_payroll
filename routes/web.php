@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PermissionsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SystemInfoController;
+use App\Http\Controllers\Backend\UsersActivityController;
 use App\Http\Controllers\Backend\UsersController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Login\AuthController;
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manage_roles', [RolesController::class, 'index'])->name('manage_roles');
     Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
     Route::get('/manage_users', [UsersController::class, 'index'])->name('manage_users');
+    Route::get('/logs_activity', [UsersActivityController::class, 'index'])->name('users_activity');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
     Route::group(['prefix' => 'api'], function () {
@@ -70,6 +72,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/manage_users/store', [UsersController::class, 'store'])->name('store_users');
         Route::post('/manage_users/update', [UsersController::class, 'update'])->name('update_users');
         Route::post('/manage_users/update_statususers', [UsersController::class, 'update_statususers'])->name('update_statususers');
+        Route::post('/manage_users/reset_userpass', [UsersController::class, 'reset_userpass'])->name('reset_userpass');
+        //Users Activity
+        Route::get('/users_activity/show', [UsersActivityController::class, 'show'])->name('show_logs');
+        Route::post('/users_activity/delete', [UsersActivityController::class, 'delete'])->name('delete_logs');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
