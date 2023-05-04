@@ -82,7 +82,7 @@ class RolesController extends Controller
                 ]);
             }
         } else {
-            $data = Role::selectRaw("id, name, 'action' as action")->get();
+            $data = Role::selectRaw("id, name, 'action' as action")->orderByDesc('id')->get();
             $output = Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btnPermissions = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-warning mb-1 me-1" data-bs-toggle="tooltip" title="Setting Permissions?" onclick="_settingPermissions('."'".$row->id."'".', '."'".$row->name."'".');"><i class="las la-tasks fs-3"></i></button>';
