@@ -141,7 +141,13 @@
 }
 /*--end footer Custom--*/
 /*--start Value Select2 Custom--*/
-.select2-container--bootstrap5 .select2-selection--single .select2-selection__rendered {
+/* .select2-container--bootstrap5 .select2-selection--single .select2-selection__rendered {
     color: #181c32;
-}
+} */
 /*--end Value Select2 Custom--*/
+/*--start Datatable Custom--*/
+div.dataTables_wrapper div.dataTables_processing {
+    --bs-bg-rgb-color: var(--bs-light-rgb);
+    background-color: var(--bs-light) !important;
+}
+/*--end Datatable Custom--*/
