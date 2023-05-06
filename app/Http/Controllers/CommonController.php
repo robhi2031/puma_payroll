@@ -165,4 +165,40 @@ class CommonController extends Controller
             ]);
         }
     }
+    /**
+     * upload_imgeditor
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    protected function upload_imgeditor(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $form = [
+            'image' => 'mimes:png,jpg,jpeg|max:1024',
+        ];
+        $request->validate($form);
+        try {
+            if(!empty($_FILES['image']['name'])) {
+                $filePath = date("m-Y");
+                $destinationPath = public_path('/dist/img/summernote-img/' .$filePath);
+                $file = $request->file('image');
+                $imageExtension = $file->getClientOriginalExtension();
+                //Cek and Create Avatar Destination Path
+                if(!is_dir($destinationPath)){ mkdir($destinationPath, 0755, TRUE); }
+                $imageOriginName = $file->getClientOriginalName();
+                $imageNewName = strtolower(Str::slug(bcrypt(pathinfo($imageOriginName, PATHINFO_FILENAME)))) . time();
+                $imageNewNameExt = $imageNewName . '.' . $imageExtension;
+                $file->move($destinationPath, $imageNewNameExt);
+
+                $data = array(
+                    "url_img" => url('dist/img/summernote-img/'.$filePath.'/'.$imageNewNameExt),
+                );
+            }
+            return jsonResponse(true, 'Image has been successfully upload', 200, $data);
+        } catch (Exception $exception) {
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
 }
