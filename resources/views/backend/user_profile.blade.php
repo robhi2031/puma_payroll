@@ -41,11 +41,7 @@
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-12 fv-row">
-                            <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="100" placeholder="Isikan nama user ..." />
-                        </div>
-                    </div>
+                    <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="100" placeholder="Isikan nama user ..." />
                 </div>
             </div>
             <!--end::Input group-->
@@ -53,15 +49,11 @@
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="username">Username</label>
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-12 fv-row">
-                            <div class="input-group input-group-solid mb-2">
-                                <span class="input-group-text"><i class="las la-user fs-1"></i></span>
-                                <input type="text" class="form-control form-control-lg form-control-solid  no-space" name="username" id="username" readonly />
-                            </div>
-                            <div class="form-text">*) Tanpa spasi, contoh: <code>andre123</code></div>
-                        </div>
+                    <div class="input-group input-group-solid mb-2">
+                        <span class="input-group-text"><i class="las la-user fs-1"></i></span>
+                        <input type="text" class="form-control form-control-lg form-control-solid  no-space" name="username" id="username" readonly />
                     </div>
+                    <div class="form-text">*) Tanpa spasi, contoh: <code>andre123</code></div>
                 </div>
             </div>
             <!--end::Input group-->
@@ -69,15 +61,11 @@
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="email">Email</label>
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-12 fv-row">
-                            <div class="input-group input-group-solid mb-2">
-                                <span class="input-group-text"><i class="las la-envelope fs-1"></i></span>
-                                <input type="text" class="form-control form-control-lg form-control-solid no-space" name="email" id="email" placeholder="Isikan email ..." />
-                            </div>
-                            <div class="form-text">*) Pastikan email sesuai format dan masih aktif digunakan, contoh: <code>andre123@gmail.com</code></div>
-                        </div>
+                    <div class="input-group input-group-solid mb-2">
+                        <span class="input-group-text"><i class="las la-envelope fs-1"></i></span>
+                        <input type="text" class="form-control form-control-lg form-control-solid no-space" name="email" id="email" placeholder="Isikan email ..." />
                     </div>
+                    <div class="form-text">*) Pastikan email sesuai format dan masih aktif digunakan, contoh: <code>andre123@gmail.com</code></div>
                 </div>
             </div>
             <!--end::Input group-->
@@ -85,15 +73,11 @@
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/Hp</label>
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-12 fv-row">
-                            <div class="input-group input-group-solid mb-2">
-                                <span class="input-group-text"><i class="las la-phone fs-1"></i></span>
-                                <input type="text" class="form-control form-control-lg form-control-solid no-space" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp ..." />
-                            </div>
-                            <div class="form-text">*) Pastikan No. Telpon/Hp sesuai format dan masih aktif digunakan, contoh: <code>+6283122222222</code></div>
-                        </div>
+                    <div class="input-group input-group-solid mb-2">
+                        <span class="input-group-text"><i class="las la-phone fs-1"></i></span>
+                        <input type="text" class="form-control form-control-lg form-control-solid no-space" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp ..." />
                     </div>
+                    <div class="form-text">*) Pastikan No. Telpon/Hp sesuai format dan masih aktif digunakan, contoh: <code>+6283122222222</code></div>
                 </div>
             </div>
             <!--end::Input group-->
@@ -120,13 +104,9 @@
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="pass_lama">Password Lama</label>
                     <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-12 fv-row">
-                                <div class="input-group input-group-solid">
-                                    <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="pass_lama" id="pass_lama" minlength="6" placeholder="Isikan password lama ..." />
-                                    <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
-                                </div>
-                            </div>
+                        <div class="input-group input-group-solid">
+                            <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="pass_lama" id="pass_lama" minlength="6" placeholder="Isikan password lama ..." />
+                            <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
                         </div>
                     </div>
                 </div>
@@ -135,15 +115,11 @@
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="pass_baru">Password Baru</label>
                     <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-12 fv-row">
-                                <div class="input-group input-group-solid">
-                                    <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="pass_baru" id="pass_baru" minlength="6" placeholder="Isikan password baru ..." />
-                                    <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
-                                </div>
-                                <div class="form-text">*) Tanpa spasi, Panjang karakter minimal 6 | contoh: <code>Admin.2020</code></div>
-                            </div>
+                        <div class="input-group input-group-solid">
+                            <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="pass_baru" id="pass_baru" minlength="6" placeholder="Isikan password baru ..." />
+                            <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
                         </div>
+                        <div class="form-text">*) Tanpa spasi, Panjang karakter minimal 6 | contoh: <code>Admin.2020</code></div>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -151,15 +127,11 @@
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="repass_baru">Ulangi Password Baru</label>
                     <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-12 fv-row">
-                                <div class="input-group input-group-solid mb-5">
-                                    <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="repass_baru" id="repass_baru" minlength="6" placeholder="Ulangi password baru ..." />
-                                    <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
-                                </div>
-                                <div class="form-text">*) Harus sama dengan password baru</div>
-                            </div>
+                        <div class="input-group input-group-solid mb-5">
+                            <input type="password" class="form-control form-control-lg form-control-solid no-space password" name="repass_baru" id="repass_baru" minlength="6" placeholder="Ulangi password baru ..." />
+                            <span class="input-group-text cursor-pointer btn-showPass" title="Sembunyikan password"><i class="las la-eye-slash fs-1"></i></span>
                         </div>
+                        <div class="form-text">*) Harus sama dengan password baru</div>
                     </div>
                 </div>
                 <!--end::Input group-->

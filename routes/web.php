@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\CompanyAboutController;
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PermissionsController;
@@ -48,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
     Route::get('/manage_users', [UsersController::class, 'index'])->name('manage_users');
     Route::get('/logs_activity', [UsersActivityController::class, 'index'])->name('users_activity');
+    Route::get('/manage_companyabout', [CompanyAboutController::class, 'index'])->name('manage_companyabout');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
     Route::group(['prefix' => 'api'], function () {
@@ -77,15 +79,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/users_activity/show', [UsersActivityController::class, 'show'])->name('show_logs');
         Route::post('/users_activity/delete', [UsersActivityController::class, 'delete'])->name('delete_logs');
         //User Profil
+        Route::get('/manage_companyabout/show', [CompanyAboutController::class, 'show'])->name('show_companyabout');
+        Route::post('/manage_companyabout/update', [CompanyAboutController::class, 'update'])->name('update_companyabout');
+        //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
         Route::post('/update_userpassprofil', [CommonController::class, 'update_userpassprofil'])->name('update_userpassprofil');
+        //Image Upload with Summernote Editor
+        Route::post('/ajax_upload_imgeditor', [CommonController::class, 'upload_imgeditor'])->name('upload_imgeditor');
     });
-    // Route::get('/system_info', [DashboardController::class, 'index'])->name('dashboard');
-    // Route::get('/roles', [DashboardController::class, 'index'])->name('dashboard');
-    // Route::get('/permissions', [DashboardController::class, 'index'])->name('dashboard');
 });
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
