@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $getUserSession = Auth::user();
         //Data WebInfo
         $data = array(
-            'title' => $getUserSession->name.' on User Profile',
+            'title' => $getUserSession->name.' on Dashboard',
             'url' => url()->current(),
             'app_version' => config('app.version'),
             'app_name' => $getSystemInfo->name,
