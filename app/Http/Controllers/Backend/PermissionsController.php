@@ -23,10 +23,10 @@ class PermissionsController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('permission:permissions-read', ['only' => ['index', 'show', 'select2_parentpermissions']]);
-        $this->middleware('permission:permissions-create', ['only' => ['store']]);
-        $this->middleware('permission:permissions-update', ['only' => ['update']]);
-        $this->middleware('permission:permissions-delete', ['only' => ['delete']]);
+        $this->middleware(['direct_permission:permissions-read'])->only(['index', 'show', 'select2_parentpermissions']);
+        $this->middleware(['direct_permission:permissions-create'])->only(['store']);
+        $this->middleware(['direct_permission:permissions-update'])->only(['update']);
+        $this->middleware(['direct_permission:permissions-delete'])->only('delete');
     }
     /**
      * index
