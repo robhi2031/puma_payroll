@@ -3,7 +3,9 @@
 use App\Http\Controllers\Backend\CompanyAboutController;
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\JobPositionController;
 use App\Http\Controllers\Backend\PermissionsController;
+use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SystemInfoController;
 use App\Http\Controllers\Backend\UsersActivityController;
@@ -49,6 +51,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
     Route::get('/manage_users', [UsersController::class, 'index'])->name('manage_users');
     Route::get('/logs_activity', [UsersActivityController::class, 'index'])->name('users_activity');
+    Route::get('/manage_project', [ProjectController::class, 'index'])->name('manage_project');
+    Route::get('/manage_jobposition', [JobPositionController::class, 'index'])->name('manage_jobposition');
     Route::get('/manage_companyabout', [CompanyAboutController::class, 'index'])->name('manage_companyabout');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
@@ -78,7 +82,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         //Users Activity
         Route::get('/users_activity/show', [UsersActivityController::class, 'show'])->name('show_logs');
         Route::post('/users_activity/delete', [UsersActivityController::class, 'delete'])->name('delete_logs');
-        //User Profil
+        //Manage Project
+        Route::get('/manage_project/show', [ProjectController::class, 'show'])->name('show_project');
+        Route::post('/manage_project/store', [ProjectController::class, 'store'])->name('store_project');
+        Route::post('/manage_project/update', [ProjectController::class, 'update'])->name('update_project');
+        //Manage Job Position
+        Route::get('/manage_jobposition/show', [JobPositionController::class, 'show'])->name('show_jobposition');
+        Route::post('/manage_jobposition/store', [JobPositionController::class, 'store'])->name('store_jobposition');
+        Route::post('/manage_jobposition/update', [JobPositionController::class, 'update'])->name('update_jobposition');
+        //User Company About
         Route::get('/manage_companyabout/show', [CompanyAboutController::class, 'show'])->name('show_companyabout');
         Route::post('/manage_companyabout/update', [CompanyAboutController::class, 'update'])->name('update_companyabout');
         //User Profil
