@@ -52,6 +52,42 @@ const _loadUserInfo = () => {
         }
     });
 };
+//Upload Image to Local Server with Summernote JS
+var _uploadFile_editor = function(image, idCustom) {
+	var data = new FormData();
+	data.append("image", image);
+	$.ajax({
+		url: base_url+ "api/ajax_upload_imgeditor",
+        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+		data: data,
+		type: "POST",
+		cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+		success: function(data){
+			if(data.status){
+				//console.log(url);
+				if(idCustom){
+					$(idCustom).summernote("insertImage", data.row.url_img);
+				}else{
+					$('.summernote').summernote("insertImage", data.row.url_img);
+				}
+				//var image = $('<img>').attr('src', url);
+				//$('#summernote').summernote("insertNode", url);
+			}else{
+				Swal.fire({
+					title: "Ooops!",
+					html: data.message,
+					icon: "warning", allowOutsideClick: false
+				});
+			}
+		}, error: function (jqXHR, textStatus, errorThrown, data) {
+			console.log('Error upload images to text editor');
+			toastr.error(errorThrown+ ', <br />' +jqXHR.responseJSON.errors.image[0], 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+		}
+	});
+};
 // Class Initialization
 jQuery(document).ready(function() {
     _loadSystemInfo(), _loadUserInfo();
