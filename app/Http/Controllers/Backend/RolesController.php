@@ -22,10 +22,10 @@ class RolesController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('permission:roles-read', ['only' => ['index', 'show', 'show_permissions', 'select2_permissions']]);
-        $this->middleware('permission:roles-create', ['only' => ['store', 'store_permissionrole']]);
-        $this->middleware('permission:roles-update', ['only' => ['update', 'update_permissionbyrole']]);
-        $this->middleware('permission:roles-delete', ['only' => ['delete']]);
+        $this->middleware(['direct_permission:roles-read'])->only(['index', 'show', 'show_permissions', 'select2_permissions']);
+        $this->middleware(['direct_permission:roles-create'])->only(['store', 'store_permissionrole']);
+        $this->middleware(['direct_permission:roles-update'])->only(['update', 'update_permissionbyrole']);
+        $this->middleware(['direct_permission:roles-delete'])->only('delete');
     }
     /**
      * index
