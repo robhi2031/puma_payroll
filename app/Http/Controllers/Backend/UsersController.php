@@ -24,10 +24,10 @@ class UsersController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('permission:users-read', ['only' => ['index', 'show']]);
-        $this->middleware('permission:users-create', ['only' => ['store']]);
-        $this->middleware('permission:users-update', ['only' => ['update']]);
-        $this->middleware('permission:users-delete', ['only' => ['delete']]);
+        $this->middleware(['direct_permission:users-read'])->only(['index', 'show']);
+        $this->middleware(['direct_permission:users-create'])->only(['store']);
+        $this->middleware(['direct_permission:users-update'])->only(['update']);
+        $this->middleware(['direct_permission:users-delete'])->only('delete');
     }
     /**
      * index
