@@ -19,9 +19,68 @@
         <div class="card-body">
             <!--begin::Input group-->
             <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="code">Kode</label>
+                <div class="col-lg-8">
+                    <input type="text" name="code" id="code" class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="12" placeholder="Isi kode proyek/ pekerjaan ..." />
+                    <div class="form-text">*) Contoh: <code>EXP-001</code></div>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
                 <div class="col-lg-8">
-                    <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="50" placeholder="Isi nama role ..." />
+                    <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225" placeholder="Isi nama proyek/ pekerjaan ..." />
+                    <div class="form-text">*) Contoh: <code>Explorasi Lokasi Tambang Bla-Bla PT. Ujung Kulon</code></div>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="desc">Deskripsi</label>
+                <div class="col-lg-8">
+                    <textarea type="text" class="form-control form-control-solid" name="desc" id="desc" maxlength="255" rows="3" style="resize: none;" placeholder="Isi deskripsi proyek/ pekerjaan ..." ></textarea>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="client">Klien/ Mitra</label>
+                <div class="col-lg-8">
+                    <input type="text" name="client" id="client" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225" placeholder="Isi klien/ mitra proyek/ pekerjaan ..." />
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="location">Lokasi</label>
+                <div class="col-lg-8">
+                    <input type="text" name="location" id="location" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225" placeholder="Isi lokasi proyek/ pekerjaan ..." />
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="start_date">Tanggal</label>
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm date-flatpickr" name="start_date" id="start_date" maxlength="10" placeholder="dd/mm/YYYY" readonly />
+                        <span class="input-group-text">s/d</span>
+                        <input type="text" class="form-control form-control-sm date-flatpickr" name="end_date" id="end_date" maxlength="10" placeholder="dd/mm/YYYY" readonly />
+                    </div>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6" id="iGroup-status">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="status">Status</label>
+                <div class="col-lg-8">
+                    <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="status" id="status" data-container="body" title="Pilih status proyek/ pekerjaan ...">
+                        <option value="Not Started" data-icon="bi bi-dash-circle">Not Started</option>
+                        <option value="In Progress" data-icon="bi bi-bootstrap-reboot">In Progress</option>
+                        <option value="Completed" data-icon="bi bi-check2-circle">Completed</option>
+                        <option value="Stop" data-icon="bi bi-sign-stop">Stop</option>
+                    </select>
                 </div>
             </div>
             <!--end::Input group-->
