@@ -160,7 +160,8 @@ class PermissionsController extends Controller
                 })
                 ->addColumn('action', function($row){
                     $btnEdit = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Edit data!" onclick="_editPermission('."'".$row->id."'".');"><i class="la la-edit fs-3"></i></button>';
-                    return $btnEdit;
+                    $btnDelete = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-danger ms-1 mb-1" data-bs-toggle="tooltip" title="Hapus data!" onclick="_deletePermission('."'".$row->id."'".');"><i class="la la-trash fs-3"></i></button>';
+                    return $btnEdit.$btnDelete;
                 })
                 ->rawColumns(['icon', 'crud', 'action'])
                 ->make(true);
