@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class PermissionsController extends Controller
 {
@@ -184,16 +186,25 @@ class PermissionsController extends Controller
         DB::beginTransaction();
         $request->validate($form);
         try {
+            $name = $request->name;
+            $order_line = $request->order_line;
+            if(DB::table('permission_has_menus')->where('name', $name)->exists()) {
+                addToLog('Data cannot be saved, the same permission name already exists in the system');
+                return jsonResponse(false, 'Gagal menambahkan data, Permission/ Menu yang sama sudah ada pada sistem. Coba gunakan nama yang berbeda', 200, array('error_code' => 'name_available'));
+            } if(DB::table('permission_has_menus')->where('order_line', $order_line)->exists()) {
+                addToLog('Data cannot be saved, the same permission order line already exists in the system');
+                return jsonResponse(false, 'Gagal menambahkan data, Order line permission/ menu yang sama sudah ada pada sistem. Coba gunakan order line yang berbeda', 200, array('error_code' => 'order_line_available'));
+            }
             //array data
             $data = array(
-                'name' => $request->name,
+                'name' => $name,
                 'icon' => isset($request->icon) ? $request->icon : NULL,
                 'has_route' => isset($request->has_route) ? 'Y' : 'N',
                 'route_name' => isset($request->has_route) || $request->route_name !='' ? $request->route_name : NULL,
                 'parent_id' => isset($request->has_parent) || $request->cbo_parent !='' ? $request->cbo_parent : NULL,
                 'has_child' => isset($request->has_child) ? 'Y' : 'N',
                 'is_crud' => isset($request->is_crud) ? 'Y' : 'N',
-                'order_line' => $request->order_line,
+                'order_line' => $order_line,
                 'user_add' => $userSesIdp
             );
             $insertPermissionMenu = DB::table('permission_has_menus')->insertGetId($data);
@@ -237,16 +248,25 @@ class PermissionsController extends Controller
         DB::beginTransaction();
         $request->validate($form);
         try {
+            $name = $request->name;
+            $order_line = $request->order_line;
+            if(DB::table('permission_has_menus')->where('name', $name)->where('id', '!=' , $request->id)->exists()) {
+                addToLog('Data cannot be updated, the same permission name already exists in the system');
+                return jsonResponse(false, 'Gagal memperbarui data, Permission/ Menu yang sama sudah ada pada sistem. Coba gunakan nama yang berbeda', 200, array('error_code' => 'name_available'));
+            } if(DB::table('permission_has_menus')->where('order_line', $order_line)->where('id', '!=' , $request->id)->exists()) {
+                addToLog('Data cannot be updated, the same permission order line already exists in the system');
+                return jsonResponse(false, 'Gagal memperbarui data, Order line permission/ menu yang sama sudah ada pada sistem. Coba gunakan order line yang berbeda', 200, array('error_code' => 'order_line_available'));
+            }
             //array data
             $data = array(
-                'name' => $request->name,
+                'name' => $name,
                 'icon' => isset($request->icon) ? $request->icon : NULL,
                 'has_route' => isset($request->has_route) ? 'Y' : 'N',
                 'route_name' => isset($request->has_route) || $request->route_name !='' ? $request->route_name : NULL,
                 'parent_id' => isset($request->has_parent) || $request->cbo_parent !='' ? $request->cbo_parent : NULL,
                 'has_child' => isset($request->has_child) ? 'Y' : 'N',
                 'is_crud' => isset($request->is_crud) ? 'Y' : 'N',
-                'order_line' => $request->order_line,
+                'order_line' => $order_line,
                 'user_updated' => $userSesIdp
             );
             DB::table('permission_has_menus')->whereId($request->id)->update($data);
@@ -322,6 +342,72 @@ class PermissionsController extends Controller
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
+        }
+    }    
+    /**
+     * delete
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function delete(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $idp = $request->idp;
+        DB::beginTransaction();
+        try {
+            $countChild = DB::table('permission_has_menus')->where('parent_id', $idp)->count();
+            if($countChild > 0) {
+                addToLog('Data cannot be deleted. Permission data has children, Please move/delete the child first then delete this menu again');
+                return jsonResponse(false, 'Gagal menghapus data. Permission/ Menu memiliki sub, Pindahkan/ hapus sub permission terlebih dahulu kemudian hapus permission ini kembali', 200, array('error_code' => 'has_parent'));
+            }
+            $users = User::get();
+            if($users) {
+                foreach ($users as $user) {
+                    $this->_revokePermissionsUser($user, $idp);
+                }
+            }
+            //Delete Has Menu
+            DB::table('permission_has_menus')->whereId($idp)->delete();
+            addToLog('Delete permission has been successfully');
+            DB::commit();
+            return jsonResponse(true, 'Data permission berhasil dihapus', 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }    
+    /**
+     * _revokePermissionsUser
+     *
+     * @param  mixed $user
+     * @param  mixed $permissionMenu
+     * @return void
+     */
+    private function _revokePermissionsUser($user, $permissionMenu) {
+        $permissions = Permission::where('fid_menu', $permissionMenu)->get();
+        if($permissions) {
+            foreach ($permissions as $permission) {
+                $user->revokePermissionTo($permission->name);
+                $this->_revokePermissionRoles($permission->name);
+                Permission::whereId($permission->id)->delete();
+            }
+        }
+    }    
+    /**
+     * _revokePermissionRoles
+     *
+     * @param  mixed $user
+     * @param  mixed $permissionMenu
+     * @return void
+     */
+    private function _revokePermissionRoles($permissionMenu) {
+        $roles = Role::get();
+        if($roles) {
+            foreach ($roles as $role) {
+                $role->revokePermissionTo($permissionMenu);
+            }
         }
     }
 }
