@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/manage_permissions/store', [PermissionsController::class, 'store'])->name('store_permissions');
         Route::post('/manage_permissions/update', [PermissionsController::class, 'update'])->name('update_permissions');
         Route::get('/manage_permissions/select2_parentpermissions', [PermissionsController::class, 'select2_parentpermissions'])->name('select2_parentpermissions');
+        Route::post('/manage_permissions/delete', [PermissionsController::class, 'delete'])->name('delete_permissions');
         //Manage Users
         Route::get('/manage_users/show', [UsersController::class, 'show'])->name('show_users');
         Route::get('/manage_users/selectpicker_role', [UsersController::class, 'selectpicker_role'])->name('selectpicker_role');
