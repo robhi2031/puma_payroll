@@ -336,23 +336,18 @@ $("#btn-save").on("click", function (e) {
                             });
                         }
                     } else {
-                        if (data.error_code == "data_available") {
-                            Swal.fire({
-                                title: "Ooops!",
-                                text: "Permission/ Menu yang sama sudah ada pada sistem, Coba lagi dengan data yang berbeda!",
-                                icon: "warning",
-                                allowOutsideClick: false,
-                            }).then(function (result) {
+                        Swal.fire({
+                            title: "Ooops!",
+                            text: data.message,
+                            icon: "warning",
+                            allowOutsideClick: false,
+                        }).then(function (result) {
+                            if (data.row.error_code == "name_available") {
                                 name.focus();
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Ooops!",
-                                text: data.message,
-                                icon: "warning",
-                                allowOutsideClick: false,
-                            });
-                        }
+                            } if (data.row.error_code == "order_line_available") {
+                                order_line.focus();
+                            }
+                        });
                     }
                 }, error: function (jqXHR, textStatus, errorThrown) {
                     $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
@@ -402,6 +397,52 @@ const _cboParentSelect2 = () => {
                 };
             },
             cache: true
+        }
+    });
+}
+//Deleted Permission
+const _deletePermission = (idp) => {
+    Swal.fire({
+        title: "",
+        html: 'Yakin ingin hapus data permission ?',
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Yakin",
+        cancelButtonText: "Tidak, Batalkan!"
+    }).then(result => {
+        if (result.value) {
+            let target = document.querySelector('#card-dtPermissions'), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+            blockUi.block(), blockUi.destroy();
+            // Load Ajax
+            $.ajax({
+                url: base_url+ "api/manage_permissions/delete",
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    idp
+                }, success: function (data) {
+                    blockUi.release(), blockUi.destroy();
+                    if (data.status == true) {
+                        Swal.fire({ title: "Success!", html: data.message, icon: "success", allowOutsideClick: false }).then(function (result) {
+                            _loadDtPermissions();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Ooops!",
+                            text: data.message,
+                            icon: "warning",
+                            allowOutsideClick: false,
+                        });
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    blockUi.release(), blockUi.destroy();
+                    Swal.fire({ title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.", icon: "error", allowOutsideClick: false }).then(function (result) {
+                        console.log("Update data is error!");
+                    });
+                }
+            });
         }
     });
 }
