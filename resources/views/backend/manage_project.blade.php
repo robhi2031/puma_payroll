@@ -1,4 +1,4 @@
-@extends('backend.layouts', ['activeMenu' => 'MASTER DATA', 'activeSubMenu' => 'Project'])
+@extends('backend.layouts', ['activeMenu' => 'COMPANY', 'activeSubMenu' => 'Project'])
 @section('content')
 <!--begin::Card Form-->
 <div class="card" id="card-formProject" style="display: none;">
