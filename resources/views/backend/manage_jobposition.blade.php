@@ -1,4 +1,4 @@
-@extends('backend.layouts', ['activeMenu' => 'MASTER DATA', 'activeSubMenu' => 'Job Position'])
+@extends('backend.layouts', ['activeMenu' => 'COMPANY', 'activeSubMenu' => 'Job Position'])
 @section('content')
 <!--begin::Card Form-->
 <div class="card" id="card-formJobPosition" style="display: none;">
