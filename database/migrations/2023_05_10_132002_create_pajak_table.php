@@ -15,12 +15,17 @@ class CreatePajakTable extends Migration
     {
         Schema::create('pajak', function (Blueprint $table) {
             $table->id();
-            $table->string('pju_bn', 16)->unsigned()->nullable();
+            $table->string('period_code', 8)->nullable();
+            $table->foreign('period_code')
+                ->references('code')
+                ->on('master_period')
+                ->onDelete('cascade');
+            $table->string('pju_bn', 16)->nullable();
             $table->foreign('pju_bn')
                 ->references('pju_bn')
                 ->on('man_power')
                 ->onDelete('cascade');
-            $table->integer('overtime_hours', 10)->nullable();
+            $table->integer('overtime_hours')->default(0);
             $table->decimal('overtime', 9, 3);
             $table->string('tunjangan_tetap', 100)->nullable();
             $table->string('tunjangan_tidaktetap', 100)->nullable();
