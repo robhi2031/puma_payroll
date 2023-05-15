@@ -172,10 +172,10 @@
         <div class="d-flex flex-wrap justify-content-center align-items-center mb-5">
             <div class="ms-auto">
                 <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative me-3 mb-md-0 mb-3">
+                <div class="d-flex align-items-center position-relative mb-md-0 mb-3">
                     <div class="input-group input-group-sm input-group-solid border">
                         <span class="input-group-text"><i class="las la-search fs-3"></i></span>
-                        <input type="text" class="form-control form-control-sm form-control-solid w-250px border-left-0" name="search-dtRoles" id="search-dtRoles" placeholder="Pencarian..." />
+                        <input type="text" class="form-control form-control-sm form-control-solid border-left-0" name="search-dtRoles" id="search-dtRoles" placeholder="Pencarian..." />
                         <span class="input-group-text border-left-0 cursor-pointer text-hover-danger" id="clear-searchDtRoles" style="display: none;">
                             <i class="las la-times fs-3"></i>
                         </span>
