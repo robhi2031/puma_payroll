@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\CompanyAboutController;
 use App\Http\Controllers\Backend\UserProfileController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\JobPositionController;
+use App\Http\Controllers\Backend\ManpowerController;
 use App\Http\Controllers\Backend\PermissionsController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\RolesController;
@@ -51,9 +52,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manage_permissions', [PermissionsController::class, 'index'])->name('manage_permissions');
     Route::get('/manage_users', [UsersController::class, 'index'])->name('manage_users');
     Route::get('/logs_activity', [UsersActivityController::class, 'index'])->name('users_activity');
+    Route::get('/manage_companyabout', [CompanyAboutController::class, 'index'])->name('manage_companyabout');
     Route::get('/manage_project', [ProjectController::class, 'index'])->name('manage_project');
     Route::get('/manage_jobposition', [JobPositionController::class, 'index'])->name('manage_jobposition');
-    Route::get('/manage_companyabout', [CompanyAboutController::class, 'index'])->name('manage_companyabout');
+    Route::get('/manage_manpower', [ManpowerController::class, 'index'])->name('manage_manpower');
     Route::get('/{username}', [UserProfileController::class,'index'])->name('user_profile');
     //Api Ajax
     Route::group(['prefix' => 'api'], function () {
