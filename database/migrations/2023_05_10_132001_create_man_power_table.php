@@ -43,7 +43,7 @@ class CreateManPowerTable extends Migration
             $table->decimal('uang_cuti', 9, 3)->nullable();
             $table->decimal('uang_makan', 9, 3)->nullable();
             $table->decimal('bonus', 9, 3)->nullable();
-            $table->decimal('inteim_location', 9, 3)->nullable();
+            $table->decimal('interim_location', 9, 3)->nullable();
             $table->decimal('tunjangan_jabatan', 9, 3)->nullable();
             $table->decimal('p_biaya_fasilitas', 9, 3)->nullable();
             $table->decimal('pengobatan', 9, 3)->nullable();
