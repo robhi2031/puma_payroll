@@ -85,6 +85,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         //Users Activity
         Route::get('/users_activity/show', [UsersActivityController::class, 'show'])->name('show_logs');
         Route::post('/users_activity/delete', [UsersActivityController::class, 'delete'])->name('delete_logs');
+        //User Company About
+        Route::get('/manage_companyabout/show', [CompanyAboutController::class, 'show'])->name('show_companyabout');
+        Route::post('/manage_companyabout/update', [CompanyAboutController::class, 'update'])->name('update_companyabout');
         //Manage Project
         Route::get('/manage_project/show', [ProjectController::class, 'show'])->name('show_project');
         Route::post('/manage_project/store', [ProjectController::class, 'store'])->name('store_project');
@@ -93,9 +96,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/manage_jobposition/show', [JobPositionController::class, 'show'])->name('show_jobposition');
         Route::post('/manage_jobposition/store', [JobPositionController::class, 'store'])->name('store_jobposition');
         Route::post('/manage_jobposition/update', [JobPositionController::class, 'update'])->name('update_jobposition');
-        //User Company About
-        Route::get('/manage_companyabout/show', [CompanyAboutController::class, 'show'])->name('show_companyabout');
-        Route::post('/manage_companyabout/update', [CompanyAboutController::class, 'update'])->name('update_companyabout');
+        //Manage Manpower
+        Route::post('/manage_manpower/import', [ManpowerController::class, 'import'])->name('import_manpower');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
         Route::post('/update_userprofile', [CommonController::class, 'update_userprofile'])->name('update_userprofile');
