@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ManPowerImport;
+use App\Models\BankAccount;
 use App\Models\ManPower;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+// use Excel;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 
 class ManpowerController extends Controller
 {
@@ -20,7 +25,7 @@ class ManpowerController extends Controller
      */
     public function __construct() {
         $this->middleware(['direct_permission:manpower-read'])->only(['index', 'show']);
-        $this->middleware(['direct_permission:manpower-create'])->only(['store']);
+        $this->middleware(['direct_permission:manpower-create'])->only(['store', 'import']);
         $this->middleware(['direct_permission:manpower-update'])->only(['update']);
         $this->middleware(['direct_permission:manpower-delete'])->only('delete');
     }
@@ -45,11 +50,18 @@ class ManpowerController extends Controller
         $data['css'] = array(
             '/dist/plugins/custom/datatables/datatables.bundle.v817.css',
             '/dist/plugins/bootstrap-select/css/bootstrap-select.min.css',
+            '/dist/plugins/bootstrap-file-input/css/fileinput.min.css',
+            '/dist/plugins/bootstrap-file-input/themes/explorer-fa5/theme.min.css',
         );
         //Data Source JS
         $data['js'] = array(
             '/dist/plugins/custom/datatables/datatables.bundle.v817.js',
             '/dist/plugins/bootstrap-select/js/bootstrap-select.min.js',
+            '/dist/plugins/bootstrap-file-input/js/plugins/piexif.min.js',
+            '/dist/plugins/bootstrap-file-input/js/plugins/sortable.min.js',
+            '/dist/plugins/bootstrap-file-input/js/fileinput.min.js',
+            '/dist/plugins/bootstrap-file-input/themes/bs5/theme.min.js',
+            '/dist/plugins/bootstrap-file-input/themes/explorer-fa5/theme.min.js',
             '/dist/js/backend_app.init.js',
             '/scripts/backend/manage_manpower.init.js'
         );
@@ -158,6 +170,120 @@ class ManpowerController extends Controller
                 "Trace" => $exception->getTrace()
             ]);
         }
+    }    
+    /**
+     * import
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function import(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        $form = [
+            'file_import' => 'mimes:xlsx,xls,csv|max:8192',
+        ];
+        DB::beginTransaction();
+        $request->validate($form);
+        try {
+            $rows = Excel::toArray(new ManPowerImport, $request->file('file_import'));
+            // $collection = Excel::toCollection(new ManPowerImport, $request->file('file_import'));
+            if (count($rows[0]) > 0) {
+                foreach ($rows[0] as $row) {
+                    // Insert Bank Account
+                    $dataBankAccount = array(
+                        'bank_name' => $row['bank_name'],
+                        'account_name' => $row['account_name'],
+                        'account_number' => $row['account_number'],
+                        'user_add' => $userSesIdp,
+                    );
+                    $bankAccountId = BankAccount::insertGetId($dataBankAccount);
+
+                    // Insert Manpower
+                    $dataManpower = array(
+                        'pju_bn' => $this->generated_pjubn(),
+                        'ext_bn' => $row['ext_bn'],
+                        'name' => $row['name'],
+                        'payroll_name' => $row['payroll_name'],
+                        'email' => $row['email'],
+                        'project_code' => $row['project_code'],
+                        'jobposition_code' => $row['jobposition_code'],
+                        'department' => $row['department'],
+                        'npwp' => $row['npwp'],
+                        'kpj' => $row['kpj'],
+                        'kis' => $row['kis'],
+                        'bpjs_ketenagakerjaan' => $row['bpjs_ketenagakerjaan'],
+                        'marital_status' => $row['marital_status'],
+                        'shift_code' => $row['shift_code'],
+                        'pay_code' => $row['pay_code'],
+                        'shift_group' => $row['shift_group'],
+                        'daily_basic' => $row['daily_basic'],
+                        'basic_salary' => $row['basic_salary'],
+                        'ot_rate' => $row['ot_rate'],
+                        'attendance_fee' => $row['attendance_fee'],
+                        'leave_day' => $row['leave_day'],
+                        'premi_sore' => $row['premi_sore'],
+                        'premi_malam' => $row['premi_malam'],
+                        'thr' => $row['thr'],
+                        'transport' => $row['transport'],
+                        'uang_cuti' => $row['uang_cuti'],
+                        'uang_makan' => $row['uang_makan'],
+                        'bonus' => $row['bonus'],
+                        'interim_location' => $row['interim_location'],
+                        'tunjangan_jabatan' => $row['tunjangan_jabatan'],
+                        'p_biaya_fasilitas' => $row['p_biaya_fasilitas'],
+                        'pengobatan' => $row['pengobatan'],
+                        'work_status' => $row['work_status'],
+                        'fid_bank_account' => $bankAccountId,
+                        'user_add' => $userSesIdp,
+                    );
+                    ManPower::insert($dataManpower);
+                }
+            }
+            addToLog('Import Manpower data has been successfully');
+            DB::commit();
+            return jsonResponse(true, 'Import data karyawan berhasil', 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    /**
+     * generated_pjubn
+     *
+     * @return void
+     */
+    private function generated_pjubn() {
+        $mNow = date('m');
+        $yNow = date('y');
+        $yearNow = date('Y');
+
+        $pjuBn = 0;
+
+        $manpower = ManPower::selectRaw('MAX(pju_bn) AS pju_bn')
+        ->whereMonth('created_at', $mNow)
+        ->whereYear('created_at', $yearNow)
+        ->first();
+
+        $pjuBn = $manpower->pju_bn;
+        $btn	= intval(substr($pjuBn,4,4));
+        $btx	= "";
+
+        $btn	= $btn+1;
+        if(strlen($btn)==1){
+        $btx	= $yNow.$mNow."000".$btn;
+        }else if(strlen($btn)==2){
+        $btx	= $yNow.$mNow."00".$btn;
+        }else if(strlen($btn)==3){
+        $btx	= $yNow.$mNow."0".$btn;
+        }else{
+        $btx	= $yNow.$mNow.$btn;
+        }
+
+        $pjuBn = $btx;
+
+        return $pjuBn;
     }
     /**
      * update
