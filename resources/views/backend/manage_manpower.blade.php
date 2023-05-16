@@ -96,6 +96,53 @@
     <!--end::Form-->
 </div>
 <!--end::Card Form-->
+<!--begin::Modal Import Data-->
+<div class="modal fade" id="modal-importManpower" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <h3 class="modal-title fw-bolder"></h3>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y">
+                <!--begin::Scroll-->
+                <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-offset="185px">
+                    <form id="form-importManpower" class="form" onsubmit="return false">
+                        <!--begin::Row-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!--begin::Input group-->
+                                <div class="mb-3" id="iGroup-fileImport">
+                                    <label class="col-form-label required fw-bold fs-6" for="file_import">File</label>
+                                    <input type="file" class="form-control" id="file_import" name="file_import" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" data-msg-placeholder="Pilih {files}...">
+                                    <div class="form-text">*) Type file: <code>*.xlsx | *.xls | *.csv</code></div>
+                                    <div class="form-text">*) Max. size file: <code>8MB</code></div>
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+                        </div>
+                        <!--end::Row-->
+                    </form>
+                </div>
+            </div>
+            <!--end::Modal body-->
+            <!--begin::Modal footer-->
+            <div class="modal-footer py-3">
+                <!--begin::Actions-->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-light btn-active-light-danger me-2" data-bs-dismiss="modal"><i class="las la-times fs-1 me-3"></i>Tutup</button>
+                    <button type="button" class="btn btn-primary" id="btn-saveImportManpower"><i class="bi bi-cloud-arrow-up fs-1 me-3"></i>Proses Import</button>
+                </div>
+                <!--end::Actions-->
+            </div>
+            <!--end::Modal footer-->
+        </div>
+    </div>
+</div>
+<!--end::Modal Import Data-->
 <!--begin::List Table Data-->
 <div class="card shadow" id="card-dtManpower">
     <!--begin::Card header-->
@@ -115,7 +162,7 @@
                 <!--begin::Menu 3-->
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
                     <div class="menu-item px-3">
-                        <a href="javascript:void(0);" class="menu-link px-3">
+                        <a href="javascript:void(0);" class="menu-link px-3" onclick="_openModalImportManPower();">
                             <i class="las la-file-import fs-3 me-1"></i>Import Data
                         </a>
                     </div>
@@ -151,13 +198,15 @@
                 <thead>
                     <tr class="fw-bolder text-uppercase bg-light">
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Kode</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Proyek</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Desk</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Klien</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Lokasi</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Tgl. Proyek</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Status</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">PJU BN</th>
+                        {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">EXT BN</th> --}}
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">EMPLOYEE NAME</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">PROJECT</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">JOB POSITION</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">DEPARTMENT</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">SHIFT</th> <!-- Shift Code/ Shift Group -->
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">PAY CODE</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">STATUS</th>
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">Aksi</th>
                     </tr>
                 </thead>
