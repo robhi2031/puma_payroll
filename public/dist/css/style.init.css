@@ -5,6 +5,10 @@
     outline: none !important;
     outline-offset: 0;
 }
+.file-input-error {
+	border: 1px solid rgb(192, 7, 7);
+	border-radius: 1%;
+}
 /*--end Input, Button Custom--*/
 /*--start Dropify Custom--*/
 .dropify-wrapper {
