@@ -25,7 +25,7 @@ class CreatePotonganGajiTable extends Migration
                 ->references('pju_bn')
                 ->on('man_power')
                 ->onDelete('cascade');
-            $table->string('cut_type', 225); //Jenis Potongan: - Pinjaman || Koperasi => If Pinjaman = Cek di data pinjaman
+            $table->string('cut_type', 225); //Jenis Potongan (Masterisasi Potongan) : - Pinjaman || Koperasi => If Pinjaman = Cek di data pinjaman
             $table->decimal('amount', 9, 3); //Jumlah potongan
             $table->integer('user_add');
             $table->integer('user_updated')->nullable();
