@@ -79,7 +79,12 @@ class ManpowerController extends Controller
     {
         if(isset($request->idp)){
             try {
-                $getRow = ManPower::selectRaw("project.*, DATE_FORMAT(project.start_date, '%d/%m/%Y') AS start_date_indo, DATE_FORMAT(project.end_date, '%d/%m/%Y') AS end_date_indo")->where('id', $request->idp)->first();
+                $getRow = ManPower::selectRaw("man_power.*")
+                    ->leftJoin('project AS b', 'b.code', '=', 'man_power.project_code')
+                    ->leftJoin('job_position AS c', 'c.code', '=', 'man_power.jobposition_code')
+                    ->leftJoin('bank_account AS d', 'd.id', '=', 'man_power.fid_bank_account')
+                    ->where('man_power.id', $request->idp)
+                    ->first();
                 if($getRow != null){
                     return jsonResponse(true, 'Success', 200, $getRow);
                 } else {
@@ -91,28 +96,42 @@ class ManpowerController extends Controller
                 ]);
             }
         } else {
-            $data = Project::selectRaw("project.*, 'action' as action")->orderByDesc('id')->get();
+            $data = ManPower::selectRaw("man_power.*, b.name AS project, c.name AS job_position, 'action' as action")
+                ->leftJoin('project AS b', 'b.code', '=', 'man_power.project_code')
+                ->leftJoin('job_position AS c', 'c.code', '=', 'man_power.jobposition_code')
+                ->leftJoin('bank_account AS d', 'd.id', '=', 'man_power.fid_bank_account')
+                ->orderByDesc('man_power.id')->get();
+
             $output = Datatables::of($data)->addIndexColumn()
-                ->addColumn('project_date', function ($row) {
-                    $dateCustom = 'Mulai: '.mediumdate_indo($row->start_date).'<br/>Selesai: '.mediumdate_indo($row->end_date);
-                    return $dateCustom;
+                ->addColumn('bn', function ($row) {
+                    $bnCustom = 'PJU: '.$row->pju_bn.'<br/>Ext.: '.$row->ext_bn;
+                    return $bnCustom;
                 })
-                ->editColumn('status', function ($row) {
-                    $statusCustom = '<span data-kt-element="status" class="badge badge-light-warning" data-bs-toggle="tooltip" title="Belum berjalan"><i class="bi bi-dash-circle me-1 text-warning"></i>Not Started</span>';
-                    if($row->status == 'In Progress') {
-                        $statusCustom = '<span data-kt-element="status" class="badge badge-light-info" data-bs-toggle="tooltip" title="Sedang berjalan"><i class="bi bi-bootstrap-reboot text-info me-1"></i>In Progress</span>';
-                    } if($row->status == 'Completed') {
-                        $statusCustom = '<span data-kt-element="status" class="badge badge-light-primary" data-bs-toggle="tooltip" title="Selesai"><i class="bi bi-check2-circle text-primary me-1"></i>Completed</span>';
-                    } if($row->status == 'Stop') {
-                        $statusCustom = '<span data-kt-element="status" class="badge badge-light-danger" data-bs-toggle="tooltip" title="Berhenti"><i class="bi bi-sign-stop text-danger me-1"></i>Stop</span>';
+                ->editColumn('shift_code', function ($row) {
+                    $shiftGroup = '';
+                    if($row->shift_group != '' || $row->shift_group != null) {
+                        $shiftGroup = ' (' .$row->shift_group. ')';
+                    }
+                    $payCode = '-';
+                    if($row->pay_code != '' || $row->pay_code != null) {
+                        $payCode = $row->pay_code;
+                    }
+                    $shiftCustom = $row->shift_code.$shiftGroup.'<br/>Pay Code: '.$payCode;
+                    return $shiftCustom;
+                })
+                ->editColumn('work_status', function ($row) {
+                    $statusCustom = '<span class="badge badge-light-primary" data-bs-toggle="tooltip" title="Karyawan aktif">' .$row->work_status. '</span>';
+                    if($row->work_status == 'NON ACTIVE') {
+                        $statusCustom = '<span class="badge badge-light-danger" data-bs-toggle="tooltip" title="Karyawan tidak aktif (Resign)">' .$row->work_status. '</span>';
                     }
                     return $statusCustom;
                 })
                 ->addColumn('action', function($row){
-                    $btnEdit = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Edit data!" onclick="_editProject('."'".$row->id."'".');"><i class="la la-edit fs-3"></i></button>';
-                    return $btnEdit;
+                    $btnEdit = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Edit data!" onclick="_editManpower('."'".$row->id."'".');"><i class="la la-edit fs-3"></i></button>';
+                    $btnDtl = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Detail data!" onclick="_dtlManpower('."'".$row->id."'".');"><i class="la la-search fs-3"></i></button>';
+                    return $btnEdit.$btnDtl;
                 })
-                ->rawColumns(['project_date', 'status', 'action'])
+                ->rawColumns(['bn', 'shift_code', 'work_status', 'action'])
                 ->make(true);
     
             return $output;
