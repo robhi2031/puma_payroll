@@ -9,7 +9,16 @@
  * @Modified by Doston Usmonov <doston1533@gmail.com> 20.09.2019
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-(function ($) {
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else if (typeof module === 'object' && typeof module.exports === 'object') {
+        factory(require('jquery'));
+    } else {
+        factory(window.jQuery);
+    }
+}(function ($) {
     "use strict";
 
     $.fn.fileinputLocales.uz = {
@@ -33,8 +42,8 @@
         msgPlaceholder: '{files} tanlash ...',
         msgZoomModalHeading: 'Batafsil ko‘rib chiqish',
         msgFileRequired: 'Yuklash uchun faylni tanlashingiz kerak.',
-        msgSizeTooSmall: 'Siz tanlagan fayl hajmi: "{name}" (<b>{size} KB</b>). Tanlangan fayl hajmi <b>{minSize} KB</b> dan katta bo‘lishi lozim. Ko‘rsatilgan hajmdan kattaroq fayl yuklashga urinib ko‘ring',
-        msgSizeTooLarge: '"{name}" fayl (<b>{size} KB</b>) ruxsat etilgan maksimal yuklash hajm: <b>{maxSize} KB</b> dan katta. Kichikroq fayl yuklashga urinib ko‘ring!',
+        msgSizeTooSmall: 'Siz tanlagan fayl hajmi: "{name}" (<b>{size}</b>). Tanlangan fayl hajmi <b>{minSize}</b> dan katta bo‘lishi lozim. Ko‘rsatilgan hajmdan kattaroq fayl yuklashga urinib ko‘ring',
+        msgSizeTooLarge: '"{name}" fayl (<b>{size}</b>) ruxsat etilgan maksimal yuklash hajm: <b>{maxSize}</b> dan katta. Kichikroq fayl yuklashga urinib ko‘ring!',
         msgFilesTooLess: 'Yuklash uchun kamida <b>{n}</b> {files} tanlashingiz kerak. Yuklashga qaytadan urinib ko‘ring!',
         msgFilesTooMany: 'Siz tanlagan fayllar miqdori : <b>({n})</b>, ruxsat berilgan maksimal miqdor: <b>{m}</b> tadan ortiq. Ko‘rsatilgan miqdordan kamroq fayl tanlab, yuklashga qaytadan urinib ko‘ring!',
         msgTotalFilesTooMany: 'You can upload a maximum of <b>{m}</b> files (<b>{n}</b> files detected).',
@@ -71,15 +80,15 @@
         msgSelected: '{n} {files} tanlangan',
         msgProcessing: 'Processing ...',
         msgFoldersNotAllowed: 'Faqat tortib qo‘yiladon fayllar! {n} o‘tirilgan tashlangan papka(lar).',
-        msgImageWidthSmall: '"{name}" fayl kengligi {size} px dan kam bo‘lmasligi lozim.',
-        msgImageHeightSmall: '"{name}" fayl bo‘yi {size} px dan kam bo‘lmasligi lozim.',
-        msgImageWidthLarge: '"{name}" fayl kengligi {size} px dan kam bo‘lishi lozim.',
-        msgImageHeightLarge: '"{name}" fayl bo‘yi {size} px dan kam bo‘lishi lozim.',
+        msgImageWidthSmall: '"{name}" fayl kengligi <b>{size} px</b> (detected <b>{dimension} px</b>) dan kam bo‘lmasligi lozim.',
+        msgImageHeightSmall: '"{name}" fayl bo‘yi <b>{size} px</b> (detected <b>{dimension} px</b>) dan kam bo‘lmasligi lozim.',
+        msgImageWidthLarge: '"{name}" fayl kengligi <b>{size} px</b> (detected <b>{dimension} px</b>) dan kam bo‘lishi lozim.',
+        msgImageHeightLarge: '"{name}" fayl bo‘yi <b>{size} px</b> (detected <b>{dimension} px</b>) dan kam bo‘lishi lozim.',
         msgImageResizeError: 'Rasm o‘lchamini o‘zgartirib bo‘lmadi.',
         msgImageResizeException: 'Rasm hajmini o‘zgartirishda xato.<pre>{errors}</pre>',
         msgAjaxError: '{operation} amaliyotida xatolik yuz berdi. Iltimos keyinroq qayta urinib ko‘ring!',
         msgAjaxProgressError: '{operation} bajarilmadi',
-        msgDuplicateFile: '"{name}" nomli "{size} KB" hajmdagi fayl oldin tanlangan. Boshqa faylni tanlashga urinib ko‘ring.',
+        msgDuplicateFile: '"{name}" nomli "{size}" hajmdagi fayl oldin tanlangan. Boshqa faylni tanlashga urinib ko‘ring.',
         msgResumableUploadRetriesExceeded:  '<b>{file}</b> faylini yuklash uchun <b>{max}</b> marta urinish bekor qilindi! Xato tafsilotlari: <pre>{error}</pre>',
         msgPendingTime: '{time} qolgan',
         msgCalculatingTime: 'qolgan vaqtni hisoblash',
@@ -96,6 +105,7 @@
             uploadTitle: 'Faylni yuklash',
             uploadRetryTitle: 'Qayta yuklab olish',
             downloadTitle: 'Faylni yuklab olish',
+            rotateTitle: 'Rotate 90 deg. clockwise',
             zoomTitle: 'Tafsilotlarni ko‘rish',
             dragTitle: 'Ko‘chirish / qayta tartiblash',
             indicatorNewTitle: 'Hali yuklanmagan',
@@ -107,10 +117,11 @@
         previewZoomButtonTitles: {
             prev: 'Oldingi faylni ko‘rish',
             next: 'Keyingi faylni ko‘rish',
+            rotate: 'Rotate 90 deg. clockwise',
             toggleheader: 'Sarlavhani yashirish',
             fullscreen: 'To‘liq ekranga o‘tish',
             borderless: 'Chegarasiz rejimga o‘tish',
             close: 'Batafsil ko‘rishni yopish'
         }
     };
-})(window.jQuery);
+}));

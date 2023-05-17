@@ -194,18 +194,18 @@
         </div>
         <div class="table-responsive">
             <!--begin::Table-->
-            <table class="table table-rounded align-middle table-row-bordered border" id="dt-mapower">
+            <table class="table table-rounded align-middle table-row-bordered border" id="dt-manpower">
                 <thead>
                     <tr class="fw-bolder text-uppercase bg-light">
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">PJU BN</th>
+                        <th class="align-middle px-2 border-bottom-2 border-gray-200">BN</th>
                         {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">EXT BN</th> --}}
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">EMPLOYEE NAME</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">PROJECT</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">JOB POSITION</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">DEPARTMENT</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">SHIFT</th> <!-- Shift Code/ Shift Group -->
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">PAY CODE</th>
+                        {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">PAY CODE</th> --}}
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">STATUS</th>
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">Aksi</th>
                     </tr>

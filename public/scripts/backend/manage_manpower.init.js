@@ -2,14 +2,14 @@
 //Class Definition
 var save_method;
 var table;
-//Load Datatables Project
-const _loadDtProject = () => {
-    table = $('#dt-project').DataTable({
+//Load Datatables Manpower
+const _loadDtManpower = () => {
+    table = $('#dt-manpower').DataTable({
         searchDelay: 300,
         processing: true,
         serverSide: true,
         ajax: {
-            url: base_url+ 'api/manage_project/show',
+            url: base_url+ 'api/manage_manpower/show',
             headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
             type: 'GET',
         },
@@ -23,13 +23,13 @@ const _loadDtProject = () => {
         pageResize: true,
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: "5%", className: "align-top text-center border px-2", searchable: false },
-            { data: 'code', name: 'code', width: "10%", className: "align-top border px-2" },
+            { data: 'bn', name: 'bn', width: "10%", className: "align-top border px-2" },
             { data: 'name', name: 'name', width: "20%", className: "align-top border px-2" },
-            { data: 'desc', name: 'desc', width: "20%", className: "align-top border px-2" },
-            { data: 'client', name: 'client', width: "10%", className: "align-top border px-2" },
-            { data: 'location', name: 'location', width: "10%", className: "align-top border px-2" },
-            { data: 'project_date', name: 'project_date', width: "15%", className: "align-top border px-2" },
-            { data: 'status', name: 'status', width: "5%", className: "align-top border px-2" },
+            { data: 'project', name: 'project', width: "20%", className: "align-top border px-2" },
+            { data: 'job_position', name: 'job_position', width: "15%", className: "align-top border px-2" },
+            { data: 'department', name: 'department', width: "10%", className: "align-top border px-2" },
+            { data: 'shift_code', name: 'shift_code', width: "10%", className: "align-top border px-2" },
+            { data: 'work_status', name: 'work_status', width: "5%", className: "align-top border px-2" },
             { data: 'action', name: 'action', width: "5%", className: "align-top text-center border px-2", orderable: false, searchable: false },
         ],
         oLanguage: {
@@ -56,22 +56,22 @@ const _loadDtProject = () => {
         fnDrawCallback: function (settings, display) {
             $('[data-bs-toggle="tooltip"]').tooltip("dispose"), $(".tooltip").hide();
             //Search Table
-            $("#search-dtProject").on("keyup", function () {
+            $("#search-dtManpower").on("keyup", function () {
                 table.search(this.value).draw();
                 if ($(this).val().length > 0) {
-                    $("#clear-searchDtProject").show();
+                    $("#clear-searchDtManpower").show();
                 } else {
-                    $("#clear-searchDtProject").hide();
+                    $("#clear-searchDtManpower").hide();
                 }
             });
             //Clear Search Table
-            $("#clear-searchDtProject").on("click", function () {
-                $("#search-dtProject").val(""),
+            $("#clear-searchDtManpower").on("click", function () {
+                $("#search-dtManpower").val(""),
                 table.search("").draw(),
-                $("#clear-searchDtProject").hide();
+                $("#clear-searchDtManpower").hide();
             });
             //Custom Table
-            $("#dt-project_length select").selectpicker(),
+            $("#dt-manpower_length select").selectpicker(),
             $('[data-bs-toggle="tooltip"]').tooltip({ 
                 trigger: "hover"
             }).on("click", function () {
@@ -79,17 +79,17 @@ const _loadDtProject = () => {
             });
         },
     });
-    $("#dt-project").css("width", "100%"),
-    $("#search-dtProject").val(""),
-    $("#clear-searchDtProject").hide();
+    $("#dt-manpower").css("width", "100%"),
+    $("#search-dtManpower").val(""),
+    $("#clear-searchDtManpower").hide();
 }
 //Close Content Card by Open Method
 const _closeCard = (card) => {
-    if(card=='form_project') {
+    if(card=='form_manpower') {
         save_method = '';
-        _clearFormProject(), $('#card-formProject .card-header .card-title').html('');
+        _clearFormManpower(), $('#card-formManpower .card-header .card-title').html('');
     }
-    $('#card-formProject').hide(), $('#card-dtProject').show();
+    $('#card-formManpower').hide(), $('#card-dtManpower').show();
 }
 //Open Modal Import Data
 const _openModalImportManPower = () => {
@@ -176,34 +176,34 @@ $("#btn-saveImportManpower").on("click", function (e) {
         }
     });
 });
-//Clear Form Project
-const _clearFormProject = () => {
-    $("#card-formProject .selectpicker").selectpicker('val', '');
-    $("#card-formProject .date-flatpickr").flatpickr({
+//Clear Form Manpower
+const _clearFormManpower = () => {
+    $("#card-formManpower .selectpicker").selectpicker('val', '');
+    $("#card-formManpower .date-flatpickr").flatpickr({
         defaultDate: "",
         dateFormat: "d/m/Y"
     });
-    if (save_method == "" || save_method == "add_project") {
-        $("#form-project")[0].reset(), $('[name="id"]').val("");
+    if (save_method == "" || save_method == "add_manpower") {
+        $("#form-manpower")[0].reset(), $('[name="id"]').val("");
     } else {
         let idp = $('[name="id"]').val();
-        _editProject(idp);
+        _editManpower(idp);
     }
 }
-//Add Project
-const _addProject = () => {
-    save_method = "add_project";
-    _clearFormProject(),
-    $("#card-formProject .card-header .card-title").html(
-        `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-window-plus fs-2 text-gray-900 me-2"></i>Form Tambah Proyek</h3>`
+//Add Manpower
+const _addManpower = () => {
+    save_method = "add_manpower";
+    _clearFormManpower(),
+    $("#card-formManpower .card-header .card-title").html(
+        `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-window-plus fs-2 text-gray-900 me-2"></i>Form Tambah Data Karyawan</h3>`
     ),
-    $("#card-dtProject").hide(), $("#card-formProject").show();
+    $("#card-dtManpower").hide(), $("#card-formManpower").show();
 };
-//Edit Project
-const _editProject = (idp) => {
-    save_method = "update_project";
-    $("#form-project")[0].reset(), $('[name="id"]').val("");
-    let target = document.querySelector("#card-formProject"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+//Edit Manpower
+const _editManpower = (idp) => {
+    save_method = "update_manpower";
+    $("#form-manpower")[0].reset(), $('[name="id"]').val("");
+    let target = document.querySelector("#card-formManpower"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
     blockUi.block(), blockUi.destroy();
     //Ajax load from ajax
     $.ajax({
@@ -377,7 +377,7 @@ $("#btn-save").on("click", function (e) {
 });
 //Class Initialization
 jQuery(document).ready(function() {
-    _loadDtProject();
+    _loadDtManpower();
     //Load File Import Upload
     $("#file_import").fileinput({
         maxFileSize: 8192, //8Mb

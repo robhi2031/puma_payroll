@@ -8,7 +8,16 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-(function ($) {
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else if (typeof module === 'object' && typeof module.exports === 'object') {
+        factory(require('jquery'));
+    } else {
+        factory(window.jQuery);
+    }
+}(function ($) {
     "use strict";
 
     $.fn.fileinputLocales['sr-latn'] = {
@@ -32,8 +41,8 @@
         msgPlaceholder: 'Odaberi {files} ...',
         msgZoomModalHeading: 'Pregled detalja',
         msgFileRequired: 'Obavezan odabir dokumenta za slanje.',
-        msgSizeTooSmall: 'Dokument "{name}" (<b>{size} KB</b>) mora biti veći od <b>{minSize} KB</b>.',
-        msgSizeTooLarge: 'Dokument "{name}" (<b>{size} KB</b>) prelazi maksimalnu dozvoljenu veličinu od <b>{maxSize} KB</b>.',
+        msgSizeTooSmall: 'Dokument "{name}" (<b>{size}</b>) mora biti veći od <b>{minSize}</b>.',
+        msgSizeTooLarge: 'Dokument "{name}" (<b>{size}</b>) prelazi maksimalnu dozvoljenu veličinu od <b>{maxSize}</b>.',
         msgFilesTooLess: 'Obavezan odabir minimum <b>{n}</b> dokumenata za slanje.',
         msgFilesTooMany: 'Broj dokumenata odabranih za slanje <b>({n})</b> prelazi maksimalno ograničenje od <b>{m}</b>.',
         msgTotalFilesTooMany: 'Maksimalni broj dokumenata je <b>{m}</b> (<b>{n}</b> je odabrano).',
@@ -70,15 +79,15 @@
         msgSelected: '{n} dokumenata odabrano',
         msgProcessing: 'Processing ...',
         msgFoldersNotAllowed: 'Prevlačenje foldera nije dozvoljeno! {n} prevučenih foldera nije dodato.',
-        msgImageWidthSmall: 'Širina slike "{name}" mora biti veća od {size} px.',
-        msgImageHeightSmall: 'Visina slike "{name}" mora biti veća od {size} px.',
-        msgImageWidthLarge: 'Širina slike "{name}" mora biti manja od {size} px.',
-        msgImageHeightLarge: 'Visina slike "{name}" mora biti manja od {size} px.',
+        msgImageWidthSmall: 'Širina slike "{name}" mora biti veća od <b>{size} px</b> (detected <b>{dimension} px</b>).',
+        msgImageHeightSmall: 'Visina slike "{name}" mora biti veća od <b>{size} px</b> (detected <b>{dimension} px</b>).',
+        msgImageWidthLarge: 'Širina slike "{name}" mora biti manja od <b>{size} px</b> (detected <b>{dimension} px</b>).',
+        msgImageHeightLarge: 'Visina slike "{name}" mora biti manja od <b>{size} px</b> (detected <b>{dimension} px</b>).',
         msgImageResizeError: 'Greška u čitanju dimenzija slike za promenu veličine.',
         msgImageResizeException: 'Greška u promeni veličine slike.<pre>{errors}</pre>',
         msgAjaxError: 'Greška u {operation} operaciji. Molimo pokušajte ponovo kasnije!',
         msgAjaxProgressError: 'Operacija {operation} nije uspela.',
-        msgDuplicateFile: 'Dokument "{name}" iste veličine "{size} KB" je već selektovan. Duplirani dokument je preskočen.',
+        msgDuplicateFile: 'Dokument "{name}" iste veličine "{size}" je već selektovan. Duplirani dokument je preskočen.',
         msgResumableUploadRetriesExceeded:  'Slanje je prekinuto nakon <b>{max}</b> pokušaja za dokument <b>{file}</b>! Detalji greške: <pre>{error}</pre>',
         msgPendingTime: '{time} preostalo',
         msgCalculatingTime: 'računanje preostalog vremena',
@@ -95,6 +104,7 @@
             uploadTitle: 'Pošalji dokument',
             uploadRetryTitle: 'Ponovi slanje',
             downloadTitle: 'Skini dokument',
+            rotateTitle: 'Rotate 90 deg. clockwise',
             zoomTitle: 'Pregled detalja',
             dragTitle: 'Promeni redosled',
             indicatorNewTitle: 'Nije poslato',
@@ -106,10 +116,11 @@
         previewZoomButtonTitles: {
             prev: 'Prethodni dokument',
             next: 'Sledeći dokument',
+            rotate: 'Rotate 90 deg. clockwise',
             toggleheader: 'Isključi naslov',
             fullscreen: 'Raširi na ceo prozor',
             borderless: 'Isključi ivice',
             close: 'Zatvori pregled detalja'
         }
     };
-})(window.jQuery);
+}));

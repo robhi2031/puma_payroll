@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/manage_jobposition/store', [JobPositionController::class, 'store'])->name('store_jobposition');
         Route::post('/manage_jobposition/update', [JobPositionController::class, 'update'])->name('update_jobposition');
         //Manage Manpower
+        Route::get('/manage_manpower/show', [ManpowerController::class, 'show'])->name('show_manpower');
         Route::post('/manage_manpower/import', [ManpowerController::class, 'import'])->name('import_manpower');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');
