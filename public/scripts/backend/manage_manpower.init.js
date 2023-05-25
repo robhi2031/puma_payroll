@@ -193,7 +193,7 @@ const _clearFormManpower = () => {
 //Add Manpower
 const _addManpower = () => {
     save_method = "add_manpower";
-    _clearFormManpower(),
+    // _clearFormManpower(),
     $("#card-formManpower .card-header .card-title").html(
         `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-window-plus fs-2 text-gray-900 me-2"></i>Form Tambah Data Karyawan</h3>`
     ),
