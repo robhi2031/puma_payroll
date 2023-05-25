@@ -208,16 +208,12 @@ class ManpowerController extends Controller
             // $collection = Excel::toCollection(new ManPowerImport, $request->file('file_import'));
             if (count($rows[0]) > 0) {
                 foreach ($rows[0] as $row) {
-                    // Insert Bank Account
-                    $dataBankAccount = array(
-                        'bank_name' => $row['bank_name'],
-                        'account_name' => $row['account_name'],
-                        'account_number' => $row['account_number'],
-                        'user_add' => $userSesIdp,
-                    );
-                    $bankAccountId = BankAccount::insertGetId($dataBankAccount);
-
-                    // Insert Manpower
+                    //Work Status
+                    $workStatus = 'ACTIVE';
+                    if ($row['work_status'] == 0) {
+                        $workStatus = 'NON ACTIVE';
+                    }
+                    //Array Manpower
                     $dataManpower = array(
                         'pju_bn' => $this->generated_pjubn(),
                         'ext_bn' => $row['ext_bn'],
@@ -250,11 +246,36 @@ class ManpowerController extends Controller
                         'tunjangan_jabatan' => $row['tunjangan_jabatan'],
                         'p_biaya_fasilitas' => $row['p_biaya_fasilitas'],
                         'pengobatan' => $row['pengobatan'],
-                        'work_status' => $row['work_status'],
-                        'fid_bank_account' => $bankAccountId,
-                        'user_add' => $userSesIdp,
+                        'work_status' => $workStatus,
                     );
-                    ManPower::insert($dataManpower);
+                    //Array Akun Bank
+                    $dataBankAccount = array(
+                        'bank_name' => $row['bank_name'],
+                        'account_name' => $row['account_name'],
+                        'account_number' => $row['account_number'],
+                    );
+                    //cek & get manpower
+                    $manpower = ManPower::where('email', $row['email'])->first();
+                    if($manpower == true) {
+                        // Update Manpower
+                        $dataManpower['user_updated'] = $userSesIdp;
+                        ManPower::whereId($manpower->id)->update($dataManpower);
+                        addToLog('Manpower by email ' .$row['email']. ' has been successfully updated from import file');
+                        // Update Bank Account
+                        $dataBankAccount['user_updated'] = $userSesIdp;
+                        BankAccount::whereId($manpower->fid_bank_account)->update($dataBankAccount);
+                        addToLog('Bank account by name ' .$row['account_name']. ' has been successfully updated from import file');
+                    } else {
+                        // Insert Bank Account
+                        $dataBankAccount['user_add'] = $userSesIdp;
+                        $bankAccountId = BankAccount::insertGetId($dataBankAccount);
+                        addToLog('Bank account by name ' .$row['account_name']. ' has been successfully inserted from import file');
+                        // Insert Manpower
+                        $dataManpower['fid_bank_account'] = $bankAccountId;
+                        $dataManpower['user_add'] = $userSesIdp;
+                        ManPower::insert($dataManpower);
+                        addToLog('Manpower by email ' .$row['email']. ' has been successfully inserted from import file');
+                    }
                 }
             }
             addToLog('Import Manpower data has been successfully');
