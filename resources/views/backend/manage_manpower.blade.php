@@ -129,16 +129,36 @@
                     </div>
                 </div>
                 <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-isDaily">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="is_daily">Karyawan Harian</label>
+                    <div class="col-lg-8">
+                        <div class="form-check form-switch form-check-custom form-check-solid mb-3">
+                            <input class="form-check-input" type="checkbox" id="is_daily" name="is_daily" />
+                            <label class="form-check-label" for="is_daily"></label>
+                        </div>
+                        <!--begin::Input group-->
+                        <div class="mb-3" id="iGroup-dailyBasic" style="display: none;">
+                            <label class="col-form-label required fw-bold fs-6" for="daily_basic">Daily Basic</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="daily_basic" id="daily_basic" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                </div>
+                <!--end::Input group-->
                 <!--begin::Salary dan Tunjangan-->
                 <div class="fs-3 fw-bold text-gray-800 mb-0 mt-12">Detail Salary & Tunjangan Karyawan</div>
                 <div class="row">
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <label class="col-form-label required fw-bold fs-6" for="basic_salary">Basic Salary</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="basic_salary" id="basic_salary" placeholder="0" />
                             </div>
                         </div>
                         <!--end::Input group-->
@@ -146,10 +166,10 @@
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <label class="col-form-label required fw-bold fs-6" for="ot_rate">OT Rate</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="ot_rate" id="ot_rate" placeholder="0" />
                             </div>
                         </div>
                         <!--end::Input group-->
@@ -157,16 +177,191 @@
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <label class="col-form-label required fw-bold fs-6" for="attendance_fee">Tunjangan Kehadiran</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="attendance_fee" id="attendance_fee" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="leave_day">Leave Day</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="leave_day" id="leave_day" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="premi_sore">Premi Sore</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="premi_sore" id="premi_sore" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="premi_malam">Premi Malam</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="premi_malam" id="premi_malam" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="thr">THR</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="thr" id="thr" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="transport">Transport</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="transport" id="transport" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="uang_cuti">Uang Cuti</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="uang_cuti" id="uang_cuti" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="uang_makan">Uang Makan</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="uang_makan" id="uang_makan" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="bonus">Bonus</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="bonus" id="bonus" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="interim_location">Interim Location</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="interim_location" id="interim_location" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="tunjangan_jabatan">Tunjangan Jabatan</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="tunjangan_jabatan" id="tunjangan_jabatan" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="p_biaya_fasilitas">Potongan Biaya Fasilitas</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="p_biaya_fasilitas" id="p_biaya_fasilitas" placeholder="0" />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="pengobatan">Pengobatan</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="pengobatan" id="pengobatan" placeholder="0" />
                             </div>
                         </div>
                         <!--end::Input group-->
                     </div>
                 </div>
                 <!--end::Salary dan Tunjangan-->
+                <!--begin::Akun Bank Karyawan-->
+                <div class="fs-3 fw-bold text-gray-800 mb-0">Akun Bank Karyawan</div>
+                <div class="row mt-12">
+                    <div class="col-lg-12">
+                        <input type="hidden" name="fid_bank_account" />
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="bank_name">Nama Bank</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="bank_name" id="bank_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama bank ..." />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="account_name">Nama Akun Bank</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="account_name" id="account_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama akun bank ..." />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="account_number">No. Rekening Bank</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="account_number" id="account_number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-17" maxlength="17" placeholder="Isikan no. rekening bank ..." />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                </div>
+                <!--end::Akun Bank Perusahaan-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-workStatus">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="work_status">Status</label>
+                    <div class="col-lg-8">
+                        <div class="form-check form-switch form-check-custom form-check-solid mb-3">
+                            <input class="form-check-input" type="checkbox" id="work_status" name="work_status" />
+                            <label class="form-check-label" for="work_status"></label>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Input group-->
             </div>
             <!--end::Card body-->
             <!--begin::Actions-->
