@@ -229,7 +229,6 @@ class ManpowerController extends Controller
                         'npwp' => $row['npwp'],
                         'kpj' => $row['kpj'],
                         'kis' => $row['kis'],
-                        'bpjs_ketenagakerjaan' => $row['bpjs_ketenagakerjaan'],
                         'marital_status' => $row['marital_status'],
                         'shift_code' => $row['shift_code'],
                         'pay_code' => $row['pay_code'],
