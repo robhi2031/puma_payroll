@@ -25,7 +25,6 @@ class CreateManPowerTable extends Migration
             $table->string('npwp', 100)->nullable();
             $table->string('kpj', 100)->nullable();
             $table->string('kis', 100)->nullable();
-            $table->string('bpjs_ketenagakerjaan', 100)->nullable();
             $table->string('marital_status', 100);
             $table->string('shift_code', 50);
             $table->string('pay_code', 50);
