@@ -19,7 +19,6 @@ class CreateManPowerTable extends Migration
             $table->string('ext_bn', 16);
             $table->string('name', 225);
             $table->string('email', 225);
-            $table->string('payroll_name', 225);
             $table->string('project_code', 8);
             $table->string('jobposition_code', 8);
             $table->string('department', 225);
@@ -31,6 +30,7 @@ class CreateManPowerTable extends Migration
             $table->string('shift_code', 50);
             $table->string('pay_code', 50);
             $table->string('shift_group', 150)->nullable();
+            $table->string('is_daily', 1)->default('N');
             $table->decimal('daily_basic', 9, 3)->nullable();
             $table->decimal('basic_salary', 9, 3);
             $table->string('ot_rate', 50);
