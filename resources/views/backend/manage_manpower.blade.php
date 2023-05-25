@@ -7,8 +7,7 @@
             <div class="card-title"></div>
             <div class="card-toolbar">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm btn btn-bg-light btn-color-danger me-2" id="btn-closeFormManpower"
-                        onclick="_closeCard('form_manpower');"><i class="fas fa-times"></i> Tutup</button>
+                    <button type="button" class="btn btn-sm btn btn-bg-light btn-color-danger me-2" id="btn-closeFormManpower" onclick="_closeCard('form_manpower');"><i class="fas fa-times"></i> Tutup</button>
                 </div>
             </div>
         </div>
@@ -20,12 +19,11 @@
             <div class="card-body">
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="ext_btn">EXT. BN</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="ext_btn">EXT. BN</label>
                     <div class="col-lg-8">
-                        <input type="text" name="ext_btn" id="ext_btn"
-                            class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="16"
-                            placeholder="Isi EXT. BN ..." />
+                        <input type="text" name="ext_btn" id="ext_btn" class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="16" placeholder="Isi EXT. BN karyawan ..." />
                         <div class="form-text">*) Contoh: <code>VALE-001</code></div>
+                        <div class="form-text">*) Jika tidak ada, kosongkan saja</div>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -33,10 +31,7 @@
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
                     <div class="col-lg-8">
-                        <input type="text" name="name" id="name"
-                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150"
-                            placeholder="Isi nama karyawan ..." />
-                        </div>
+                        <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isi nama karyawan ..." />
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -46,7 +41,7 @@
                     <div class="col-lg-8">
                         <div class="input-group input-group-solid mb-2">
                             <span class="input-group-text"><i class="las la-envelope fs-1"></i></span>
-                            <input type="text" class="form-control form-control-lg form-control-solid no-space" name="email" id="email" placeholder="Isikan email institusi ..." />
+                            <input type="text" class="form-control form-control-lg form-control-solid no-space" name="email" id="email" placeholder="Isikan email karyawan ..." />
                         </div>
                         <div class="form-text">*) Pastikan email sesuai format dan masih aktif digunakan, contoh: <code>andre123@gmail.com</code></div>
                     </div>
@@ -54,70 +49,130 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="desc">Deskripsi</label>
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="project_code">Proyek</label>
                     <div class="col-lg-8">
-                        <textarea type="text" class="form-control form-control-solid" name="desc" id="desc" maxlength="255"
-                            rows="3" style="resize: none;" placeholder="Isi deskripsi proyek/ pekerjaan ..."></textarea>
+                        <select class="form-select" name="project_code" id="project_code"></select>
+                        <div class="form-text">*) Ketik nama/ kode proyek untuk mempercepat pencarian</div>
                     </div>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="client">Klien/ Mitra</label>
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="jobposition_code">Posisi</label>
                     <div class="col-lg-8">
-                        <input type="text" name="client" id="client"
-                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225"
-                            placeholder="Isi klien/ mitra proyek/ pekerjaan ..." />
+                        <select class="form-select" name="jobposition_code" id="jobposition_code"></select>
+                        <div class="form-text">*) Ketik nama/ kode posisi untuk mempercepat pencarian</div>
                     </div>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="location">Lokasi</label>
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="department">Departemen</label>
                     <div class="col-lg-8">
-                        <input type="text" name="location" id="location"
-                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225"
-                            placeholder="Isi lokasi proyek/ pekerjaan ..." />
+                        <input type="text" name="department" id="department" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isi departemen karyawan ..." />
                     </div>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="start_date">Tanggal</label>
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="npwp">NPWP</label>
                     <div class="col-lg-8">
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-sm date-flatpickr" name="start_date"
-                                id="start_date" maxlength="10" placeholder="dd/mm/YYYY" readonly />
-                            <span class="input-group-text">s/d</span>
-                            <input type="text" class="form-control form-control-sm date-flatpickr" name="end_date"
-                                id="end_date" maxlength="10" placeholder="dd/mm/YYYY" readonly />
+                        <input type="text" name="npwp" id="npwp" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor pokok wajib pajak karyawan ..." />
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="kpj">Nomor KPJ</label>
+                    <div class="col-lg-8">
+                        <input type="text" name="kpj" id="kpj" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor kartu bpjs ketenagakerjaan karyawan ..." />
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="kis">Nomor KIS</label>
+                    <div class="col-lg-8">
+                        <input type="text" name="kis" id="kis" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor kartu indonesia sehat karyawan ..." />
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-maritalStatus">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="marital_status">Status Pernikahan</label>
+                    <div class="col-lg-8">
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="marital_status" id="marital_status" data-container="body" title="Pilih status pernikahan karyawan ..."></select>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-shiftCode">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_code">Shift Code</label>
+                    <div class="col-lg-8">
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_code" id="shift_code" data-container="body" title="Pilih jenis shift karyawan ..."></select>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-payCode">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="pay_code">Pay Code</label>
+                    <div class="col-lg-8">
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="pay_code" id="pay_code" data-container="body" title="Pilih pay code karyawan ..."></select>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6" id="iGroup-shiftGroup">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_group">Shift Group</label>
+                    <div class="col-lg-8">
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_group" id="shift_group" data-container="body" title="Pilih shift group karyawan ..."></select>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Salary dan Tunjangan-->
+                <div class="fs-3 fw-bold text-gray-800 mb-0 mt-12">Detail Salary & Tunjangan Karyawan</div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                            </div>
                         </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
+                        <!--begin::Input group-->
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="phone_number">No. Telpon/ Hp</label>
+                            <div class="input-group input-group-solid mb-2">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="phone_number" id="phone_number" placeholder="Isikan No. Telpon/Hp user ..." />
+                            </div>
+                        </div>
+                        <!--end::Input group-->
                     </div>
                 </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="row mb-6" id="iGroup-status">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="status">Status</label>
-                    <div class="col-lg-8">
-                        <select class="show-tick form-select-solid selectpicker" data-width="100%"
-                            data-style="btn-sm btn-primary" name="status" id="status" data-container="body"
-                            title="Pilih status proyek/ pekerjaan ...">
-                            <option value="Not Started" data-icon="bi bi-dash-circle">Not Started</option>
-                            <option value="In Progress" data-icon="bi bi-bootstrap-reboot">In Progress</option>
-                            <option value="Completed" data-icon="bi bi-check2-circle">Completed</option>
-                            <option value="Stop" data-icon="bi bi-sign-stop">Stop</option>
-                        </select>
-                    </div>
-                </div>
-                <!--end::Input group-->
+                <!--end::Salary dan Tunjangan-->
             </div>
             <!--end::Card body-->
             <!--begin::Actions-->
             <div class="card-footer d-flex justify-content-end py-6 px-9">
-                <button type="button" class="btn btn-light btn-active-light-danger me-2" id="btn-reset"
-                    onclick="_clearFormProject();"><i class="las la-redo-alt fs-1 me-3"></i>Batal</button>
-                <button type="button" class="btn btn-primary" id="btn-save"><i
-                        class="las la-save fs-1 me-3"></i>Simpan</button>
+                <button type="button" class="btn btn-light btn-active-light-danger me-2" id="btn-reset" onclick="_clearFormProject();"><i class="las la-redo-alt fs-1 me-3"></i>Batal</button>
+                <button type="button" class="btn btn-primary" id="btn-save"><i class="las la-save fs-1 me-3"></i>Simpan</button>
             </div>
             <!--end::Actions-->
         </form>
@@ -203,16 +258,13 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-sm btn-primary me-2" id="btn-addProject"
-                        onclick="_addProject();"><i class="fas fa-plus"></i> Tambah</button>
+                    <button type="button" class="btn btn-sm btn-primary me-2" id="btn-addManpower" onclick="_addManpower();"><i class="fas fa-plus"></i> Tambah</button>
                     <!--begin::Menu-->
-                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n3"
-                        data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-end">
+                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n3" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-end">
                         <i class="bi bi-three-dots fs-2"></i>
                     </button>
                     <!--begin::Menu 3-->
-                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
-                        data-kt-menu="true">
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
                         <div class="menu-item px-3">
                             <a href="javascript:void(0);" class="menu-link px-3" onclick="_openModalImportManPower();">
                                 <i class="las la-file-import fs-3 me-1"></i>Import Data
