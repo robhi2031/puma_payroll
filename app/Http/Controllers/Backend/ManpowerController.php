@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\ManPowerImport;
 use App\Models\BankAccount;
 use App\Models\ManPower;
+use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,13 +19,14 @@ use Maatwebsite\Excel\HeadingRowImport;
 class ManpowerController extends Controller
 {
     use SystemCommon;
+    use Select2Common;
     /**
      * __construct
      *
      * @return void
      */
     public function __construct() {
-        $this->middleware(['direct_permission:manpower-read'])->only(['index', 'show']);
+        $this->middleware(['direct_permission:manpower-read'])->only(['index', 'show', 'select2_project', 'select2_jobposition']);
         $this->middleware(['direct_permission:manpower-create'])->only(['store', 'import']);
         $this->middleware(['direct_permission:manpower-update'])->only(['update']);
         $this->middleware(['direct_permission:manpower-delete'])->only('delete');
@@ -365,6 +367,40 @@ class ManpowerController extends Controller
             return jsonResponse(true, 'Project berhasil diperbarui', 200);
         } catch (\Exception $exception) {
             DB::rollback();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    /**
+     * select2_project
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function select2_project(Request $request)
+    {
+        try {
+            $output = $this->select2_project_rows($request->search, $request->page);
+            return jsonResponse(true, 'Success', 200, $output);
+        } catch (\Exception $exception) {
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    /**
+     * select2_jobposition
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function select2_jobposition(Request $request)
+    {
+        try {
+            $output = $this->select2_jobposition_rows($request->search, $request->page);
+            return jsonResponse(true, 'Success', 200, $output);
+        } catch (\Exception $exception) {
             return jsonResponse(false, $exception->getMessage(), 401, [
                 "Trace" => $exception->getTrace()
             ]);
