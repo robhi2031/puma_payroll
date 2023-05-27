@@ -176,15 +176,83 @@ $("#btn-saveImportManpower").on("click", function (e) {
         }
     });
 });
+//Load Project Select Custom
+const _cboProjectSelest2 = () => {
+    $('#project_code').select2({
+        width: '100%', placeholder: 'Pilih Project ...', allowClear: true,
+        ajax: {
+            url: base_url+ "api/manage_manpower/select2_project",
+            headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+            dataType: 'json',
+            data: function (params) {
+                let query = {
+                    search: params.term,
+                    page: params.page || 1
+                }
+                // Query parameters will be ?search=[term]&page=[page]
+                return query;
+            }, processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    //results: data.results,
+                    results: $.map(data.row.results, function (item) {
+                        return {
+                            id: item.code,
+                            text: item.code+ ' - ' +item.text
+                        }
+                    }),
+                    pagination: {
+                        more: (params.page * 20) < data.row.count
+                    }
+                };
+            },
+            cache: true
+        }
+    });
+}
+//Load Job Position Select Custom
+const _cboJobPositionSelest2 = () => {
+    $('#jobposition_code').select2({
+        width: '100%', placeholder: 'Pilih Posisi ...', allowClear: true,
+        ajax: {
+            url: base_url+ "api/manage_manpower/select2_jobposition",
+            headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+            dataType: 'json',
+            data: function (params) {
+                let query = {
+                    search: params.term,
+                    page: params.page || 1
+                }
+                // Query parameters will be ?search=[term]&page=[page]
+                return query;
+            }, processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    //results: data.results,
+                    results: $.map(data.row.results, function (item) {
+                        return {
+                            id: item.code,
+                            text: item.code+ ' - ' +item.text
+                        }
+                    }),
+                    pagination: {
+                        more: (params.page * 20) < data.row.count
+                    }
+                };
+            },
+            cache: true
+        }
+    });
+}
 //Clear Form Manpower
 const _clearFormManpower = () => {
-    $("#card-formManpower .selectpicker").selectpicker('val', '');
-    $("#card-formManpower .date-flatpickr").flatpickr({
-        defaultDate: "",
-        dateFormat: "d/m/Y"
-    });
+    // $("#card-formManpower .selectpicker").selectpicker('val', '');
+    // $("#card-formManpower .date-flatpickr").flatpickr({
+    //     defaultDate: "",
+    //     dateFormat: "d/m/Y"
+    // });
     if (save_method == "" || save_method == "add_manpower") {
-        $("#form-manpower")[0].reset(), $('[name="id"]').val("");
+        $("#form-manpower")[0].reset(), $('[name="id"]').val(""), _cboProjectSelest2(), _cboJobPositionSelest2();
     } else {
         let idp = $('[name="id"]').val();
         _editManpower(idp);
@@ -193,7 +261,7 @@ const _clearFormManpower = () => {
 //Add Manpower
 const _addManpower = () => {
     save_method = "add_manpower";
-    // _clearFormManpower(),
+    _clearFormManpower(),
     $("#card-formManpower .card-header .card-title").html(
         `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-window-plus fs-2 text-gray-900 me-2"></i>Form Tambah Data Karyawan</h3>`
     ),
