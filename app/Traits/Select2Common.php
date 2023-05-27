@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\JobPosition;
+use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
 trait Select2Common {    
@@ -35,6 +37,82 @@ trait Select2Common {
 
         $getArray = $getResult->get()->toArray();
         $countResult = $query->groupBy('b.fid_menu')->orderBy('a.order_line', 'ASC')->count();
+        $result['results'] = $getArray;
+        $pagination = array("more" => true);
+        if($countResult < 20 ){
+            $pagination = array("more" => false);
+        }
+        $result['pagination'] = $pagination;
+        $result['count'] = $countResult;
+        return $result;
+    }    
+    /**
+     * select2_project_rows
+     *
+     * @param  mixed $search
+     * @param  mixed $page
+     * @return void
+     */
+    protected function select2_project_rows($search, $page)
+    {
+        // Search term
+        $searchTerm = $search;
+        $page = $page;
+        $result = array();
+        $query = Project::selectRaw("id, name AS text, code")
+            ->where('name','LIKE','%'.$searchTerm.'%')
+            ->orWhere('code','LIKE','%'.$searchTerm.'%');
+
+        $start=0;
+        $limit=20;
+        if($page!=''){
+            $start=20*$page-20;
+            $limit=20;
+            $getResult = $query->offset($start)->limit($limit)->orderBy('code', 'DESC');
+        }else{
+            $getResult = $query->orderBy('code', 'DESC');
+        }
+
+        $getArray = $getResult->get()->toArray();
+        $countResult = $query->orderBy('code', 'DESC')->count();
+        $result['results'] = $getArray;
+        $pagination = array("more" => true);
+        if($countResult < 20 ){
+            $pagination = array("more" => false);
+        }
+        $result['pagination'] = $pagination;
+        $result['count'] = $countResult;
+        return $result;
+    }    
+    /**
+     * select2_jobposition_rows
+     *
+     * @param  mixed $search
+     * @param  mixed $page
+     * @return void
+     */
+    protected function select2_jobposition_rows($search, $page)
+    {
+        // Search term
+        $searchTerm = $search;
+        $page = $page;
+        $result = array();
+        $query = JobPosition::selectRaw("id, name AS text, code")
+            ->where('name','LIKE','%'.$searchTerm.'%')
+            ->orWhere('code','LIKE','%'.$searchTerm.'%');
+
+        $start=0;
+        $limit=20;
+        if($page!=''){
+            $start=20*$page-20;
+            $limit=20;
+            $getResult = $query->offset($start)->limit($limit)->orderBy('code', 'DESC');
+        }else{
+            $getResult = $query->orderBy('code', 'DESC');
+        }
+
+        $getArray = $getResult->get()->toArray();
+        $countResult = $query->orderBy('code', 'DESC')->count();
         $result['results'] = $getArray;
         $pagination = array("more" => true);
         if($countResult < 20 ){
