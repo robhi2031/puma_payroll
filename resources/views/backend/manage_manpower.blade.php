@@ -122,7 +122,7 @@
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
-                <div class="row mb-6" id="iGroup-shiftGroup">
+                <div class="row mb-6" id="iGroup-shiftGroup" style="display: none;">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_group">Shift Group</label>
                     <div class="col-lg-8">
                         <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_group" id="shift_group" data-container="body" title="Pilih shift group karyawan ..."></select>
@@ -320,39 +320,36 @@
                 </div>
                 <!--end::Salary dan Tunjangan-->
                 <!--begin::Akun Bank Karyawan-->
-                <div class="fs-3 fw-bold text-gray-800 mb-0">Akun Bank Karyawan</div>
-                <div class="row mt-12">
-                    <div class="col-lg-12">
-                        <input type="hidden" name="fid_bank_account" />
+                <div class="fs-3 fw-bold text-gray-800 mt-12 mb-0">Akun Bank Karyawan</div>
+                <input type="hidden" name="fid_bank_account" />
+                <div class="row">
+                    <div class="col-lg-4">
                         <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="bank_name">Nama Bank</label>
-                            <div class="col-lg-8">
-                                <input type="text" name="bank_name" id="bank_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama bank ..." />
-                            </div>
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="bank_name">Nama Bank</label>
+                            <input type="text" name="bank_name" id="bank_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama bank ..." />
                         </div>
                         <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
                         <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="account_name">Nama Akun Bank</label>
-                            <div class="col-lg-8">
-                                <input type="text" name="account_name" id="account_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama akun bank ..." />
-                            </div>
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="account_name">Nama Akun Bank</label>
+                            <input type="text" name="account_name" id="account_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama akun bank ..." />
                         </div>
-                        <!--end::Input group-->
+                    </div>
+                    <div class="col-lg-4">
                         <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="account_number">No. Rekening Bank</label>
-                            <div class="col-lg-8">
-                                <input type="text" name="account_number" id="account_number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-17" maxlength="17" placeholder="Isikan no. rekening bank ..." />
-                            </div>
+                        <div class="mb-3">
+                            <label class="col-form-label required fw-bold fs-6" for="account_number">No. Rekening Bank</label>
+                            <input type="text" name="account_number" id="account_number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-17" maxlength="17" placeholder="Isikan no. rekening bank ..." />
                         </div>
                         <!--end::Input group-->
                     </div>
                 </div>
                 <!--end::Akun Bank Perusahaan-->
                 <!--begin::Input group-->
-                <div class="row mb-6" id="iGroup-workStatus">
+                <div class="row mt-12 mb-6" id="iGroup-workStatus">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="work_status">Status</label>
                     <div class="col-lg-8">
                         <div class="form-check form-switch form-check-custom form-check-solid mb-3">
