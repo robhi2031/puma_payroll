@@ -270,7 +270,7 @@ const _addManpower = () => {
 //Edit Manpower
 const _editManpower = (idp) => {
     save_method = "update_manpower";
-    $("#form-manpower")[0].reset(), $('[name="id"]').val("");
+    $("#form-manpower")[0].reset(), $('[name="id"]').val(""), _cboProjectSelest2(), _cboJobPositionSelest2();
     let target = document.querySelector("#card-formManpower"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
     blockUi.block(), blockUi.destroy();
     //Ajax load from ajax
@@ -297,7 +297,7 @@ const _editManpower = (idp) => {
                 });
                 $("#status").selectpicker('val', data.row.status);
                 $("#card-formProject .card-header .card-title").html(
-                    `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-pencil-square fs-2 text-gray-900 me-2"></i>Form Edit Proyek</h3>`
+                    `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-pencil-square fs-2 text-gray-900 me-2"></i>Form Edit Data Karyawan</h3>`
                 ),
                 $("#card-dtProject").hide(), $("#card-formProject").show();
             } else {
