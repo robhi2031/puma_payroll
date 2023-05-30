@@ -113,7 +113,6 @@ $("#btn-saveImportManpower").on("click", function (e) {
         return false;
     }
 
-
     Swal.fire({
         title: "",
         text: "Proses import file data karyawan ?",
@@ -246,13 +245,12 @@ const _cboJobPositionSelest2 = () => {
 }
 //Clear Form Manpower
 const _clearFormManpower = () => {
-    // $("#card-formManpower .selectpicker").selectpicker('val', '');
-    // $("#card-formManpower .date-flatpickr").flatpickr({
-    //     defaultDate: "",
-    //     dateFormat: "d/m/Y"
-    // });
     if (save_method == "" || save_method == "add_manpower") {
-        $("#form-manpower")[0].reset(), $('[name="id"]').val(""), _cboProjectSelest2(), _cboJobPositionSelest2();
+        $("#form-manpower")[0].reset(), $('[name="id"]').val(""),
+        $("#project_code").html('').trigger('change'), _cboProjectSelest2(),
+        $("#jobposition_code").html('').trigger('change'), _cboJobPositionSelest2(),
+        $("#card-formManpower .selectpicker").selectpicker('val', '');
+        $('#card-formManpower .hide-add').hide();
     } else {
         let idp = $('[name="id"]').val();
         _editManpower(idp);
@@ -270,12 +268,15 @@ const _addManpower = () => {
 //Edit Manpower
 const _editManpower = (idp) => {
     save_method = "update_manpower";
-    $("#form-manpower")[0].reset(), $('[name="id"]').val(""), _cboProjectSelest2(), _cboJobPositionSelest2();
+    $("#form-manpower")[0].reset(), $('[name="id"]').val(""),
+    $("#project_code").html('').trigger('change'), _cboProjectSelest2(),
+    $("#jobposition_code").html('').trigger('change'), _cboJobPositionSelest2(),
+    $('#card-formManpower .hide-add').hide();
     let target = document.querySelector("#card-formManpower"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
     blockUi.block(), blockUi.destroy();
     //Ajax load from ajax
     $.ajax({
-        url: base_url+ 'api/manage_project/show',
+        url: base_url+ 'api/manage_manpower/show',
         headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
         type: 'GET',
         dataType: 'JSON',
@@ -284,22 +285,65 @@ const _editManpower = (idp) => {
         },
         success: function (data) {
             blockUi.release(), blockUi.destroy();
+            console.log(data);
             if (data.status == true) {
-                $('[name="id"]').val(data.row.id), $('#code').val(data.row.code), $('#name').val(data.row.name),
-                $('#desc').val(data.row.desc), $('#client').val(data.row.client), $('#location').val(data.row.location);
-                $("#start_date").flatpickr({
-                    defaultDate: data.row.start_date_indo,
-                    dateFormat: "d/m/Y"
-                });
-                $("#end_date").flatpickr({
-                    defaultDate: data.row.end_date_indo,
-                    dateFormat: "d/m/Y"
-                });
-                $("#status").selectpicker('val', data.row.status);
-                $("#card-formProject .card-header .card-title").html(
+                $('[name="id"]').val(data.row.id),
+                $('#pju_bn').val(data.row.pju_bn), $('#iGroup-pjuBn').show(),
+                $('#ext_btn').val(data.row.ext_btn),
+                $('#name').val(data.row.name),
+                $('#email').val(data.row.email);
+
+                let selectedProject = $("<option selected='selected'></option>").val(data.row.project_code).text(data.row.project_code+ ' - ' +data.row.project_name);
+                $("#project_code").append(selectedProject).trigger('change');
+                let selectedPosition = $("<option selected='selected'></option>").val(data.row.jobposition_code).text(data.row.jobposition_code+ ' - ' +data.row.job_position);
+                $("#jobposition_code").append(selectedPosition).trigger('change');
+
+                $('#department').val(data.row.department),
+                $('#npwp').val(data.row.npwp),
+                $('#kpj').val(data.row.kpj),
+                $('#kis').val(data.row.kis),
+                $('#marital_status').selectpicker('val', data.row.marital_status),
+                $('#shift_code').selectpicker('val', data.row.shift_code),
+                $('#pay_code').selectpicker('val', data.row.pay_code);
+
+                $('#is_daily').prop('checked', false);
+                $('#iGroup-isDaily .form-check-label').text('TIDAK');
+                if(data.row.is_daily == 'Y') {
+                    $('#is_daily').prop('checked', true);
+                    $('#iGroup-isDaily .form-check-label').text('YA');
+                    $('#iGroup-dailyBasic').show();
+                }
+                $('#daily_basic').val(data.row.daily_basic),
+                $('#basic_salary').val(data.row.basic_salary),
+                $('#ot_rate').val(data.row.ot_rate),
+                $('#attendance_fee').val(data.row.attendance_fee),
+                $('#leave_day').val(data.row.leave_day),
+                $('#premi_sore').val(data.row.premi_sore),
+                $('#premi_malam').val(data.row.premi_malam),
+                $('#thr').val(data.row.thr),
+                $('#transport').val(data.row.transport),
+                $('#uang_cuti').val(data.row.uang_cuti),
+                $('#uang_makan').val(data.row.uang_makan),
+                $('#bonus').val(data.row.bonus),
+                $('#interim_location').val(data.row.interim_location),
+                $('#tunjangan_jabatan').val(data.row.tunjangan_jabatan),
+                $('#p_biaya_fasilitas').val(data.row.p_biaya_fasilitas),
+                $('#pengobatan').val(data.row.pengobatan),
+                $('#bank_name').val(data.row.bank_name),
+                $('#account_name').val(data.row.account_name),
+                $('#account_number').val(data.row.account_number);
+
+                $('#work_status').prop('checked', false);
+                $('#iGroup-workStatus .form-check-label').text('NON ACTIVE');
+                if(data.row.work_status == 'ACTIVE') {
+                    $('#work_status').prop('checked', true);
+                    $('#iGroup-workStatus .form-check-label').text('ACTIVE');
+                }
+
+                $("#card-formManpower .card-header .card-title").html(
                     `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-pencil-square fs-2 text-gray-900 me-2"></i>Form Edit Data Karyawan</h3>`
                 ),
-                $("#card-dtProject").hide(), $("#card-formProject").show();
+                $("#card-dtManpower").hide(), $("#card-formManpower").show();
             } else {
                 Swal.fire({title: "Ooops!", text: data.message, icon: "warning", allowOutsideClick: false});
             }
@@ -315,66 +359,128 @@ const _editManpower = (idp) => {
         },
     });
 }
-//Save Project by Enter
-$("#form-project input").keyup(function (event) {
+//Save Manpower by Enter
+$("#form-manpower input").keyup(function (event) {
     if (event.keyCode == 13 || event.key === "Enter") {
         $("#btn-save").click();
     }
 });
-//Save Project Form
+//Save Manpower Form
 $("#btn-save").on("click", function (e) {
     e.preventDefault();
     $("#btn-save").html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr("disabled", true);
-    let code = $("#code"), name = $("#name"), desc = $("#desc"), client = $("#client"),
-        location = $("#location"), start_date = $("#start_date"), end_date = $("#end_date"),
-        status = $("#status");
-    if (code.val() == "") {
-        toastr.error("Kode proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        code.focus();
-        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
-        return false;
-    } if (name.val() == "") {
-        toastr.error("Nama proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+    let name = $("#name"), email = $("#email"), project_code = $("#project_code"),
+        jobposition_code = $("#jobposition_code"), department = $("#department"), npwp = $("#npwp"),
+        kpj = $("#kpj"), kis = $("#kis"), marital_status = $("#marital_status"),
+        shift_code = $("#shift_code"), pay_code = $("#pay_code"),
+        basic_salary = $("#basic_salary"), bank_name = $("#bank_name"), account_name = $("#account_name"), account_number = $("#account_number");
+
+    if (name.val() == "") {
+        toastr.error("Nama karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         name.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (desc.val() == "") {
-        toastr.error("Deskripsi proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        desc.focus();
+    } if (email.val() == "") {
+        toastr.error("Deskripsi karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        email.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (client.val() == "") {
-        toastr.error("Klien/ mitra proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        client.focus();
+    } if (!validateEmail(email.val())) {
+        toastr.error('Email karyawan tidak valid!  contoh: ardi.jeg@gmail.com ...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        email.focus();
+        $('#btn-save').html('<i class="las la-save fs-1 me-3"></i>Simpan').attr('disabled', false);
+        return false;
+    } if (project_code.val() == "") {
+        toastr.error("Proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        project_code.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (location.val() == "") {
-        toastr.error("Lokasi proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        location.focus();
+    } if (jobposition_code.val() == "") {
+        toastr.error("Job position karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        jobposition_code.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (start_date.val() == "") {
-        toastr.error("Tgl. mulai proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        start_date.focus();
+    } if (department.val() == "") {
+        toastr.error("Departemen masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        department.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (end_date.val() == "") {
-        toastr.error("Tgl. selesai proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        end_date.focus();
+    } if (npwp.val() == "") {
+        toastr.error("No. pokok wajib pajak karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        npwp.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (status.val() == "") {
-        toastr.error("Status proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        $('#iGroup-status button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
+    } if (kpj.val() == "") {
+        toastr.error("No. kartu bpjs ketenagakerjaan karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        kpj.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (kis.val() == "") {
+        toastr.error("No. kartu indonesia sehat karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        kis.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (marital_status.val() == "") {
+        toastr.error("Status pernikahan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        $('#iGroup-maritalStatus button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
 			$(this).removeClass('btn-danger').addClass('btn-primary');
 		});
-        status.focus();
+        marital_status.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (shift_code.val() == "") {
+        toastr.error("Kode shift masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        $('#iGroup-shiftCode button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
+			$(this).removeClass('btn-danger').addClass('btn-primary');
+		});
+        shift_code.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (pay_code.val() == "") {
+        toastr.error("Kode pembayaran gaji karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        $('#iGroup-payCode button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
+			$(this).removeClass('btn-danger').addClass('btn-primary');
+		});
+        pay_code.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (npwp.val() == "") {
+        toastr.error("No. pokok wajib pajak karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        npwp.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if($('#is_daily').is(':checked')) {
+        let daily_basic = $("#daily_basic");
+        if (daily_basic.val() == "") {
+            toastr.error("Daily basic karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+            daily_basic.focus();
+            $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+            return false;
+        }
+    } if (basic_salary.val() == "") {
+        toastr.error("Basic salary karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        basic_salary.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (bank_name.val() == "") {
+        toastr.error("Nama Bank masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        bank_name.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (account_name.val() == "") {
+        toastr.error("Nama akun bank karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        account_name.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (account_number.val() == "") {
+        toastr.error("No. rekening bank karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        account_number.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
     }
 
     let textConfirmSave = "Simpan perubahan data sekarang ?";
-    if (save_method == "add_project") {
+    if (save_method == "add_manpower") {
         textConfirmSave = "Tambahkan data sekarang ?";
     }
 
@@ -388,7 +494,7 @@ $("#btn-save").on("click", function (e) {
         cancelButtonText: "Batal",
     }).then((result) => {
         if (result.value) {
-            let target = document.querySelector("#card-formProject"),
+            let target = document.querySelector("#card-formManpower"),
             blockUi = new KTBlockUI(target, { message: messageBlockUi });
             blockUi.block(), blockUi.destroy();
             let formData = new FormData($("#form-project")[0]), ajax_url = base_url+ "api/manage_project/store";
@@ -457,4 +563,27 @@ jQuery(document).ready(function() {
 	$('.no-space').on('keypress', function (e) {
 		return e.which !== 32;
 	});
+    //Mask Input
+    $('#npwp').mask('00.000.000.0-000.000');
+    $('#kpj').mask('000000000000');
+    $('#kis').mask('00000000000000');
+    $('.zero-money').mask('000000000');
+    $('.mask-16').mask('0000000000000000');
+    //Change Check Switch
+    $("#is_daily").change(function() {
+        if(this.checked) {
+            $('#iGroup-isDaily .form-check-label').text('YA');
+            $('#iGroup-dailyBasic').show(), $('#daily_basic').val('');
+        }else{
+            $('#iGroup-isDaily .form-check-label').text('TIDAK');
+            $('#iGroup-dailyBasic').hide(), $('#daily_basic').val('');
+        }
+    });
+    $("#work_status").change(function() {
+        if(this.checked) {
+            $('#iGroup-workStatus .form-check-label').text('ACTIVE');
+        }else{
+            $('#iGroup-workStatus .form-check-label').text('NON ACTIVE');
+        }
+    });
 });

@@ -4,6 +4,7 @@
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 if (! function_exists('jsonResponse')) {      
@@ -363,3 +364,22 @@ if ( ! function_exists('longdate_indo')){
     }
 }
 /* end:Date Indo */
+/* start: Selectpicker */
+if ( ! function_exists('get_selectpicker')){
+    function get_selectpicker($param){
+        if($param == 'marital_status') {
+            $getRow = DB::table('master_marital_status')
+                ->orderBy('name')->get()->toArray();
+        } if($param == 'shift') {
+            $getRow = DB::table('master_shift')
+                ->orderBy('code')->get()->toArray();
+        } if($param == 'paycode') {
+            $getRow = DB::table('master_paycode')
+                ->orderBy('code')->get()->toArray();
+        }
+
+        $result = $getRow;
+        return $result;
+    }
+}
+/* end: Selectpicker */

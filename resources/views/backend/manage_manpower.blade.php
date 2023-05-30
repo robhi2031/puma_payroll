@@ -18,6 +18,14 @@
             <!--begin::Card body-->
             <div class="card-body">
                 <!--begin::Input group-->
+                <div class="row mb-6 hide-add" id="iGroup-pjuBn" style="display: none;">
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="pju_bn">PJU. BN</label>
+                    <div class="col-lg-8">
+                        <input type="text" name="pju_bn" id="pju_bn" class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="16" placeholder="Tidak dapat diedit ..." readonly />
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
                 <div class="row mb-6">
                     <label class="col-lg-4 col-form-label fw-bold fs-6" for="ext_btn">EXT. BN</label>
                     <div class="col-lg-8">
@@ -101,7 +109,14 @@
                 <div class="row mb-6" id="iGroup-maritalStatus">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="marital_status">Status Pernikahan</label>
                     <div class="col-lg-8">
-                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="marital_status" id="marital_status" data-container="body" title="Pilih status pernikahan karyawan ..."></select>
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="marital_status" id="marital_status" data-container="body" title="Pilih status pernikahan karyawan ...">
+                            @php
+                                $options_ms = get_selectpicker('marital_status')
+                            @endphp
+                            @foreach ($options_ms as $ms)
+                                <option value="{{ $ms->name }}">{{ $ms->name }} ({{ $ms->desc }})</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -109,7 +124,33 @@
                 <div class="row mb-6" id="iGroup-shiftCode">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_code">Shift Code</label>
                     <div class="col-lg-8">
-                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_code" id="shift_code" data-container="body" title="Pilih jenis shift karyawan ..."></select>
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_code" id="shift_code" data-container="body" title="Pilih jenis shift karyawan ...">
+                            @php
+                                $options_shift = get_selectpicker('shift');
+                                $disabledOpt = '';
+                            @endphp
+                            @foreach ($options_shift as $shift)
+                                @if ($shift->code == '532')
+                                    @php $disabledOpt = 'disabled' @endphp
+                                @endif
+                                <option value="{{ $shift->code }}" {{ $disabledOpt }}>{{ $shift->code }} ({{ $shift->desc }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6 hide-add" id="iGroup-shiftGroup" style="display: none;">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_group">Shift Group</label>
+                    <div class="col-lg-8">
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_group" id="shift_group" data-container="body" title="Pilih shift group karyawan ...">
+                            {{-- @php
+                                $options_sg = get_selectpicker('sg')
+                            @endphp
+                            @foreach ($options_sg as $sg)
+                                <option value="{{ $sg->code }}">{{ $sg->code }}</option>
+                            @endforeach --}}
+                        </select>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -117,15 +158,14 @@
                 <div class="row mb-6" id="iGroup-payCode">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="pay_code">Pay Code</label>
                     <div class="col-lg-8">
-                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="pay_code" id="pay_code" data-container="body" title="Pilih pay code karyawan ..."></select>
-                    </div>
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="row mb-6" id="iGroup-shiftGroup" style="display: none;">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="shift_group">Shift Group</label>
-                    <div class="col-lg-8">
-                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="shift_group" id="shift_group" data-container="body" title="Pilih shift group karyawan ..."></select>
+                        <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="pay_code" id="pay_code" data-container="body" title="Pilih pay code karyawan ...">
+                            @php
+                                $options_paycode = get_selectpicker('paycode')
+                            @endphp
+                            @foreach ($options_paycode as $paycode)
+                                <option value="{{ $paycode->code }}">{{ $paycode->code }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -135,15 +175,16 @@
                     <div class="col-lg-8">
                         <div class="form-check form-switch form-check-custom form-check-solid mb-3">
                             <input class="form-check-input" type="checkbox" id="is_daily" name="is_daily" />
-                            <label class="form-check-label" for="is_daily"></label>
+                            <label class="form-check-label" for="is_daily">TIDAK</label>
                         </div>
                         <!--begin::Input group-->
-                        <div class="mb-3" id="iGroup-dailyBasic" style="display: none;">
+                        <div class="mb-3 hide-add" id="iGroup-dailyBasic" style="display: none;">
                             <label class="col-form-label required fw-bold fs-6" for="daily_basic">Daily Basic</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="daily_basic" id="daily_basic" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="daily_basic" id="daily_basic" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
@@ -158,162 +199,177 @@
                             <label class="col-form-label required fw-bold fs-6" for="basic_salary">Basic Salary</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="basic_salary" id="basic_salary" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="basic_salary" id="basic_salary" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>4500000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="ot_rate">OT Rate</label>
+                            <label class="col-form-label fw-bold fs-6" for="ot_rate">OT Rate</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="ot_rate" id="ot_rate" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="ot_rate" id="ot_rate" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>50000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="attendance_fee">Tunjangan Kehadiran</label>
+                            <label class="col-form-label fw-bold fs-6" for="attendance_fee">Tunjangan Kehadiran</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="attendance_fee" id="attendance_fee" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="attendance_fee" id="attendance_fee" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="leave_day">Leave Day</label>
+                            <label class="col-form-label fw-bold fs-6" for="leave_day">Leave Day</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="leave_day" id="leave_day" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="leave_day" id="leave_day" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="premi_sore">Premi Sore</label>
+                            <label class="col-form-label fw-bold fs-6" for="premi_sore">Premi Sore</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="premi_sore" id="premi_sore" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="premi_sore" id="premi_sore" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="premi_malam">Premi Malam</label>
+                            <label class="col-form-label fw-bold fs-6" for="premi_malam">Premi Malam</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="premi_malam" id="premi_malam" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="premi_malam" id="premi_malam" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="thr">THR</label>
+                            <label class="col-form-label fw-bold fs-6" for="thr">THR</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="thr" id="thr" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="thr" id="thr" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="transport">Transport</label>
+                            <label class="col-form-label fw-bold fs-6" for="transport">Transport</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="transport" id="transport" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="transport" id="transport" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="uang_cuti">Uang Cuti</label>
+                            <label class="col-form-label fw-bold fs-6" for="uang_cuti">Uang Cuti</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="uang_cuti" id="uang_cuti" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="uang_cuti" id="uang_cuti" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="uang_makan">Uang Makan</label>
+                            <label class="col-form-label fw-bold fs-6" for="uang_makan">Uang Makan</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="uang_makan" id="uang_makan" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="uang_makan" id="uang_makan" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="bonus">Bonus</label>
+                            <label class="col-form-label fw-bold fs-6" for="bonus">Bonus</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="bonus" id="bonus" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="bonus" id="bonus" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="interim_location">Interim Location</label>
+                            <label class="col-form-label fw-bold fs-6" for="interim_location">Interim Location</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="interim_location" id="interim_location" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="interim_location" id="interim_location" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="tunjangan_jabatan">Tunjangan Jabatan</label>
+                            <label class="col-form-label fw-bold fs-6" for="tunjangan_jabatan">Tunjangan Jabatan</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="tunjangan_jabatan" id="tunjangan_jabatan" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="tunjangan_jabatan" id="tunjangan_jabatan" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="p_biaya_fasilitas">Potongan Biaya Fasilitas</label>
+                            <label class="col-form-label fw-bold fs-6" for="p_biaya_fasilitas">Potongan Biaya Fasilitas</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="p_biaya_fasilitas" id="p_biaya_fasilitas" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="p_biaya_fasilitas" id="p_biaya_fasilitas" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
-                            <label class="col-form-label required fw-bold fs-6" for="pengobatan">Pengobatan</label>
+                            <label class="col-form-label fw-bold fs-6" for="pengobatan">Pengobatan</label>
                             <div class="input-group input-group-solid mb-2">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="pengobatan" id="pengobatan" placeholder="0" />
+                                <input type="text" class="form-control form-control-lg form-control-solid zero-money" name="pengobatan" id="pengobatan" placeholder="0" />
                             </div>
+                            <div class="form-text">*) contoh: <code>100000</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
@@ -328,6 +384,7 @@
                         <div class="mb-3">
                             <label class="col-form-label required fw-bold fs-6" for="bank_name">Nama Bank</label>
                             <input type="text" name="bank_name" id="bank_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama bank ..." />
+                            <div class="form-text">*) contoh: <code>BANK MANDIRI</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
@@ -336,13 +393,15 @@
                         <div class="mb-3">
                             <label class="col-form-label required fw-bold fs-6" for="account_name">Nama Akun Bank</label>
                             <input type="text" name="account_name" id="account_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isikan nama akun bank ..." />
+                            <div class="form-text">*) contoh: <code>ARI WIJAYA</code></div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <!--begin::Input group-->
                         <div class="mb-3">
                             <label class="col-form-label required fw-bold fs-6" for="account_number">No. Rekening Bank</label>
-                            <input type="text" name="account_number" id="account_number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-17" maxlength="17" placeholder="Isikan no. rekening bank ..." />
+                            <input type="text" name="account_number" id="account_number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-16" maxlength="16" placeholder="Isikan no. rekening bank ..." />
+                            <div class="form-text">*) contoh: <code>1234567890</code></div>
                         </div>
                         <!--end::Input group-->
                     </div>
@@ -354,7 +413,7 @@
                     <div class="col-lg-8">
                         <div class="form-check form-switch form-check-custom form-check-solid mb-3">
                             <input class="form-check-input" type="checkbox" id="work_status" name="work_status" />
-                            <label class="form-check-label" for="work_status"></label>
+                            <label class="form-check-label" for="work_status">NON ACTIVE</label>
                         </div>
                     </div>
                 </div>
@@ -363,7 +422,7 @@
             <!--end::Card body-->
             <!--begin::Actions-->
             <div class="card-footer d-flex justify-content-end py-6 px-9">
-                <button type="button" class="btn btn-light btn-active-light-danger me-2" id="btn-reset" onclick="_clearFormProject();"><i class="las la-redo-alt fs-1 me-3"></i>Batal</button>
+                <button type="button" class="btn btn-light btn-active-light-danger me-2" id="btn-reset" onclick="_clearFormManpower();"><i class="las la-redo-alt fs-1 me-3"></i>Batal</button>
                 <button type="button" class="btn btn-primary" id="btn-save"><i class="las la-save fs-1 me-3"></i>Simpan</button>
             </div>
             <!--end::Actions-->

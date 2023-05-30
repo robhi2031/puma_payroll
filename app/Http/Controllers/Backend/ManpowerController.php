@@ -64,6 +64,7 @@ class ManpowerController extends Controller
             '/dist/plugins/bootstrap-file-input/js/fileinput.min.js',
             '/dist/plugins/bootstrap-file-input/themes/bs5/theme.min.js',
             '/dist/plugins/bootstrap-file-input/themes/explorer-fa5/theme.min.js',
+            '/dist/js/jquery.mask.min.js',
             '/dist/js/backend_app.init.js',
             '/scripts/backend/manage_manpower.init.js'
         );
@@ -81,7 +82,7 @@ class ManpowerController extends Controller
     {
         if(isset($request->idp)){
             try {
-                $getRow = ManPower::selectRaw("man_power.*")
+                $getRow = ManPower::selectRaw("man_power.*, b.name AS project_name, c.name AS job_position, d.bank_name, d.account_name, d.account_number, d.is_active")
                     ->leftJoin('project AS b', 'b.code', '=', 'man_power.project_code')
                     ->leftJoin('job_position AS c', 'c.code', '=', 'man_power.jobposition_code')
                     ->leftJoin('bank_account AS d', 'd.id', '=', 'man_power.fid_bank_account')
