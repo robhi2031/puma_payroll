@@ -497,9 +497,9 @@ $("#btn-save").on("click", function (e) {
             let target = document.querySelector("#card-formManpower"),
             blockUi = new KTBlockUI(target, { message: messageBlockUi });
             blockUi.block(), blockUi.destroy();
-            let formData = new FormData($("#form-project")[0]), ajax_url = base_url+ "api/manage_project/store";
+            let formData = new FormData($("#form-project")[0]), ajax_url = base_url+ "api/manage_manpower/store";
             if(save_method == 'update_project') {
-                ajax_url = base_url+ "api/manage_project/update";
+                ajax_url = base_url+ "api/manage_manpower/update";
             }
             $.ajax({
                 url: ajax_url,
