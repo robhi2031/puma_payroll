@@ -89,6 +89,23 @@ class ManpowerController extends Controller
                     ->where('man_power.id', $request->idp)
                     ->first();
                 if($getRow != null){
+                    $getRow->rp_daily_basic = numberFormat($getRow->daily_basic);
+                    $getRow->rp_basic_salary = numberFormat($getRow->basic_salary);
+                    $getRow->rp_ot_rate = numberFormat($getRow->ot_rate);
+                    $getRow->rp_attendance_fee = numberFormat($getRow->attendance_fee);
+                    $getRow->rp_leave_day = numberFormat($getRow->leave_day);
+                    $getRow->rp_premi_sore = numberFormat($getRow->premi_sore);
+                    $getRow->rp_premi_malam = numberFormat($getRow->premi_malam);
+                    $getRow->rp_thr = numberFormat($getRow->thr);
+                    $getRow->rp_transport = numberFormat($getRow->transport);
+                    $getRow->rp_uang_cuti = numberFormat($getRow->uang_cuti);
+                    $getRow->rp_uang_makan = numberFormat($getRow->uang_makan);
+                    $getRow->rp_bonus = numberFormat($getRow->bonus);
+                    $getRow->rp_interim_location = numberFormat($getRow->interim_location);
+                    $getRow->rp_tunjangan_jabatan = numberFormat($getRow->tunjangan_jabatan);
+                    $getRow->rp_p_biaya_fasilitas = numberFormat($getRow->p_biaya_fasilitas);
+                    $getRow->rp_pengobatan = numberFormat($getRow->pengobatan);
+
                     return jsonResponse(true, 'Success', 200, $getRow);
                 } else {
                     return jsonResponse(false, "Credentials not match", 401);
@@ -149,43 +166,80 @@ class ManpowerController extends Controller
     public function store(Request $request) {
         $userSesIdp = Auth::user()->id;
         $form = [
-            'code' => 'required|max:12',
-            'name' => 'required|max:225',
-            'desc' => 'required|max:255',
-            'client' => 'required|max:225',
-            'location' => 'required|max:225',
-            'start_date' => 'required|max:10',
-            'end_date' => 'required|max:10',
-            'status' => 'required',
+            'name' => 'required|max:150',
+            'email' => 'required',
+            'project_code' => 'required',
+            'jobposition_code' => 'required',
+            'department' => 'required|max:150',
+            'npwp' => 'required|max:25',
+            'kpj' => 'required|max:25',
+            'kis' => 'required|max:25',
+            'marital_status' => 'required',
+            'shift_code' => 'required',
+            'pay_code' => 'required',
+            'basic_salary' => 'required',
+            'bank_name' => 'required|max:150',
+            'account_name' => 'required|max:150',
+            'account_number' => 'required|max:16',
         ];
         DB::beginTransaction();
         $request->validate($form);
         try {
-            $code = strtoupper($request->code);
-            if(Project::where('code', $code)->exists()) {
-                addToLog('Data cannot be saved, the same project code already exists in the system');
-                return jsonResponse(false, 'Gagal menambahkan data, kode proyek yang sama sudah ada pada sistem. Coba gunakan kode yang berbeda', 200, array('error_code' => 'code_available'));
+            $email = $request->email;
+            if(ManPower::where('email', $email)->exists()) {
+                addToLog('Data cannot be saved, the same manpower email already exists in the system');
+                return jsonResponse(false, 'Gagal menambahkan data, Email yang sama sudah ada pada sistem. Coba gunakan email yang berbeda', 200, array('error_code' => 'email_available'));
             }
-            $start_date = str_replace('/', '-', $request->start_date);
-            $start_date = date('Y-m-d', strtotime($start_date));
-            $end_date = str_replace('/', '-', $request->end_date);
-            $end_date = date('Y-m-d', strtotime($end_date));
-            //array data
-            $data = array(
-                'code' => $code,
-                'name' => $request->name,
-                'desc' => $request->desc,
-                'client' => $request->client,
-                'location' => $request->location,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'status' => $request->status,
+            //Array Akun Bank
+            $dataBankAccount = array(
+                'bank_name' => strtoupper($request->bank_name),
+                'account_name' => strtoupper($request->account_name),
+                'account_number' => $request->account_number,
                 'user_add' => $userSesIdp
             );
-            Project::insert($data);
-            addToLog('Project has been successfully added');
+            $bankAccountId = BankAccount::insertGetId($dataBankAccount);
+            addToLog('Bank account has been successfully added');
+            //array data
+            $data = array(
+                'pju_bn' => $this->generated_pjubn(),
+                'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
+                'name' => $request->name,
+                'email' => $email,
+                'project_code' => $request->project_code,
+                'jobposition_code' => $request->jobposition_code,
+                'department' => $request->department,
+                'npwp' => $request->npwp,
+                'kpj' => $request->kpj,
+                'kis' => $request->kis,
+                'marital_status' => $request->marital_status,
+                'shift_code' => $request->shift_code,
+                'pay_code' => $request->pay_code,
+                'shift_group' => $request->shift_group,
+                'is_daily' => isset($request->is_daily) ? 'Y' : 'N',
+                'daily_basic' => $request->daily_basic !='' ? str_replace(".", "", $request->daily_basic) : 0,
+                'basic_salary' => $request->basic_salary !='' ? str_replace(".", "", $request->basic_salary) : 0,
+                'ot_rate' => $request->ot_rate !='' ? str_replace(".", "", $request->ot_rate) : 0,
+                'attendance_fee' => $request->attendance_fee !='' ? str_replace(".", "", $request->attendance_fee) : 0,
+                'leave_day' => $request->leave_day !='' ? str_replace(".", "", $request->leave_day) : 0,
+                'premi_sore' => $request->premi_sore !='' ? str_replace(".", "", $request->premi_sore) : 0,
+                'premi_malam' => $request->premi_malam !='' ? str_replace(".", "", $request->premi_malam) : 0,
+                'thr' => $request->thr !='' ? str_replace(".", "", $request->thr) : 0,
+                'transport' => $request->transport !='' ? str_replace(".", "", $request->transport) : 0,
+                'uang_cuti' => $request->uang_cuti !='' ? str_replace(".", "", $request->uang_cuti) : 0,
+                'uang_makan' => $request->uang_makan !='' ? str_replace(".", "", $request->uang_makan) : 0,
+                'bonus' => $request->bonus !='' ? str_replace(".", "", $request->bonus) : 0,
+                'interim_location' => $request->interim_location !='' ? str_replace(".", "", $request->interim_location) : 0,
+                'tunjangan_jabatan' => $request->tunjangan_jabatan !='' ? str_replace(".", "", $request->tunjangan_jabatan) : 0,
+                'p_biaya_fasilitas' => $request->p_biaya_fasilitas !='' ? str_replace(".", "", $request->p_biaya_fasilitas) : 0,
+                'pengobatan' => $request->pengobatan !='' ? str_replace(".", "", $request->pengobatan) : 0,
+                'fid_bank_account' => $bankAccountId,
+                'work_status' => 'ACTIVE',
+                'user_add' => $userSesIdp
+            );
+            ManPower::insert($data);
+            addToLog('Manpower has been successfully added');
             DB::commit();
-            return jsonResponse(true, 'Proyek berhasil ditambahkan', 200);
+            return jsonResponse(true, 'Data Karyawan berhasil ditambahkan', 200);
         } catch (\Exception $exception) {
             DB::rollback();
             return jsonResponse(false, $exception->getMessage(), 401, [
@@ -253,8 +307,8 @@ class ManpowerController extends Controller
                     );
                     //Array Akun Bank
                     $dataBankAccount = array(
-                        'bank_name' => $row['bank_name'],
-                        'account_name' => $row['account_name'],
+                        'bank_name' => strtoupper($row['bank_name']),
+                        'account_name' => strtoupper($row['account_name']),
                         'account_number' => $row['account_number'],
                     );
                     //cek & get manpower
@@ -336,36 +390,77 @@ class ManpowerController extends Controller
     public function update(Request $request) {
         $userSesIdp = Auth::user()->id;
         $form = [
-            'name' => 'required|max:50',
+            'name' => 'required|max:150',
+            'email' => 'required',
+            'project_code' => 'required',
+            'jobposition_code' => 'required',
+            'department' => 'required|max:150',
+            'npwp' => 'required|max:25',
+            'kpj' => 'required|max:25',
+            'kis' => 'required|max:25',
+            'marital_status' => 'required',
+            'shift_code' => 'required',
+            'pay_code' => 'required',
+            'basic_salary' => 'required',
+            'bank_name' => 'required|max:150',
+            'account_name' => 'required|max:150',
+            'account_number' => 'required|max:16',
         ];
         DB::beginTransaction();
         $request->validate($form);
         try {
-            $code = strtoupper($request->code);
-            if(Project::where('code', $code)->where('id', '!=' , $request->id)->exists()) {
-                addToLog('Data cannot be updated, the same project code already exists in the system');
-                return jsonResponse(false, 'Gagal memperbarui data, kode proyek yang sama sudah ada pada sistem. Coba gunakan kode yang berbeda', 200, array('error_code' => 'code_available'));
+            $email = $request->email;
+            if(ManPower::where('email', $email)->where('id', '!=' , $request->id)->exists()) {
+                addToLog('Data cannot be updated, the same manpower email already exists in the system');
+                return jsonResponse(false, 'Gagal memperbarui data, Email yang sama sudah ada pada sistem. Coba gunakan email yang berbeda', 200, array('error_code' => 'email_available'));
             }
-            $start_date = str_replace('/', '-', $request->start_date);
-            $start_date = date('Y-m-d', strtotime($start_date));
-            $end_date = str_replace('/', '-', $request->end_date);
-            $end_date = date('Y-m-d', strtotime($end_date));
-            //array data
-            $data = array(
-                'code' => $code,
-                'name' => $request->name,
-                'desc' => $request->desc,
-                'client' => $request->client,
-                'location' => $request->location,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'status' => $request->status,
+            //Array Akun Bank
+            $dataBankAccount = array(
+                'bank_name' => strtoupper($request->bank_name),
+                'account_name' => strtoupper($request->account_name),
+                'account_number' => $request->account_number,
                 'user_updated' => $userSesIdp
             );
-            Project::whereId($request->id)->update($data);
-            addToLog('Project has been successfully updated');
+            BankAccount::whereId($request->fid_bank_account)->update($dataBankAccount);
+            addToLog('Bank account has been successfully updated');
+            //array data
+            $data = array(
+                'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
+                'name' => $request->name,
+                'email' => $email,
+                'project_code' => $request->project_code,
+                'jobposition_code' => $request->jobposition_code,
+                'department' => $request->department,
+                'npwp' => $request->npwp,
+                'kpj' => $request->kpj,
+                'kis' => $request->kis,
+                'marital_status' => $request->marital_status,
+                'shift_code' => $request->shift_code,
+                'pay_code' => $request->pay_code,
+                'shift_group' => $request->shift_group,
+                'is_daily' => isset($request->is_daily) ? 'Y' : 'N',
+                'daily_basic' => $request->daily_basic !='' ? str_replace(".", "", $request->daily_basic) : 0,
+                'basic_salary' => $request->basic_salary !='' ? str_replace(".", "", $request->basic_salary) : 0,
+                'ot_rate' => $request->ot_rate !='' ? str_replace(".", "", $request->ot_rate) : 0,
+                'attendance_fee' => $request->attendance_fee !='' ? str_replace(".", "", $request->attendance_fee) : 0,
+                'leave_day' => $request->leave_day !='' ? str_replace(".", "", $request->leave_day) : 0,
+                'premi_sore' => $request->premi_sore !='' ? str_replace(".", "", $request->premi_sore) : 0,
+                'premi_malam' => $request->premi_malam !='' ? str_replace(".", "", $request->premi_malam) : 0,
+                'thr' => $request->thr !='' ? str_replace(".", "", $request->thr) : 0,
+                'transport' => $request->transport !='' ? str_replace(".", "", $request->transport) : 0,
+                'uang_cuti' => $request->uang_cuti !='' ? str_replace(".", "", $request->uang_cuti) : 0,
+                'uang_makan' => $request->uang_makan !='' ? str_replace(".", "", $request->uang_makan) : 0,
+                'bonus' => $request->bonus !='' ? str_replace(".", "", $request->bonus) : 0,
+                'interim_location' => $request->interim_location !='' ? str_replace(".", "", $request->interim_location) : 0,
+                'tunjangan_jabatan' => $request->tunjangan_jabatan !='' ? str_replace(".", "", $request->tunjangan_jabatan) : 0,
+                'p_biaya_fasilitas' => $request->p_biaya_fasilitas !='' ? str_replace(".", "", $request->p_biaya_fasilitas) : 0,
+                'pengobatan' => $request->pengobatan !='' ? str_replace(".", "", $request->pengobatan) : 0,
+                'user_updated' => $userSesIdp
+            );
+            ManPower::whereId($request->id)->update($data);
+            addToLog('Manpower has been successfully updated');
             DB::commit();
-            return jsonResponse(true, 'Project berhasil diperbarui', 200);
+            return jsonResponse(true, 'Data karyawan berhasil diperbarui', 200);
         } catch (\Exception $exception) {
             DB::rollback();
             return jsonResponse(false, $exception->getMessage(), 401, [

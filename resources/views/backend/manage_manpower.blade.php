@@ -14,7 +14,7 @@
         <!--end::Card header-->
         <!--begin::Form-->
         <form id="form-manpower" class="form" onsubmit="return false">
-            <input type="hidden" name="id" />
+            <input type="hidden" name="id" /><input type="hidden" name="fid_bank_account" />
             <!--begin::Card body-->
             <div class="card-body">
                 <!--begin::Input group-->
@@ -27,9 +27,9 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="ext_btn">EXT. BN</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="ext_bn">EXT. BN</label>
                     <div class="col-lg-8">
-                        <input type="text" name="ext_btn" id="ext_btn" class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="16" placeholder="Isi EXT. BN karyawan ..." />
+                        <input type="text" name="ext_bn" id="ext_bn" class="form-control form-control-lg form-control-solid no-space mb-3 mb-lg-0" maxlength="16" placeholder="Isi EXT. BN karyawan ..." />
                         <div class="form-text">*) Contoh: <code>VALE-001</code></div>
                         <div class="form-text">*) Jika tidak ada, kosongkan saja</div>
                     </div>
@@ -408,11 +408,11 @@
                 </div>
                 <!--end::Akun Bank Perusahaan-->
                 <!--begin::Input group-->
-                <div class="row mt-12 mb-6" id="iGroup-workStatus">
+                <div class="row mt-12 mb-6 hide-add" id="iGroup-workStatus" style="display: none;">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="work_status">Status</label>
                     <div class="col-lg-8">
                         <div class="form-check form-switch form-check-custom form-check-solid mb-3">
-                            <input class="form-check-input" type="checkbox" id="work_status" name="work_status" />
+                            <input class="form-check-input" type="checkbox" id="work_status" name="work_status" disabled />
                             <label class="form-check-label" for="work_status">NON ACTIVE</label>
                         </div>
                     </div>

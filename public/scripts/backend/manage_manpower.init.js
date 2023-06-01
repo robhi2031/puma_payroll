@@ -246,7 +246,7 @@ const _cboJobPositionSelest2 = () => {
 //Clear Form Manpower
 const _clearFormManpower = () => {
     if (save_method == "" || save_method == "add_manpower") {
-        $("#form-manpower")[0].reset(), $('[name="id"]').val(""),
+        $("#form-manpower")[0].reset(), $('[name="id"]').val(""), $('[name="fid_bank_account"]').val(""),
         $("#project_code").html('').trigger('change'), _cboProjectSelest2(),
         $("#jobposition_code").html('').trigger('change'), _cboJobPositionSelest2(),
         $("#card-formManpower .selectpicker").selectpicker('val', '');
@@ -268,7 +268,7 @@ const _addManpower = () => {
 //Edit Manpower
 const _editManpower = (idp) => {
     save_method = "update_manpower";
-    $("#form-manpower")[0].reset(), $('[name="id"]').val(""),
+    $("#form-manpower")[0].reset(), $('[name="id"]').val(""), $('[name="fid_bank_account"]').val(""),
     $("#project_code").html('').trigger('change'), _cboProjectSelest2(),
     $("#jobposition_code").html('').trigger('change'), _cboJobPositionSelest2(),
     $('#card-formManpower .hide-add').hide();
@@ -285,11 +285,10 @@ const _editManpower = (idp) => {
         },
         success: function (data) {
             blockUi.release(), blockUi.destroy();
-            console.log(data);
             if (data.status == true) {
-                $('[name="id"]').val(data.row.id),
+                $('[name="id"]').val(data.row.id), $('[name="fid_bank_account"]').val(data.row.fid_bank_account),
                 $('#pju_bn').val(data.row.pju_bn), $('#iGroup-pjuBn').show(),
-                $('#ext_btn').val(data.row.ext_btn),
+                $('#ext_bn').val(data.row.ext_bn),
                 $('#name').val(data.row.name),
                 $('#email').val(data.row.email);
 
@@ -313,26 +312,27 @@ const _editManpower = (idp) => {
                     $('#iGroup-isDaily .form-check-label').text('YA');
                     $('#iGroup-dailyBasic').show();
                 }
-                $('#daily_basic').val(data.row.daily_basic),
-                $('#basic_salary').val(data.row.basic_salary),
-                $('#ot_rate').val(data.row.ot_rate),
-                $('#attendance_fee').val(data.row.attendance_fee),
-                $('#leave_day').val(data.row.leave_day),
-                $('#premi_sore').val(data.row.premi_sore),
-                $('#premi_malam').val(data.row.premi_malam),
-                $('#thr').val(data.row.thr),
-                $('#transport').val(data.row.transport),
-                $('#uang_cuti').val(data.row.uang_cuti),
-                $('#uang_makan').val(data.row.uang_makan),
-                $('#bonus').val(data.row.bonus),
-                $('#interim_location').val(data.row.interim_location),
-                $('#tunjangan_jabatan').val(data.row.tunjangan_jabatan),
-                $('#p_biaya_fasilitas').val(data.row.p_biaya_fasilitas),
-                $('#pengobatan').val(data.row.pengobatan),
+                $('#daily_basic').val(data.row.rp_daily_basic),
+                $('#basic_salary').val(data.row.rp_basic_salary),
+                $('#ot_rate').val(data.row.rp_ot_rate),
+                $('#attendance_fee').val(data.row.rp_attendance_fee),
+                $('#leave_day').val(data.row.rp_leave_day),
+                $('#premi_sore').val(data.row.rp_premi_sore),
+                $('#premi_malam').val(data.row.rp_premi_malam),
+                $('#thr').val(data.row.rp_thr),
+                $('#transport').val(data.row.rp_transport),
+                $('#uang_cuti').val(data.row.rp_uang_cuti),
+                $('#uang_makan').val(data.row.rp_uang_makan),
+                $('#bonus').val(data.row.rp_bonus),
+                $('#interim_location').val(data.row.rp_interim_location),
+                $('#tunjangan_jabatan').val(data.row.rp_tunjangan_jabatan),
+                $('#p_biaya_fasilitas').val(data.row.rp_p_biaya_fasilitas),
+                $('#pengobatan').val(data.row.rp_pengobatan),
                 $('#bank_name').val(data.row.bank_name),
                 $('#account_name').val(data.row.account_name),
                 $('#account_number').val(data.row.account_number);
 
+                $('#iGroup-workStatus').show();
                 $('#work_status').prop('checked', false);
                 $('#iGroup-workStatus .form-check-label').text('NON ACTIVE');
                 if(data.row.work_status == 'ACTIVE') {
@@ -390,14 +390,14 @@ $("#btn-save").on("click", function (e) {
         email.focus();
         $('#btn-save').html('<i class="las la-save fs-1 me-3"></i>Simpan').attr('disabled', false);
         return false;
-    } if (project_code.val() == "") {
-        toastr.error("Proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        project_code.focus();
+    } if (project_code.val() == '' || project_code.val() == null) {
+        toastr.error('Kategori postingan masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        project_code.focus().select2('open');
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (jobposition_code.val() == "") {
-        toastr.error("Job position karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        jobposition_code.focus();
+    } if (jobposition_code.val() == '' || jobposition_code.val() == null) {
+        toastr.error('Kategori postingan masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        jobposition_code.focus().select2('open');
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
     } if (department.val() == "") {
@@ -497,8 +497,8 @@ $("#btn-save").on("click", function (e) {
             let target = document.querySelector("#card-formManpower"),
             blockUi = new KTBlockUI(target, { message: messageBlockUi });
             blockUi.block(), blockUi.destroy();
-            let formData = new FormData($("#form-project")[0]), ajax_url = base_url+ "api/manage_manpower/store";
-            if(save_method == 'update_project') {
+            let formData = new FormData($("#form-manpower")[0]), ajax_url = base_url+ "api/manage_manpower/store";
+            if(save_method == 'update_manpower') {
                 ajax_url = base_url+ "api/manage_manpower/update";
             }
             $.ajax({
@@ -519,7 +519,7 @@ $("#btn-save").on("click", function (e) {
                             icon: "success",
                             allowOutsideClick: false,
                         }).then(function (result) {
-                            _closeCard('form_project'), _loadDtProject();
+                            _closeCard('form_manpower'), _loadDtManpower();
                         });
                     } else {
                         Swal.fire({
@@ -528,8 +528,8 @@ $("#btn-save").on("click", function (e) {
                             icon: "warning",
                             allowOutsideClick: false,
                         }).then(function (result) {
-                            if (data.row.error_code == "code_available") {
-                                code.focus();
+                            if (data.row.error_code == "email_available") {
+                                email.focus();
                             }
                         });
                     }
@@ -567,7 +567,15 @@ jQuery(document).ready(function() {
     $('#npwp').mask('00.000.000.0-000.000');
     $('#kpj').mask('000000000000');
     $('#kis').mask('00000000000000');
-    $('.zero-money').mask('000000000');
+    $('.zero-money').mask("#.##0,00", {reverse: true});
+    // $('.zero-money').change(function() {
+    //     if($(this).val() != '' && $(this).val() != null) {
+    //         if($(this).val().indexOf(",") < 0) {
+    //             let value = $(this).val();
+    //             $(this).val(value+ ',00');
+    //         }
+    //     }
+    // });
     $('.mask-16').mask('0000000000000000');
     //Change Check Switch
     $("#is_daily").change(function() {

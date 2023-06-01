@@ -100,6 +100,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/manage_manpower/show', [ManpowerController::class, 'show'])->name('show_manpower');
         Route::get('/manage_manpower/select2_project', [ManpowerController::class, 'select2_project'])->name('select2_project_manpower');
         Route::get('/manage_manpower/select2_jobposition', [ManpowerController::class, 'select2_jobposition'])->name('select2_jobposition_manpower');
+        Route::post('/manage_manpower/store', [ManpowerController::class, 'store'])->name('store_manpower');
+        Route::post('/manage_manpower/update', [ManpowerController::class, 'update'])->name('update_manpower');
         Route::post('/manage_manpower/import', [ManpowerController::class, 'import'])->name('import_manpower');
         //User Profil
         Route::get('/user_info', [CommonController::class, 'user_info'])->name('user_info');

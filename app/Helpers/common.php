@@ -383,3 +383,17 @@ if ( ! function_exists('get_selectpicker')){
     }
 }
 /* end: Selectpicker */
+/* start: Number Format */
+if ( ! function_exists('numberFormat')){
+    function numberFormat($number){
+        $numberAr = explode('.', (string)$number);
+        $count = 0;
+        if (2 === count($numberAr)) {
+            $count = strlen($numberAr[1]);
+        }
+
+        $result = number_format($number, $count, ',', '.');
+        return $result;
+    }
+}
+/* end: Selectpicker */
