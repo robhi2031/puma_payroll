@@ -549,6 +549,39 @@ $("#btn-save").on("click", function (e) {
         }
     });
 });
+//Detail Manpower
+const _dtlManpower = (idp) => {
+    let target = document.querySelector("#card-formManpower"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+    blockUi.block(), blockUi.destroy();
+    //Ajax load from ajax
+    $.ajax({
+        url: base_url+ 'api/manage_manpower/show',
+        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+        type: 'GET',
+        dataType: 'JSON',
+        data: {
+            idp,
+        },
+        success: function (data) {
+            blockUi.release(), blockUi.destroy();
+            if (data.status == true) {
+                $('#modal-dtlManpower .modal-header .modal-title').html(`<i class="bi bi-person-lines-fill fs-2 text-gray-900 me-2"></i> Detail - Nama Karyawan Yang Dilihat`);
+                $('#modal-dtlManpower').modal('show');
+            } else {
+                Swal.fire({title: "Ooops!", text: data.message, icon: "warning", allowOutsideClick: false});
+            }
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            blockUi.release(), blockUi.destroy();
+            console.log("load data is error!");
+            Swal.fire({
+                title: "Ooops!",
+                text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.",
+                icon: "error",
+                allowOutsideClick: false,
+            });
+        },
+    });
+}
 //Class Initialization
 jQuery(document).ready(function() {
     _loadDtManpower();

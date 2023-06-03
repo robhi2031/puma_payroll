@@ -498,6 +498,189 @@
         </div>
     </div>
     <!--end::Modal Import Data-->
+    <!--begin::Modal Detail Manpower-->
+    <div class="modal fade" id="modal-dtlManpower" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <h3 class="modal-title fw-bolder"></h3>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y">
+                    <!--begin::Scroll-->
+                    <div class="scroll-y me-n7 pe-7" data-kt-scroll="true"
+                        data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto"
+                        data-kt-scroll-offset="185px">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                <h1 class="page-heading text-dark fw-bold fs-3 mt-0 mb-3">
+                                    Identitas Karyawan
+                                </h1>
+                                <div class="border border-dashed border-gray-300 rounded fs-6 px-3 py-4">
+                                    <div class="mb-3">
+                                        <div class="fw-bold">PJU. BN</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">EXT. BN</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nama</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Email</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Project</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Job Position</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Departemen</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">NPWP</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">KPJ</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">KIS</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Marital Status</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Shift</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Pay Code</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <h1 class="page-heading text-dark fw-bold fs-3 mt-5 mb-3">
+                                        Data Akun Bank
+                                    </h1>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nama Bank</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nama Akun Bank</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nomor Rekening Bank</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <h1 class="page-heading text-dark fw-bold fs-3 mt-0 mb-3">
+                                    Salary & Tunjangan
+                                </h1>
+                                <div class="border border-dashed border-gray-300 rounded fs-6 px-3 py-4">
+                                    <div class="mb-3" id="g-dailyEmployee" style="display: none;">
+                                        <div class="fw-bold">Daily Employee</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Basic Salary</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">OT Rate</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Attendance Fee</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Leave Day</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Premi Sore</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Premi Malam</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">THR</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Transport</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Uang Cuti</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Uang Makan</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Bonus</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Interim Location</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Tunjangan Jabatan</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">P. Biaya Fasilitas</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Pengobatan</div>
+                                        <div class="text-gray-600">ID-45453423</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal body-->
+                <!--begin::Modal footer-->
+                <div class="modal-footer py-3">
+                    <!--begin::Actions-->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-light btn-active-light-danger btn-sm me-2"
+                            data-bs-dismiss="modal">
+                            <i class="las la-times fs-1 me-3"></i>Tutup
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </div>
+                <!--end::Modal footer-->
+            </div>
+        </div>
+    </div>
+    <!--end::Modal Detail Manpower-->
     <!--begin::List Table Data-->
     <div class="card shadow" id="card-dtManpower">
         <!--begin::Card header-->
