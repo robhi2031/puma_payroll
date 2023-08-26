@@ -46,7 +46,7 @@ class SystemInfoController extends Controller
             '/dist/plugins/summernote/lang/summernote-id-ID.min.js',
             '/dist/plugins/dropify-master/js/dropify.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_systeminfo.init.js'
+            '/dist/scripts/backend/manage_systeminfo.init.js'
         );
 
         addToLog('Mengakses halaman ' .$data['title']. ' - Backend');
