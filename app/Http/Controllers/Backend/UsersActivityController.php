@@ -49,7 +49,7 @@ class UsersActivityController extends Controller
             '/dist/plugins/custom/datatables/datatables.bundle.v817.js',
             '/dist/plugins/bootstrap-select/js/bootstrap-select.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/users_activity.init.js'
+            '/dist/scripts/backend/users_activity.init.js'
         );
 
         addToLog('Mengakses halaman Kelola aktivitas user - Backend');
