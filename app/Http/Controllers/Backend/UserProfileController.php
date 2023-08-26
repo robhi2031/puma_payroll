@@ -36,7 +36,7 @@ class UserProfileController extends Controller
             '/dist/js/jquery.mask.min.js',
             '/dist/plugins/Magnific-Popup/jquery.magnific-popup.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/user_profile.init.js'
+            '/dist/scripts/backend/user_profile.init.js'
         );
 
         addToLog('Mengakses halaman ' .$getUserSession->name. ' on User Profile - Backend');
