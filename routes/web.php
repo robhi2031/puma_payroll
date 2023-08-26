@@ -26,6 +26,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/artisan', function() {
+    Artisan::call('key:generate');
+    Artisan::call('cache:clear');
+    Artisan::call('route:cache');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    Artisan::call('config:cache');
+    return 'DONE';
+});
 // Auth Login
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
