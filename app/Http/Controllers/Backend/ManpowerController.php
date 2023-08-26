@@ -66,7 +66,7 @@ class ManpowerController extends Controller
             '/dist/plugins/bootstrap-file-input/themes/explorer-fa5/theme.min.js',
             '/dist/js/jquery.mask.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_manpower.init.js'
+            '/dist/scripts/backend/manage_manpower.init.js'
         );
 
         addToLog('Mengakses halaman Kelola Data Karyawan - Backend');
