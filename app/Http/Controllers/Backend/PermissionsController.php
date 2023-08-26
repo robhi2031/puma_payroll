@@ -58,7 +58,7 @@ class PermissionsController extends Controller
             '/dist/plugins/bootstrap-select/js/bootstrap-select.min.js',
             '/dist/js/jquery.mask.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_permissions.init.js'
+            '/dist/scripts/backend/manage_permissions.init.js'
         );
 
         addToLog('Mengakses halaman Kelola Permissions System - Backend');
