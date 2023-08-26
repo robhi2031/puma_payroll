@@ -41,7 +41,7 @@ class DashboardController extends Controller
         $data['js'] = array(
             '/dist/plugins/Magnific-Popup/jquery.magnific-popup.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/main.init.js'
+            '/dist/scripts/backend/main.init.js'
         );
 
         addToLog('Mengakses halaman Dashboard - Backend');
