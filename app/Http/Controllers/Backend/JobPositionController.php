@@ -51,7 +51,7 @@ class JobPositionController extends Controller
             '/dist/plugins/custom/datatables/datatables.bundle.v817.js',
             '/dist/plugins/bootstrap-select/js/bootstrap-select.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_jobposition.init.js'
+            '/dist/scripts/backend/manage_jobposition.init.js'
         );
 
         addToLog('Mengakses halaman Kelola Data Posisi Pekerjaan - Backend');
