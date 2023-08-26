@@ -54,7 +54,7 @@ class RolesController extends Controller
             '/dist/plugins/custom/datatables/datatables.bundle.v817.js',
             '/dist/plugins/bootstrap-select/js/bootstrap-select.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_roles.init.js'
+            '/dist/scripts/backend/manage_roles.init.js'
         );
 
         addToLog('Mengakses halaman Kelola Roles System - Backend');
