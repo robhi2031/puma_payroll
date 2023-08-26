@@ -59,7 +59,7 @@ class UsersController extends Controller
             '/dist/plugins/Magnific-Popup/jquery.magnific-popup.min.js',
             '/dist/js/jquery.mask.min.js',
             '/dist/js/backend_app.init.js',
-            '/scripts/backend/manage_users.init.js'
+            '/dist/scripts/backend/manage_users.init.js'
         );
 
         addToLog('Mengakses halaman Kelola Users - Backend');
