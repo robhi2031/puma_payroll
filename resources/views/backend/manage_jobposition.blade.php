@@ -17,7 +17,7 @@
         <input type="hidden" name="id" />
         <!--begin::Card body-->
         <div class="card-body">
-            <!--begin::Input group-->
+            <!--begin::Input group--
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="code">Kode</label>
                 <div class="col-lg-8">
