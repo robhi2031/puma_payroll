@@ -111,7 +111,7 @@
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="no_jamsostek">No. Jamsostek</label>
                 <div class="col-lg-8">
-                    <input type="text" name="no_jamsostek" id="no_jamsostek" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 mask-15" maxlength="15" placeholder="Isikan no. jamsostek perusahaan ..." />
+                    <input type="text" name="no_jamsostek" id="no_jamsostek" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="15" placeholder="Isikan no. jamsostek perusahaan ..." />
                 </div>
             </div>
             <!--end::Input group-->
