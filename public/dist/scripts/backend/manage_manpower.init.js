@@ -405,7 +405,7 @@ $("#btn-save").on("click", function (e) {
         department.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (npwp.val() == "") {
+    } /* if (npwp.val() == "") {
         toastr.error("No. pokok wajib pajak karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         npwp.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
@@ -420,7 +420,7 @@ $("#btn-save").on("click", function (e) {
         kis.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (marital_status.val() == "") {
+    } */ if (marital_status.val() == "") {
         toastr.error("Status pernikahan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         $('#iGroup-maritalStatus button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
 			$(this).removeClass('btn-danger').addClass('btn-primary');
@@ -442,11 +442,6 @@ $("#btn-save").on("click", function (e) {
 			$(this).removeClass('btn-danger').addClass('btn-primary');
 		});
         pay_code.focus();
-        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
-        return false;
-    } if (npwp.val() == "") {
-        toastr.error("No. pokok wajib pajak karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
-        npwp.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
     } if($('#is_daily').is(':checked')) {
