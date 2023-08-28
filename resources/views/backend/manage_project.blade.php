@@ -17,7 +17,7 @@
         <input type="hidden" name="id" />
         <!--begin::Card body-->
         <div class="card-body">
-            <!--begin::Input group-->
+            <!--begin::Input group--
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="code">Kode</label>
                 <div class="col-lg-8">
@@ -31,13 +31,13 @@
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
                 <div class="col-lg-8">
                     <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="225" placeholder="Isi nama proyek/ pekerjaan ..." />
-                    <div class="form-text">*) Contoh: <code>Explorasi Lokasi Tambang Bla-Bla PT. Ujung Kulon</code></div>
+                    <div class="form-text">*) Contoh: <code>Drilling Exploration at Rante Balla</code></div>
                 </div>
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="desc">Deskripsi</label>
+                <label class="col-lg-4 col-form-label fw-bold fs-6" for="desc">Deskripsi</label>
                 <div class="col-lg-8">
                     <textarea type="text" class="form-control form-control-solid" name="desc" id="desc" maxlength="255" rows="3" style="resize: none;" placeholder="Isi deskripsi proyek/ pekerjaan ..." ></textarea>
                 </div>
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <!--end::Input group-->
-            <!--begin::Input group-->
+            <!--begin::Input group--
             <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="start_date">Tanggal</label>
                 <div class="col-lg-8">
@@ -76,10 +76,12 @@
                 <label class="col-lg-4 col-form-label required fw-bold fs-6" for="status">Status</label>
                 <div class="col-lg-8">
                     <select class="show-tick form-select-solid selectpicker" data-width="100%" data-style="btn-sm btn-primary" name="status" id="status" data-container="body" title="Pilih status proyek/ pekerjaan ...">
-                        <option value="Not Started" data-icon="bi bi-dash-circle">Not Started</option>
+                        <!-- <option value="Not Started" data-icon="bi bi-dash-circle">Not Started</option>
                         <option value="In Progress" data-icon="bi bi-bootstrap-reboot">In Progress</option>
                         <option value="Completed" data-icon="bi bi-check2-circle">Completed</option>
-                        <option value="Stop" data-icon="bi bi-sign-stop">Stop</option>
+                        <option value="Stop" data-icon="bi bi-sign-stop">Stop</option> -->
+                        <option value="1" data-icon="bi bi-check2-circle">Aktif</option>
+                        <option value="0" data-icon="bi bi-sign-stop">Tidak Aktif</option>
                     </select>
                 </div>
             </div>
@@ -134,12 +136,12 @@
                 <thead>
                     <tr class="fw-bolder text-uppercase bg-light">
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Kode</th>
+                        {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">Kode</th> --}}
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Proyek</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Desk</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Klien</th>
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Lokasi</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Tgl. Proyek</th>
+                        {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">Tgl. Proyek</th> --}}
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Status</th>
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">Aksi</th>
                     </tr>
