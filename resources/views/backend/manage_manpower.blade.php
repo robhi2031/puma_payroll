@@ -83,7 +83,7 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="npwp">NPWP</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="npwp">NPWP</label>
                     <div class="col-lg-8">
                         <input type="text" name="npwp" id="npwp" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor pokok wajib pajak karyawan ..." />
                     </div>
@@ -91,7 +91,7 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="kpj">Nomor KPJ</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="kpj">Nomor KPJ</label>
                     <div class="col-lg-8">
                         <input type="text" name="kpj" id="kpj" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor kartu bpjs ketenagakerjaan karyawan ..." />
                     </div>
@@ -99,7 +99,7 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
-                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="kis">Nomor KIS</label>
+                    <label class="col-lg-4 col-form-label fw-bold fs-6" for="kis">Nomor KIS</label>
                     <div class="col-lg-8">
                         <input type="text" name="kis" id="kis" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="25" placeholder="Isi nomor kartu indonesia sehat karyawan ..." />
                     </div>
