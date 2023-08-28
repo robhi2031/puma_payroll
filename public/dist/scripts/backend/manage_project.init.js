@@ -23,12 +23,12 @@ const _loadDtProject = () => {
         pageResize: true,
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: "5%", className: "align-top text-center border px-2", searchable: false },
-            { data: 'code', name: 'code', width: "10%", className: "align-top border px-2" },
+            // { data: 'code', name: 'code', width: "10%", className: "align-top border px-2" },
             { data: 'name', name: 'name', width: "20%", className: "align-top border px-2" },
             { data: 'desc', name: 'desc', width: "20%", className: "align-top border px-2" },
             { data: 'client', name: 'client', width: "10%", className: "align-top border px-2" },
             { data: 'location', name: 'location', width: "10%", className: "align-top border px-2" },
-            { data: 'project_date', name: 'project_date', width: "15%", className: "align-top border px-2" },
+            // { data: 'project_date', name: 'project_date', width: "15%", className: "align-top border px-2" },
             { data: 'status', name: 'status', width: "5%", className: "align-top border px-2" },
             { data: 'action', name: 'action', width: "5%", className: "align-top text-center border px-2", orderable: false, searchable: false },
         ],
@@ -94,10 +94,10 @@ const _closeCard = (card) => {
 //Clear Form Project
 const _clearFormProject = () => {
     $("#card-formProject .selectpicker").selectpicker('val', '');
-    $("#card-formProject .date-flatpickr").flatpickr({
+    /*  $("#card-formProject .date-flatpickr").flatpickr({
         defaultDate: "",
         dateFormat: "d/m/Y"
-    });
+    }); */
     if (save_method == "" || save_method == "add_project") {
         $("#form-project")[0].reset(), $('[name="id"]').val("");
     } else {
@@ -117,7 +117,7 @@ const _addProject = () => {
 //Edit Project
 const _editProject = (idp) => {
     save_method = "update_project";
-    $("#form-project")[0].reset(), $('[name="id"]').val("");
+    $("#form-project")[0].reset(), $('[name="id"]').val(""), $("#card-formProject .selectpicker").selectpicker('val', '');
     let target = document.querySelector("#card-formProject"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
     blockUi.block(), blockUi.destroy();
     //Ajax load from ajax
@@ -132,17 +132,18 @@ const _editProject = (idp) => {
         success: function (data) {
             blockUi.release(), blockUi.destroy();
             if (data.status == true) {
-                $('[name="id"]').val(data.row.id), $('#code').val(data.row.code), $('#name').val(data.row.name),
-                $('#desc').val(data.row.desc), $('#client').val(data.row.client), $('#location').val(data.row.location);
-                $("#start_date").flatpickr({
+                $('[name="id"]').val(data.row.id),
+                // $('#code').val(data.row.code),
+                $('#name').val(data.row.name), $('#desc').val(data.row.desc), $('#client').val(data.row.client), $('#location').val(data.row.location);
+                /* $("#start_date").flatpickr({
                     defaultDate: data.row.start_date_indo,
                     dateFormat: "d/m/Y"
                 });
                 $("#end_date").flatpickr({
                     defaultDate: data.row.end_date_indo,
                     dateFormat: "d/m/Y"
-                });
-                $("#status").selectpicker('val', data.row.status);
+                }); */
+                $("#status").selectpicker('val', data.row.status.toString());
                 $("#card-formProject .card-header .card-title").html(
                     `<h3 class="fw-bolder fs-2 text-gray-900"><i class="bi bi-pencil-square fs-2 text-gray-900 me-2"></i>Form Edit Proyek</h3>`
                 ),
@@ -172,15 +173,15 @@ $("#form-project input").keyup(function (event) {
 $("#btn-save").on("click", function (e) {
     e.preventDefault();
     $("#btn-save").html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr("disabled", true);
-    let code = $("#code"), name = $("#name"), desc = $("#desc"), client = $("#client"),
-        location = $("#location"), start_date = $("#start_date"), end_date = $("#end_date"),
-        status = $("#status");
-    if (code.val() == "") {
+    let name = $("#name"), desc = $("#desc"), client = $("#client"),
+        // code = $("#code"), start_date = $("#start_date"), end_date = $("#end_date"),
+        location = $("#location"), status = $("#status");
+    /* if (code.val() == "") {
         toastr.error("Kode proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         code.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (name.val() == "") {
+    } */ if (name.val() == "") {
         toastr.error("Nama proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         name.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
@@ -200,7 +201,7 @@ $("#btn-save").on("click", function (e) {
         location.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (start_date.val() == "") {
+    } /* if (start_date.val() == "") {
         toastr.error("Tgl. mulai proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         start_date.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
@@ -210,7 +211,7 @@ $("#btn-save").on("click", function (e) {
         end_date.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (status.val() == "") {
+    } */ if (status.val() == "") {
         toastr.error("Status proyek masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         $('#iGroup-status button').removeClass('btn-primary').addClass('btn-danger').stop().delay(1500).queue(function () {
 			$(this).removeClass('btn-danger').addClass('btn-primary');
@@ -268,11 +269,12 @@ $("#btn-save").on("click", function (e) {
                             text: data.message,
                             icon: "warning",
                             allowOutsideClick: false,
-                        }).then(function (result) {
+                        });
+                        /* .then(function (result) {
                             if (data.row.error_code == "code_available") {
                                 code.focus();
                             }
-                        });
+                        }); */
                     }
                 }, error: function (jqXHR, textStatus, errorThrown) {
                     $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
