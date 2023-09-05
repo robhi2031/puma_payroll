@@ -93,9 +93,23 @@ const _closeCard = (card) => {
 }
 //Open Modal Import Data
 const _openModalImportManPower = () => {
-    $("#form-importManpower")[0].reset(), $('#file_import').val('').fileinput('reset').fileinput('refresh');
-    $('#modal-importManpower .modal-header .modal-title').html(`<i class="las la-file-import fs-2 text-gray-900 me-2"></i> Import Data Karyawan`);
-    $('#modal-importManpower').modal('show');
+    Swal.fire({
+        title: "Warning",
+        text: "Pastikan sudah melakukan Sikronisasi Data Aplikasi Manpower terlebih dahulu sebelum import data Employee!",
+        icon: "warning",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Ok, Lanjutkan",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.value) {
+            $("#form-importManpower")[0].reset(), $('#file_import').val('').fileinput('reset').fileinput('refresh');
+            $('#modal-importManpower .modal-header .modal-title').html(`<i class="las la-file-import fs-2 text-gray-900 me-2"></i> Import Data Karyawan`);
+            $('#modal-importManpower').modal('show');
+        } else {
+            $('#btn-saveImportManpower').html('<i class="bi bi-cloud-arrow-up fs-1 me-3"></i>Proses Import').attr('disabled', false);
+        }
+    });
 }
 //Save Import Manpower Form
 $("#btn-saveImportManpower").on("click", function (e) {
@@ -196,8 +210,8 @@ const _cboProjectSelest2 = () => {
                     //results: data.results,
                     results: $.map(data.row.results, function (item) {
                         return {
-                            id: item.code,
-                            text: item.code+ ' - ' +item.text
+                            id: item.id,
+                            text: item.text
                         }
                     }),
                     pagination: {
@@ -230,8 +244,8 @@ const _cboJobPositionSelest2 = () => {
                     //results: data.results,
                     results: $.map(data.row.results, function (item) {
                         return {
-                            id: item.code,
-                            text: item.code+ ' - ' +item.text
+                            id: item.id,
+                            text: item.text
                         }
                     }),
                     pagination: {
@@ -292,9 +306,9 @@ const _editManpower = (idp) => {
                 $('#name').val(data.row.name),
                 $('#email').val(data.row.email);
 
-                let selectedProject = $("<option selected='selected'></option>").val(data.row.project_code).text(data.row.project_code+ ' - ' +data.row.project_name);
+                let selectedProject = $("<option selected='selected'></option>").val(data.row.fid_last_project).text(data.row.project_name);
                 $("#project_code").append(selectedProject).trigger('change');
-                let selectedPosition = $("<option selected='selected'></option>").val(data.row.jobposition_code).text(data.row.jobposition_code+ ' - ' +data.row.job_position);
+                let selectedPosition = $("<option selected='selected'></option>").val(data.row.fid_job_position).text(data.row.job_position);
                 $("#jobposition_code").append(selectedPosition).trigger('change');
 
                 $('#department').val(data.row.department),
