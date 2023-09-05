@@ -85,7 +85,7 @@
                 <thead>
                     <tr class="fw-bolder text-uppercase bg-light">
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
-                        <th class="align-middle px-2 border-bottom-2 border-gray-200">Kode</th>
+                        <!-- <th class="align-middle px-2 border-bottom-2 border-gray-200">Kode</th> -->
                         <th class="align-middle px-2 border-bottom-2 border-gray-200">Posisi</th>
                         <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">Aksi</th>
                     </tr>
