@@ -433,7 +433,7 @@
     <!--begin::Modal Import Data-->
     <div class="modal fade" id="modal-importManpower" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <!--begin::Modal header-->
                 <div class="modal-header">
@@ -448,16 +448,19 @@
                         data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto"
                         data-kt-scroll-offset="185px">
                         <!--begin::Notice-->
-                        <div class="notice d-flex bg-light-primary rounded flex-shrink-0 p-3">
-                            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                        <div class="notice d-flex bg-light-primary rounded flex-column p-3">
+                            <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap mb-5">
                                 <div class="mb-3 mb-md-0 fw-semibold">
                                     <h4 class="text-gray-900 fw-bold">Tidak memiliki format Manpower?</h4>
-                                    <div class="fs-6 text-gray-700 pe-7">Silahkan download file format dengan cara, klik tombol download.
-                                    </div>
+                                    <div class="fs-6 text-gray-700 pe-7">Silahkan download file format dengan cara, klik tombol download.</div>
                                 </div>
                                 <a href="https://docs.google.com/spreadsheets/d/1eKGrTNj5_2Y0ZvALtiZmhxnIaj3Faa1XGmVFNpaywtg/edit?usp=sharing" target="_blank" class="btn btn-primary btn-sm align-self-center text-nowrap">
                                     <i class="bi bi-download"></i> Download
                                 </a>
+                            </div>
+                            <div class="text-danger pe-7">
+                                <h6 class="mb-0 text-danger"><u>Catatan :</u></h6>
+                                <span class="fs-7">*) Sebelum melakukan import data excel, sebaiknya melakukan <strong>sikronisasi Aplikasi Manpower</strong> terlebih dahulu untuk menghindari <strong>kesalahan Data</strong> pada saat proses Import dilakukan.</span>
                             </div>
                         </div>
                         <!--end::Notice-->
@@ -698,15 +701,15 @@
                         <i class="bi bi-three-dots fs-2"></i>
                     </button>
                     <!--begin::Menu 3-->
-                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-auto py-3" data-kt-menu="true">
                         <div class="menu-item px-3">
-                            <a href="javascript:void(0);" class="menu-link px-3" onclick="_openModalImportManPower();">
-                                <i class="las la-file-import fs-3 me-1"></i>Import Data
+                            <a href="javascript:void(0);" class="menu-link px-3" onclick="_syncManpowerApp();">
+                                <i class="las la-sync-alt fs-3 me-1"></i>Sinkronisasi Aplikasi Manpower
                             </a>
                         </div>
                         <div class="menu-item px-3">
-                            <a href="javascript:void(0);" class="menu-link px-3">
-                                <i class="las la-file-export fs-3 me-1"></i>Export Data
+                            <a href="javascript:void(0);" class="menu-link px-3" onclick="_openModalImportManPower();">
+                                <i class="las la-file-import fs-3 me-1"></i>Import Data (Excel/ CSV)
                             </a>
                         </div>
                     </div>
