@@ -59,22 +59,21 @@ trait Select2Common {
         $searchTerm = $search;
         $page = $page;
         $result = array();
-        $query = Project::selectRaw("id, name AS text, code")
-            ->where('name','LIKE','%'.$searchTerm.'%')
-            ->orWhere('code','LIKE','%'.$searchTerm.'%');
+        $query = Project::selectRaw("id, name AS text")
+            ->where('name','LIKE','%'.$searchTerm.'%');
 
         $start=0;
         $limit=20;
         if($page!=''){
             $start=20*$page-20;
             $limit=20;
-            $getResult = $query->offset($start)->limit($limit)->orderBy('code', 'DESC');
+            $getResult = $query->offset($start)->limit($limit)->orderBy('name', 'ASC');
         }else{
-            $getResult = $query->orderBy('code', 'DESC');
+            $getResult = $query->orderBy('name', 'ASC');
         }
 
         $getArray = $getResult->get()->toArray();
-        $countResult = $query->orderBy('code', 'DESC')->count();
+        $countResult = $query->orderBy('name', 'ASC')->count();
         $result['results'] = $getArray;
         $pagination = array("more" => true);
         if($countResult < 20 ){
@@ -97,22 +96,21 @@ trait Select2Common {
         $searchTerm = $search;
         $page = $page;
         $result = array();
-        $query = JobPosition::selectRaw("id, name AS text, code")
-            ->where('name','LIKE','%'.$searchTerm.'%')
-            ->orWhere('code','LIKE','%'.$searchTerm.'%');
+        $query = JobPosition::selectRaw("id, name AS text")
+            ->where('name','LIKE','%'.$searchTerm.'%');
 
         $start=0;
         $limit=20;
         if($page!=''){
             $start=20*$page-20;
             $limit=20;
-            $getResult = $query->offset($start)->limit($limit)->orderBy('code', 'DESC');
+            $getResult = $query->offset($start)->limit($limit)->orderBy('name', 'ASC');
         }else{
-            $getResult = $query->orderBy('code', 'DESC');
+            $getResult = $query->orderBy('name', 'ASC');
         }
 
         $getArray = $getResult->get()->toArray();
-        $countResult = $query->orderBy('code', 'DESC')->count();
+        $countResult = $query->orderBy('name', 'ASC')->count();
         $result['results'] = $getArray;
         $pagination = array("more" => true);
         if($countResult < 20 ){
