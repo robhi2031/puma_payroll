@@ -23,8 +23,8 @@ const _loadDtJobPosition = () => {
         pageResize: true,
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: "5%", className: "align-top text-center border px-2", searchable: false },
-            { data: 'code', name: 'code', width: "20%", className: "align-top border px-2" },
-            { data: 'name', name: 'name', width: "55%", className: "align-top border px-2" },
+            // { data: 'code', name: 'code', width: "20%", className: "align-top border px-2" },
+            { data: 'name', name: 'name', width: "75%", className: "align-top border px-2" },
             { data: 'action', name: 'action', width: "20%", className: "align-top text-center border px-2", orderable: false, searchable: false },
         ],
         oLanguage: {
@@ -153,12 +153,12 @@ $("#btn-save").on("click", function (e) {
     e.preventDefault();
     $("#btn-save").html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr("disabled", true);
     let code = $("#code"), name = $("#name");
-    if (code.val() == "") {
+    /* if (code.val() == "") {
         toastr.error("Kode posisi pekerjaan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         code.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
         return false;
-    } if (name.val() == "") {
+    } */ if (name.val() == "") {
         toastr.error("Nama posisi pekerjaan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         name.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
