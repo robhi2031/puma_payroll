@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Imports\ManPowerImport;
 use App\Models\BankAccount;
+use App\Models\JobPosition;
 use App\Models\ManPower;
+use App\Models\Project;
 use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
 use Illuminate\Http\Request;
@@ -83,8 +85,8 @@ class ManpowerController extends Controller
         if(isset($request->idp)){
             try {
                 $getRow = ManPower::selectRaw("man_power.*, b.name AS project_name, c.name AS job_position, d.bank_name, d.account_name, d.account_number, d.is_active")
-                    ->leftJoin('project AS b', 'b.code', '=', 'man_power.project_code')
-                    ->leftJoin('job_position AS c', 'c.code', '=', 'man_power.jobposition_code')
+                    ->leftJoin('project AS b', 'b.id', '=', 'man_power.fid_last_project')
+                    ->leftJoin('job_position AS c', 'c.id', '=', 'man_power.fid_job_position')
                     ->leftJoin('bank_account AS d', 'd.id', '=', 'man_power.fid_bank_account')
                     ->where('man_power.id', $request->idp)
                     ->first();
@@ -117,8 +119,8 @@ class ManpowerController extends Controller
             }
         } else {
             $data = ManPower::selectRaw("man_power.*, b.name AS project, c.name AS job_position, 'action' as action")
-                ->leftJoin('project AS b', 'b.code', '=', 'man_power.project_code')
-                ->leftJoin('job_position AS c', 'c.code', '=', 'man_power.jobposition_code')
+                ->leftJoin('project AS b', 'b.id', '=', 'man_power.fid_last_project')
+                ->leftJoin('job_position AS c', 'c.id', '=', 'man_power.fid_job_position')
                 ->leftJoin('bank_account AS d', 'd.id', '=', 'man_power.fid_bank_account')
                 ->orderByDesc('man_power.id')->get();
 
@@ -205,8 +207,8 @@ class ManpowerController extends Controller
                 'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
                 'name' => $request->name,
                 'email' => $email,
-                'project_code' => $request->project_code,
-                'jobposition_code' => $request->jobposition_code,
+                'fid_last_project' => $request->project_code,
+                'fid_job_position' => $request->jobposition_code,
                 'department' => $request->department,
                 'npwp' => $request->npwp,
                 'kpj' => $request->kpj,
@@ -270,14 +272,46 @@ class ManpowerController extends Controller
                     if ($row['work_status'] == 0) {
                         $workStatus = 'NON ACTIVE';
                     }
+                    //Last Project
+                    $getProject = Project::whereName(strtoupper($row['project_name']))->first();
+                    if($getProject == true) {
+                        $fid_last_project = $getProject->id;
+                    } else {
+                        $newProject = [
+                            'name' => strtoupper($row['project_name']),
+                            'desc' => '-',
+                            'location' => '-',
+                            'client' => '-',
+                            'user_add' => $userSesIdp,
+                        ];
+                        $fid_last_project = Project::insertGetId($newProject);
+                    }
+                    //Job Position
+                    $getJobPosition = JobPosition::whereName(strtoupper($row['job_position']))->first();
+                    if($getJobPosition == true) {
+                        $fid_job_position = $getJobPosition->id;
+                    } else {
+                        $newJobPosition = [
+                            'name' => strtoupper($row['job_position']),
+                            'user_add' => $userSesIdp,
+                        ];
+                        $fid_job_position = JobPosition::insertGetId($newJobPosition);
+                    }
+                    //PJU BN
+                    $getPjuBn = ManPower::wherePjuBn($row['int_bn'])->first();
+                    if($getPjuBn == true) {
+                        $pju_bn = $this->generated_pjubn();
+                    } else {
+                        $pju_bn = $row['int_bn'];
+                    }
                     //Array Manpower
                     $dataManpower = array(
-                        'pju_bn' => $this->generated_pjubn(),
+                        'pju_bn' => $pju_bn,
                         'ext_bn' => $row['ext_bn'],
                         'name' => $row['name'],
                         'email' => $row['email'],
-                        'project_code' => $row['project_code'],
-                        'jobposition_code' => $row['jobposition_code'],
+                        'fid_last_project' => $fid_last_project,
+                        'fid_job_position' => $fid_job_position,
                         'department' => $row['department'],
                         'npwp' => $row['npwp'],
                         'kpj' => $row['kpj'],
@@ -428,8 +462,8 @@ class ManpowerController extends Controller
                 'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
                 'name' => $request->name,
                 'email' => $email,
-                'project_code' => $request->project_code,
-                'jobposition_code' => $request->jobposition_code,
+                'fid_last_project' => $request->project_code,
+                'fid_job_position' => $request->jobposition_code,
                 'department' => $request->department,
                 'npwp' => $request->npwp,
                 'kpj' => $request->kpj,
