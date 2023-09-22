@@ -10,6 +10,7 @@ use App\Models\ManPower;
 use App\Models\Project;
 use App\Traits\Select2Common;
 use App\Traits\SystemCommon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -129,7 +130,14 @@ class ManpowerController extends Controller
                     $bnCustom = 'PJU: '.$row->pju_bn.'<br/>Ext.: '.$row->ext_bn;
                     return $bnCustom;
                 })
+                ->editColumn('department', function ($row) {
+                    return $row->department ? $row->department : '-';
+                })
                 ->editColumn('shift_code', function ($row) {
+                    $shiftCode = '-';
+                    if($row->shift_code != '' || $row->shift_code != null) {
+                        $shiftCode = $row->shift_code;
+                    }
                     $shiftGroup = '';
                     if($row->shift_group != '' || $row->shift_group != null) {
                         $shiftGroup = ' (' .$row->shift_group. ')';
@@ -138,7 +146,7 @@ class ManpowerController extends Controller
                     if($row->pay_code != '' || $row->pay_code != null) {
                         $payCode = $row->pay_code;
                     }
-                    $shiftCustom = $row->shift_code.$shiftGroup.'<br/>Pay Code: '.$payCode;
+                    $shiftCustom = $shiftCode.$shiftGroup.'<br/>Pay Code: '.$payCode;
                     return $shiftCustom;
                 })
                 ->editColumn('work_status', function ($row) {
@@ -153,7 +161,7 @@ class ManpowerController extends Controller
                     $btnDtl = '<button type="button" class="btn btn-icon btn-circle btn-sm btn-dark mb-1" data-bs-toggle="tooltip" title="Detail data!" onclick="_dtlManpower('."'".$row->id."'".');"><i class="la la-search fs-3"></i></button>';
                     return $btnEdit.$btnDtl;
                 })
-                ->rawColumns(['bn', 'shift_code', 'work_status', 'action'])
+                ->rawColumns(['bn', 'department', 'shift_code', 'work_status', 'action'])
                 ->make(true);
     
             return $output;
@@ -168,6 +176,7 @@ class ManpowerController extends Controller
     public function store(Request $request) {
         $userSesIdp = Auth::user()->id;
         $form = [
+            'nik' => 'required|max:20',
             'name' => 'required|max:150',
             'email' => 'required',
             'project_code' => 'required',
@@ -187,10 +196,10 @@ class ManpowerController extends Controller
         DB::beginTransaction();
         $request->validate($form);
         try {
-            $email = $request->email;
-            if(ManPower::where('email', $email)->exists()) {
-                addToLog('Data cannot be saved, the same manpower email already exists in the system');
-                return jsonResponse(false, 'Gagal menambahkan data, Email yang sama sudah ada pada sistem. Coba gunakan email yang berbeda', 200, array('error_code' => 'email_available'));
+            $nik = $request->nik;
+            if(ManPower::where('nik', $nik)->exists()) {
+                addToLog('Data cannot be saved, the same manpower NIK already exists in the system');
+                return jsonResponse(false, 'Gagal menambahkan data, NIK yang sama sudah ada pada sistem. Coba gunakan NIK yang berbeda', 200, array('error_code' => 'nik_available'));
             }
             //Array Akun Bank
             $dataBankAccount = array(
@@ -205,6 +214,7 @@ class ManpowerController extends Controller
             $data = array(
                 'pju_bn' => $this->generated_pjubn(),
                 'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
+                'nik' => $request->nik,
                 'name' => $request->name,
                 'email' => $email,
                 'fid_last_project' => $request->project_code,
@@ -249,6 +259,125 @@ class ManpowerController extends Controller
             ]);
         }
     }    
+    /**
+     * syncManpower
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function syncManpower(Request $request) {
+        $userSesIdp = Auth::user()->id;
+        DB::beginTransaction();
+        try {
+            $client = new Client(
+                ['auth' => [config('app.manpower_userkey'), config('app.manpower_passkey')]]
+            );
+            $url  = config('app.manpower_host').'api/sync_manpower?access_token='.config('app.manpower_synctoken');
+            $res = $client->get($url);
+            $res = json_decode($res->getBody()->getContents(), TRUE);
+            if($res['status'] == true) {
+                $employees = $res['data'];
+                if (count($employees) > 0) {
+                    foreach ($employees as $row) {
+                        //Work Status
+                        $workStatus = 'ACTIVE';
+                        // if ($row['work_status'] == 0) {
+                        //     $workStatus = 'NON ACTIVE';
+                        // }
+                        //Last Project
+                        $getProject = Project::whereName(strtoupper($row['project_name']))->first();
+                        if($getProject == true) {
+                            $fid_last_project = $getProject->id;
+                        } else {
+                            $newProject = [
+                                'name' => strtoupper($row['project_name']),
+                                'desc' => '-',
+                                'location' => '-',
+                                'client' => '-',
+                                'user_add' => $userSesIdp,
+                            ];
+                            $fid_last_project = Project::insertGetId($newProject);
+                        }
+                        //Job Position
+                        $getJobPosition = JobPosition::whereName(strtoupper($row['position']))->first();
+                        if($getJobPosition == true) {
+                            $fid_job_position = $getJobPosition->id;
+                        } else {
+                            $newJobPosition = [
+                                'name' => strtoupper($row['position']),
+                                'user_add' => $userSesIdp,
+                            ];
+                            $fid_job_position = JobPosition::insertGetId($newJobPosition);
+                        }
+                        //PJU BN
+                        if($row['badge_number_internal'] != null || $row['badge_number_internal'] != '') {
+                            $getPjuBn = ManPower::wherePjuBn($row['badge_number_internal'])->first();
+                            if($getPjuBn == true) {
+                                $pju_bn = $this->generated_pjubn();
+                            } else {
+                                $pju_bn = $row['badge_number_internal'];
+                            }
+                        } else {
+                            $pju_bn = $this->generated_pjubn();
+                        }
+                        //Marital Status
+                        $marital_status = 'M3';
+                        if($row['martial_status'] == '1') {
+                            $marital_status = 'S/L';
+                        }
+                        //Array Manpower
+                        $dataManpower = array(
+                            'pju_bn' => $pju_bn,
+                            'ext_bn' => $row['badge_number'],
+                            'nik' => $row['ktp_number'],
+                            'name' => $row['employee_name'],
+                            'email' => $row['email'],
+                            'fid_last_project' => $fid_last_project,
+                            'fid_job_position' => $fid_job_position,
+                            'marital_status' => $marital_status,
+                            'work_status' => $workStatus,
+                        );
+                        //Array Akun Bank
+                        $dataBankAccount = array(
+                            'bank_name' => strtoupper($row['bank_name']),
+                            'account_name' => strtoupper($row['bank_account_name']),
+                            'account_number' => $row['bank_account_no'],
+                        );
+                        //cek & get manpower
+                        $manpower = ManPower::where('nik', $row['ktp_number'])->first();
+                        if($manpower == true) {
+                            // Update Manpower
+                            $dataManpower['user_updated'] = $userSesIdp;
+                            ManPower::whereId($manpower->id)->update($dataManpower);
+                            addToLog('Manpower by NIK ' .$row['ktp_number']. ' has been successfully updated from synchronization by Manpower App');
+                            // Update Bank Account
+                            $dataBankAccount['user_updated'] = $userSesIdp;
+                            BankAccount::whereId($manpower->fid_bank_account)->update($dataBankAccount);
+                            addToLog('Bank account by name ' .strtoupper($row['bank_name']). ' has been successfully updated from synchronization by Manpower App');
+                        } else {
+                            // Insert Bank Account
+                            $dataBankAccount['user_add'] = $userSesIdp;
+                            $bankAccountId = BankAccount::insertGetId($dataBankAccount);
+                            addToLog('Bank account by name ' .strtoupper($row['bank_name']). ' has been successfully inserted from synchronization by Manpower App');
+                            // Insert Manpower
+                            $dataManpower['fid_bank_account'] = $bankAccountId;
+                            $dataManpower['user_add'] = $userSesIdp;
+                            ManPower::insert($dataManpower);
+                            addToLog('Manpower by NIK ' .$row['ktp_number']. ' has been successfully inserted from synchronization by Manpower App');
+                        }
+                    }
+                }
+                addToLog('Manpower data has been successfully synchronization');
+                DB::commit();
+                return jsonResponse(true, 'Data karyawan berhasil disinkronisasikan dari Aplikasi Manpower', 200);
+            }
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
     /**
      * import
      *
@@ -308,6 +437,7 @@ class ManpowerController extends Controller
                     $dataManpower = array(
                         'pju_bn' => $pju_bn,
                         'ext_bn' => $row['ext_bn'],
+                        'nik' => $row['nik'],
                         'name' => $row['name'],
                         'email' => $row['email'],
                         'fid_last_project' => $fid_last_project,
@@ -346,12 +476,12 @@ class ManpowerController extends Controller
                         'account_number' => $row['account_number'],
                     );
                     //cek & get manpower
-                    $manpower = ManPower::where('email', $row['email'])->first();
+                    $manpower = ManPower::where('nik', $row['nik'])->first();
                     if($manpower == true) {
                         // Update Manpower
                         $dataManpower['user_updated'] = $userSesIdp;
                         ManPower::whereId($manpower->id)->update($dataManpower);
-                        addToLog('Manpower by email ' .$row['email']. ' has been successfully updated from import file');
+                        addToLog('Manpower by NIK ' .$row['nik']. ' has been successfully updated from import file');
                         // Update Bank Account
                         $dataBankAccount['user_updated'] = $userSesIdp;
                         BankAccount::whereId($manpower->fid_bank_account)->update($dataBankAccount);
@@ -424,6 +554,7 @@ class ManpowerController extends Controller
     public function update(Request $request) {
         $userSesIdp = Auth::user()->id;
         $form = [
+            'nik' => 'required|max:20',
             'name' => 'required|max:150',
             'email' => 'required',
             'project_code' => 'required',
@@ -443,10 +574,10 @@ class ManpowerController extends Controller
         DB::beginTransaction();
         $request->validate($form);
         try {
-            $email = $request->email;
-            if(ManPower::where('email', $email)->where('id', '!=' , $request->id)->exists()) {
-                addToLog('Data cannot be updated, the same manpower email already exists in the system');
-                return jsonResponse(false, 'Gagal memperbarui data, Email yang sama sudah ada pada sistem. Coba gunakan email yang berbeda', 200, array('error_code' => 'email_available'));
+            $nik = $request->nik;
+            if(ManPower::where('nik', $nik)->where('id', '!=' , $request->id)->exists()) {
+                addToLog('Data cannot be updated, the same manpower NIK already exists in the system');
+                return jsonResponse(false, 'Gagal memperbarui data, NIK yang sama sudah ada pada sistem. Coba gunakan NIK yang berbeda', 200, array('error_code' => 'nik_available'));
             }
             //Array Akun Bank
             $dataBankAccount = array(
@@ -460,6 +591,7 @@ class ManpowerController extends Controller
             //array data
             $data = array(
                 'ext_bn' => $request->ext_bn !='' ? strtoupper($request->ext_bn) : '-',
+                'nik' => $request->nik,
                 'name' => $request->name,
                 'email' => $email,
                 'fid_last_project' => $request->project_code,
