@@ -345,10 +345,10 @@ class UsersController extends Controller
                     ->get();
                     if($getOldPermissions) {
                         foreach ($getOldPermissions as $row) {
-                            $getUser->revokePermissionTo($getOldPermissions->name);
+                            $getUser->revokePermissionTo($row->name);
                         }
                     }
-                    $getUser->removeRole([$oldIdpRole]);
+                    $getUser->removeRole($oldIdpRole);
                 }
             } if($getPermissions) {
                 foreach ($getPermissions as $row) {
