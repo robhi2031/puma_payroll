@@ -17,6 +17,7 @@ class CreateManPowerTable extends Migration
             $table->id();
             $table->string('pju_bn', 16);
             $table->string('ext_bn', 16)->nullable();
+            $table->string('nik', 50)->unique();
             $table->string('name', 225);
             $table->string('email', 225);
             $table->string('project_code', 8);
