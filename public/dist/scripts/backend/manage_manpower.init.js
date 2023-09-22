@@ -24,8 +24,9 @@ const _loadDtManpower = () => {
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: "5%", className: "align-top text-center border px-2", searchable: false },
             { data: 'bn', name: 'bn', width: "10%", className: "align-top border px-2" },
+            { data: 'nik', name: 'nik', width: "5%", className: "align-top border px-2" },
             { data: 'name', name: 'name', width: "20%", className: "align-top border px-2" },
-            { data: 'project', name: 'project', width: "20%", className: "align-top border px-2" },
+            { data: 'project', name: 'project', width: "15%", className: "align-top border px-2" },
             { data: 'job_position', name: 'job_position', width: "15%", className: "align-top border px-2" },
             { data: 'department', name: 'department', width: "10%", className: "align-top border px-2" },
             { data: 'shift_code', name: 'shift_code', width: "10%", className: "align-top border px-2" },
@@ -303,6 +304,7 @@ const _editManpower = (idp) => {
                 $('[name="id"]').val(data.row.id), $('[name="fid_bank_account"]').val(data.row.fid_bank_account),
                 $('#pju_bn').val(data.row.pju_bn), $('#iGroup-pjuBn').show(),
                 $('#ext_bn').val(data.row.ext_bn),
+                $('#nik').val(data.row.nik),
                 $('#name').val(data.row.name),
                 $('#email').val(data.row.email);
 
@@ -383,13 +385,18 @@ $("#form-manpower input").keyup(function (event) {
 $("#btn-save").on("click", function (e) {
     e.preventDefault();
     $("#btn-save").html('<span class="spinner-border spinner-border-sm align-middle me-3"></span> Mohon Tunggu...').attr("disabled", true);
-    let name = $("#name"), email = $("#email"), project_code = $("#project_code"),
+    let nik = $("#nik"), name = $("#name"), email = $("#email"), project_code = $("#project_code"),
         jobposition_code = $("#jobposition_code"), department = $("#department"), npwp = $("#npwp"),
         kpj = $("#kpj"), kis = $("#kis"), marital_status = $("#marital_status"),
         shift_code = $("#shift_code"), pay_code = $("#pay_code"),
         basic_salary = $("#basic_salary"), bank_name = $("#bank_name"), account_name = $("#account_name"), account_number = $("#account_number");
 
-    if (name.val() == "") {
+    if (nik.val() == "") {
+        toastr.error("NIK (No. KTP) karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
+        nik.focus();
+        $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
+        return false;
+    } if (name.val() == "") {
         toastr.error("Nama karyawan masih kosong...", "Uuppss!", { progressBar: true, timeOut: 1500 });
         name.focus();
         $("#btn-save").html('<i class="las la-save fs-1 me-3"></i>Simpan').attr("disabled", false);
@@ -537,8 +544,8 @@ $("#btn-save").on("click", function (e) {
                             icon: "warning",
                             allowOutsideClick: false,
                         }).then(function (result) {
-                            if (data.row.error_code == "email_available") {
-                                email.focus();
+                            if (data.row.error_code == "nik_available") {
+                                nik.focus();
                             }
                         });
                     }
@@ -591,6 +598,58 @@ const _dtlManpower = (idp) => {
         },
     });
 }
+const _syncManpowerApp = () => {
+    Swal.fire({
+        title: "",
+        html: `Yakin akan melakukan sinkronisasi data <strong>Manpower</strong>?<small class="d-block fs-7 mt-3"><strong class="text-danger">Perhatian:</strong><br/>Ini mungkin akan membutuhkan waktu yang cukup lama sesuai dengan jumlah data manpower yang akan disinkronisasikan</small>`,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.value) {
+            let target = document.querySelector("#card-dtManpower"), blockUi = new KTBlockUI(target, { message: messageBlockUi });
+            blockUi.block(), blockUi.destroy();
+            $('#modal-syncManpowerApp').modal('show');
+            //Ajax load from ajax
+            $.ajax({
+                url: base_url+ 'api/manage_manpower/sync_manpower_api',
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (data) {
+                    blockUi.release(), blockUi.destroy();
+                    if (data.status == true) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: data.message,
+                            icon: "success",
+                            allowOutsideClick: false,
+                        }).then(function (result) {
+                            $('#modal-syncManpowerApp').modal('hide'), _loadDtManpower();
+                        });
+                    } else {
+                        Swal.fire({title: "Ooops!", text: data.message, icon: "warning", allowOutsideClick: false}).then(function (result) {
+                            $('#modal-syncManpowerApp').modal('hide'), _loadDtManpower();
+                        });
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    blockUi.release(), blockUi.destroy();
+                    console.log("load data is error!");
+                    Swal.fire({
+                        title: "Ooops!",
+                        text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.",
+                        icon: "error",
+                        allowOutsideClick: false,
+                    }).then(function (result) {
+                        $('#modal-syncManpowerApp').modal('hide'), _loadDtManpower();
+                    });
+                },
+            });
+        }
+    });
+}
 //Class Initialization
 jQuery(document).ready(function() {
     _loadDtManpower();
@@ -619,6 +678,7 @@ jQuery(document).ready(function() {
     //     }
     // });
     $('.mask-16').mask('0000000000000000');
+    $('.mask-20').mask('00000000000000000000');
     //Change Check Switch
     $("#is_daily").change(function() {
         if(this.checked) {
