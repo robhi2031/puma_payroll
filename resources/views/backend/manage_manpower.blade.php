@@ -37,6 +37,15 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row mb-6">
+                    <label class="col-lg-4 col-form-label required fw-bold fs-6" for="nik">NIK (No. KTP)</label>
+                    <div class="col-lg-8">
+                        <input type="text" name="nik" id="nik" class="form-control form-control-lg form-control-solid no-space mask-20 mb-3 mb-lg-0" maxlength="20" placeholder="Isi NIK (No. KTP) karyawan ..." />
+                        <div class="form-text">*) Contoh: <code>1234567890123456</code></div>
+                    </div>
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-6">
                     <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">Nama</label>
                     <div class="col-lg-8">
                         <input type="text" name="name" id="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" maxlength="150" placeholder="Isi nama karyawan ..." />
@@ -501,6 +510,32 @@
         </div>
     </div>
     <!--end::Modal Import Data-->
+    <!--begin::Modal proses sinkronisasi data-->
+    <div class="modal fade" id="modal-syncManpowerApp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!--begin::Modal body-->
+                <div class="modal-body">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <div class="p-2">
+                            <img src="{{ asset('dist/img/loading-data.gif') }}" alt="loading-data" class="mw-100 h-200px h-sm-325px">
+                        </div>
+                        <div class="p-2">
+                            <h2 class="fs-4 fw-bold mb-0">
+                                Mohon menunggu hingga proses selesai
+                            </h2>
+                            <p class="text-gray-400 fs-7">
+                                Ini mungkin membutuhkan waktu yang cukup lama...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal body-->
+            </div>
+        </div>
+    </div>
+    <!--end::Modal proses sinkronisasi data-->
     <!--begin::Modal Detail Manpower-->
     <div class="modal fade" id="modal-dtlManpower" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-hidden="true">
@@ -742,7 +777,7 @@
                         <tr class="fw-bolder text-uppercase bg-light">
                             <th class="text-center align-middle px-2 border-bottom-2 border-gray-200">No.</th>
                             <th class="align-middle px-2 border-bottom-2 border-gray-200">BN</th>
-                            {{-- <th class="align-middle px-2 border-bottom-2 border-gray-200">EXT BN</th> --}}
+                            <th class="align-middle px-2 border-bottom-2 border-gray-200">NIK</th>
                             <th class="align-middle px-2 border-bottom-2 border-gray-200">EMPLOYEE NAME</th>
                             <th class="align-middle px-2 border-bottom-2 border-gray-200">PROJECT</th>
                             <th class="align-middle px-2 border-bottom-2 border-gray-200">JOB POSITION</th>
