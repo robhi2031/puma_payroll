@@ -21,6 +21,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API MANPOWER ACCESS
+    |--------------------------------------------------------------------------
+    */
+    'manpower_host' => env('MANPOWER_HOST', null),
+    'manpower_userkey' => env('MANPOWER_USERKEY', null),
+    'manpower_passkey' => env('MANPOWER_PASSKEY', null),
+    'manpower_synctoken' => env('MANPOWER_SYNCTOKEN', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
