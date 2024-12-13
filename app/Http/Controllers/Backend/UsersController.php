@@ -111,7 +111,7 @@ class UsersController extends Controller
             if(auth()->user()->getRoleNames()[0] != 'Super Admin') {
                 $query = $query->where('c.name', '!=', 'Super Admin');
             }
-            $data = $query->orderBy('b.role_id', 'ASC')->get();
+            $data = $query->orderBy('c.name')->orderBy('b.role_id', 'ASC')->get();
             $output = Datatables::of($data)->addIndexColumn()
                 ->editColumn('name', function ($row) {
                     $user_thumb = $row->thumb;
